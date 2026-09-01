@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Discoveries - LOST@UET</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+    <div id="app">
+
+        <!-- HEADER -->
+        <header id="global-header">
+            <div class="header-left">
+                <span class="logo-icon">🏛️</span>
+                <span class="logo-text">LOST@UET</span>
+            </div>
+            <nav class="header-nav">
+                <a href="index.html">Home</a>
+                <a href="map.html">Map</a>
+                <a href="quests.html">Quests</a>
+                <a href="discoveries.html" class="active">Discoveries</a>
+            </nav>
+            <div class="header-profile">
+                <div class="avatar">👤</div>
+                <div class="profile-info">
+                    <span class="level-text">Lv. 2 Explorer</span>
+                    <div class="mini-progress"><div class="mini-progress-bar" style="width:25%;"></div></div>
+                    <span class="progress-text">3/12</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- DISCOVERIES PAGE -->
+        <section class="page active">
+            <div class="page-header">
+                <h2>⭐ MY DISCOVERIES</h2>
+                <div class="level-bar">
+                    <span>📍 3 / 12 locations</span>
+                    <span>⭐ +300 XP (Level 2)</span>
+                </div>
+            </div>
+
+            <!-- Discovery Progress -->
+            <div class="discovery-progress">
+                <div class="progress-label">
+                    <span>Progress</span>
+                    <span>25%</span>
+                </div>
+                <div class="progress-bar-full">
+                    <div class="progress-fill-full" style="width:25%;"></div>
+                </div>
+            </div>
+
+            <!-- Discovery Stats -->
+            <div class="discovery-stats">
+                <div class="stat-card">
+                    <span class="stat-number">3</span>
+                    <span class="stat-label">✅ Unlocked</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">9</span>
+                    <span class="stat-label">🔒 Locked</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">100</span>
+                    <span class="stat-label">⭐ XP Earned</span>
+                </div>
+            </div>
+
+            <!-- Location Grid -->
+            <h3 style="font-family:var(--font-pixel);font-size:14px;color:var(--text-yellow);margin:20px 0 12px;">📍 ALL LOCATIONS</h3>
+            <div class="discovery-grid">
+
+                <!-- Unlocked -->
+                <div class="discovery-item unlocked" onclick="openLocation('CS Department')">
+                    <span>💻</span>
+                    <span class="name">CS Department</span>
+                    <span class="badge">✅</span>
+                </div>
+                <div class="discovery-item unlocked" onclick="openLocation('Main Cafe')">
+                    <span>☕</span>
+                    <span class="name">Main Cafe</span>
+                    <span class="badge">✅</span>
+                </div>
+                <div class="discovery-item unlocked" onclick="openLocation('Library')">
+                    <span>📚</span>
+                    <span class="name">Library</span>
+                    <span class="badge">✅</span>
+                </div>
+                <div class="discovery-item unlocked" onclick="openLocation('Mosque')">
+                    <span>🕌</span>
+                    <span class="name">Mosque</span>
+                    <span class="badge">✅</span>
+                </div>
+
+                <!-- Locked -->
+                <div class="discovery-item locked">
+                    <span>🏟️</span>
+                    <span class="name">Sports Complex</span>
+                    <span class="badge">🔒</span>
+                </div>
+                <div class="discovery-item locked">
+                    <span>🏥</span>
+                    <span class="name">Medical Center</span>
+                    <span class="badge">🔒</span>
+                </div>
+                <div class="discovery-item locked">
+                    <span>🚌</span>
+                    <span class="name">Bus Stop</span>
+                    <span class="badge">🔒</span>
+                </div>
+                <div class="discovery-item locked">
+                    <span>🌿</span>
+                    <span class="name">Hidden Garden</span>
+                    <span class="badge">🔒</span>
+                </div>
+                <div class="discovery-item locked">
+                    <span>🚪</span>
+                    <span class="name">Main Gate</span>
+                    <span class="badge">🔒</span>
+                </div>
+                <div class="discovery-item locked">
+                    <span>🏛️</span>
+                    <span class="name">Admin Building</span>
+                    <span class="badge">🔒</span>
+                </div>
+                <div class="discovery-item locked">
+                    <span>🔬</span>
+                    <span class="name">Research Lab</span>
+                    <span class="badge">🔒</span>
+                </div>
+                <div class="discovery-item locked">
+                    <span>🎭</span>
+                    <span class="name">Auditorium</span>
+                    <span class="badge">🔒</span>
+                </div>
+            </div>
+
+            <!-- Badges Section -->
+            <div class="badges-section">
+                <h3>🏅 BADGES</h3>
+                <div class="badges-grid">
+                    <div class="badge unlocked">🎒 Campus Newbie</div>
+                    <div class="badge unlocked">☕ Caffeine Addict</div>
+                    <div class="badge unlocked">💻 CS Explorer</div>
+                    <div class="badge locked">🔒 ??? Locked</div>
+                    <div class="badge locked">🔒 ??? Locked</div>
+                    <div class="badge locked">🔒 ??? Locked</div>
+                </div>
+            </div>
+
+            <!-- Export/Import -->
+            <div class="save-actions">
+                <button class="btn-outline" onclick="exportSave()">💾 Export Save</button>
+                <button class="btn-outline" onclick="document.getElementById('importFile').click()">📂 Import Save</button>
+                <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importSave(event)" />
+                <button class="btn-danger" onclick="resetGame()">🔄 Reset Game</button>
+            </div>
+        </section>
+
+        <!-- BOTTOM NAVIGATION -->
+        <nav class="bottom-nav">
+            <a href="index.html">
+                <i class="fas fa-home"></i> Home
+            </a>
+            <a href="map.html">
+                <i class="fas fa-map"></i> Map
+            </a>
+            <a href="quests.html">
+                <i class="fas fa-tasks"></i> Quests
+            </a>
+            <a href="discoveries.html" class="active">
+                <i class="fas fa-trophy"></i> Discoveries
+            </a>
+        </nav>
+
+        <!-- MOBILE BOTTOM NAV -->
+        <nav class="mobile-nav">
+            <a href="index.html"><i class="fas fa-home"></i> Home</a>
+            <a href="map.html"><i class="fas fa-map"></i> Map</a>
+            <a href="quests.html"><i class="fas fa-tasks"></i> Quests</a>
+            <a href="discoveries.html" class="active"><i class="fas fa-trophy"></i> Discoveries</a>
+        </nav>
+
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        function exportSave() {
+            const data = {
+                xp: 100,
+                level: 2,
+                discoveries: ['CS Department', 'Main Cafe', 'Library', 'Mosque'],
+                badges: ['Campus Newbie', 'Caffeine Addict', 'CS Explorer']
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'lostuet_save_' + new Date().toISOString().split('T')[0] + '.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function importSave(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    alert('✅ Save imported successfully!');
+                    console.log('Imported data:', data);
+                } catch (error) {
+                    alert('❌ Invalid save file!');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function resetGame() {
+            if (confirm('⚠️ Are you sure you want to reset ALL progress?')) {
+                localStorage.removeItem('lostuet_save');
+                alert('🔄 Game reset! Refresh the page.');
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html>

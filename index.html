@@ -1,17 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LOST@UET</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>LOST@UET - Campus Explorer</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
 </head>
-
 <body>
+    <div id="app">
 
-    <h1>LOST@UET</h1>
+        <!-- ======================================== -->
+        <!-- GLOBAL HEADER -->
+        <!-- ======================================== -->
+        <header id="global-header">
+            <div class="header-left">
+                <span class="logo-icon">🏛️</span>
+                <span class="logo-text">LOST@UET</span>
+            </div>
+            <nav class="header-nav">
+                <a href="index.html" class="active">Home</a>
+                <a href="map.html">Map</a>
+                <a href="quests.html">Quests</a>
+                <a href="discoveries.html">Discoveries</a>
+            </nav>
+            <div class="header-profile">
+                <div class="avatar">👤</div>
+                <div class="profile-info">
+                    <span class="level-text">Lv. 2 Explorer</span>
+                    <div class="mini-progress"><div class="mini-progress-bar" style="width:25%;"></div></div>
+                    <span class="progress-text">3/12</span>
+                </div>
+            </div>
+        </header>
 
-    <script src="js/locations.js"></script>
+        <!-- ======================================== -->
+        <!-- LANDING PAGE -->
+        <!-- ======================================== -->
+        <section class="page active">
+            <div class="landing-container">
+                <div class="landing-banner">
+                    <h1 class="landing-title">LOST@UET</h1>
+                    <p class="landing-tagline">EXPLORE · DISCOVER · BELONG</p>
+                </div>
+
+                <div class="pixel-art-container">
+                    <div class="pixel-building">
+                        <div class="building-block"></div>
+                        <div class="building-block"></div>
+                        <div class="building-block"></div>
+                        <div class="building-window"></div>
+                        <div class="building-window"></div>
+                        <div class="building-window"></div>
+                    </div>
+                    <div class="student-avatar">🧑‍🎓</div>
+                </div>
+
+                <div class="speech-bubble">
+                    NEW CAMPUS. SAME YOU. JUST MORE LOST.
+                </div>
+
+                <div class="button-stack">
+                    <a href="map.html" class="btn-yellow" style="text-decoration:none;text-align:center;">
+                        START EXPLORING
+                    </a>
+                    <a href="map.html" class="btn-outline" style="text-decoration:none;text-align:center;">
+                        EXPLORE MAP
+                    </a>
+                    <a href="quests.html" class="btn-outline" style="text-decoration:none;text-align:center;">
+                        VIEW QUESTS
+                    </a>
+                    <a href="discoveries.html" class="btn-outline" style="text-decoration:none;text-align:center;">
+                        MY DISCOVERIES
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================================== -->
+        <!-- BOTTOM NAVIGATION -->
+        <!-- ======================================== -->
+        <nav class="bottom-nav">
+            <a href="index.html" class="active">
+                <i class="fas fa-home"></i> Home
+            </a>
+            <a href="map.html">
+                <i class="fas fa-map"></i> Map
+            </a>
+            <a href="quests.html">
+                <i class="fas fa-tasks"></i> Quests
+            </a>
+            <a href="discoveries.html">
+                <i class="fas fa-trophy"></i> Discoveries
+            </a>
+        </nav>
+
+        <!-- MOBILE BOTTOM NAV -->
+        <nav class="mobile-nav">
+            <a href="index.html" class="active"><i class="fas fa-home"></i> Home</a>
+            <a href="map.html"><i class="fas fa-map"></i> Map</a>
+            <a href="quests.html"><i class="fas fa-tasks"></i> Quests</a>
+            <a href="discoveries.html"><i class="fas fa-trophy"></i> Discoveries</a>
+        </nav>
+
+    </div>
+
     <script src="js/app.js"></script>
-
 </body>
 </html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Search - LOST@UET</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+    <div id="app">
+
+        <!-- HEADER -->
+        <header id="global-header">
+            <div class="header-left">
+                <span class="logo-icon">🏛️</span>
+                <span class="logo-text">LOST@UET</span>
+            </div>
+            <nav class="header-nav">
+                <a href="index.html">Home</a>
+                <a href="map.html">Map</a>
+                <a href="quests.html">Quests</a>
+                <a href="discoveries.html">Discoveries</a>
+            </nav>
+            <div class="header-profile">
+                <div class="avatar">👤</div>
+                <div class="profile-info">
+                    <span class="level-text">Lv. 2 Explorer</span>
+                    <div class="mini-progress"><div class="mini-progress-bar" style="width:25%;"></div></div>
+                    <span class="progress-text">3/12</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- SEARCH PAGE -->
+        <section class="page active">
+            <div class="search-page-container">
+
+                <!-- Search Input -->
+                <div class="search-input-container">
+                    <div class="search-bar">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="searchInput" placeholder="🔍 Search for a place..." oninput="filterResults()" />
+                        <button class="search-clear" onclick="clearSearch()">&times;</button>
+                    </div>
+                    <p class="search-hint">Press <kbd>Ctrl+K</kbd> to focus search</p>
+                </div>
+
+                <!-- Popular Tags -->
+                <div class="popular-tags">
+                    <span>🔥 Popular</span>
+                    <span class="tag" onclick="searchTag('Cafe')">☕ Cafe</span>
+                    <span class="tag" onclick="searchTag('Library')">📚 Library</span>
+                    <span class="tag" onclick="searchTag('Stadium')">🏟️ Stadium</span>
+                    <span class="tag" onclick="searchTag('CS Department')">💻 CS Department</span>
+                    <span class="tag" onclick="searchTag('Mosque')">🕌 Mosque</span>
+                    <span class="tag" onclick="searchTag('Garden')">🌿 Garden</span>
+                </div>
+
+                <!-- Search Results -->
+                <div class="search-results" id="searchResults">
+                    <div class="search-result-item" onclick="openLocation('CS Department')">
+                        <span class="result-icon">💻</span>
+                        <div class="result-info">
+                            <span class="result-name">CS Department</span>
+                            <span class="result-category">Academic</span>
+                        </div>
+                        <span class="result-status unlocked">✅</span>
+                    </div>
+                    <div class="search-result-item" onclick="openLocation('Library')">
+                        <span class="result-icon">📚</span>
+                        <div class="result-info">
+                            <span class="result-name">Central Library</span>
+                            <span class="result-category">Academic</span>
+                        </div>
+                        <span class="result-status unlocked">✅</span>
+                    </div>
+                    <div class="search-result-item" onclick="openLocation('Main Cafe')">
+                        <span class="result-icon">☕</span>
+                        <div class="result-info">
+                            <span class="result-name">Main Cafe</span>
+                            <span class="result-category">Food</span>
+                        </div>
+                        <span class="result-status unlocked">✅</span>
+                    </div>
+                    <div class="search-result-item" onclick="openLocation('Sports Complex')">
+                        <span class="result-icon">🏟️</span>
+                        <div class="result-info">
+                            <span class="result-name">Sports Complex</span>
+                            <span class="result-category">Sports</span>
+                        </div>
+                        <span class="result-status locked">🔒</span>
+                    </div>
+                    <div class="search-result-item" onclick="openLocation('Mosque')">
+                        <span class="result-icon">🕌</span>
+                        <div class="result-info">
+                            <span class="result-name">Mosque</span>
+                            <span class="result-category">Essential</span>
+                        </div>
+                        <span class="result-status unlocked">✅</span>
+                    </div>
+                    <div class="search-result-item" onclick="openLocation('Hidden Garden')">
+                        <span class="result-icon">🌿</span>
+                        <div class="result-info">
+                            <span class="result-name">Hidden Garden</span>
+                            <span class="result-category">Hidden Gem</span>
+                        </div>
+                        <span class="result-status locked">🔒</span>
+                    </div>
+                    <div class="search-result-item" onclick="openLocation('Medical Center')">
+                        <span class="result-icon">🏥</span>
+                        <div class="result-info">
+                            <span class="result-name">Medical Center</span>
+                            <span class="result-category">Essential</span>
+                        </div>
+                        <span class="result-status locked">🔒</span>
+                    </div>
+                    <div class="search-result-item" onclick="openLocation('Bus Stop')">
+                        <span class="result-icon">🚌</span>
+                        <div class="result-info">
+                            <span class="result-name">Bus Stop</span>
+                            <span class="result-category">Essential</span>
+                        </div>
+                        <span class="result-status locked">🔒</span>
+                    </div>
+                </div>
+
+                <!-- No Results -->
+                <div class="no-results" id="noResults" style="display:none;">
+                    <span class="no-results-icon">🔍</span>
+                    <h3>No results found</h3>
+                    <p>Try adjusting your search terms</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- BOTTOM NAVIGATION -->
+        <nav class="bottom-nav">
+            <a href="index.html">
+                <i class="fas fa-home"></i> Home
+            </a>
+            <a href="map.html" class="active">
+                <i class="fas fa-map"></i> Map
+            </a>
+            <a href="quests.html">
+                <i class="fas fa-tasks"></i> Quests
+            </a>
+            <a href="discoveries.html">
+                <i class="fas fa-trophy"></i> Discoveries
+            </a>
+        </nav>
+
+        <!-- MOBILE BOTTOM NAV -->
+        <nav class="mobile-nav">
+            <a href="index.html"><i class="fas fa-home"></i> Home</a>
+            <a href="map.html" class="active"><i class="fas fa-map"></i> Map</a>
+            <a href="quests.html"><i class="fas fa-tasks"></i> Quests</a>
+            <a href="discoveries.html"><i class="fas fa-trophy"></i> Discoveries</a>
+        </nav>
+
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        const locations = [
+            { name: 'CS Department', icon: '💻', category: 'Academic', unlocked: true },
+            { name: 'Central Library', icon: '📚', category: 'Academic', unlocked: true },
+            { name: 'Main Cafe', icon: '☕', category: 'Food', unlocked: true },
+            { name: 'Sports Complex', icon: '🏟️', category: 'Sports', unlocked: false },
+            { name: 'Mosque', icon: '🕌', category: 'Essential', unlocked: true },
+            { name: 'Hidden Garden', icon: '🌿', category: 'Hidden Gem', unlocked: false },
+            { name: 'Medical Center', icon: '🏥', category: 'Essential', unlocked: false },
+            { name: 'Bus Stop', icon: '🚌', category: 'Essential', unlocked: false },
+            { name: 'Main Gate', icon: '🚪', category: 'Essential', unlocked: false },
+            { name: 'Admin Building', icon: '🏛️', category: 'Academic', unlocked: false },
+            { name: 'Research Lab', icon: '🔬', category: 'Academic', unlocked: false },
+            { name: 'Auditorium', icon: '🎭', category: 'Academic', unlocked: false }
+        ];
+
+        function filterResults() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            const results = document.getElementById('searchResults');
+            const noResults = document.getElementById('noResults');
+
+            if (!query) {
+                results.style.display = 'grid';
+                noResults.style.display = 'none';
+                return;
+            }
+
+            const filtered = locations.filter(function(loc) {
+                return loc.name.toLowerCase().includes(query) ||
+                       loc.category.toLowerCase().includes(query);
+            });
+
+            if (filtered.length === 0) {
+                results.style.display = 'none';
+                noResults.style.display = 'block';
+                return;
+            }
+
+            results.style.display = 'grid';
+            noResults.style.display = 'none';
+
+            results.innerHTML = filtered.map(function(loc) {
+                return '<div class="search-result-item" onclick="openLocation(\'' + loc.name + '\')">' +
+                    '<span class="result-icon">' + loc.icon + '</span>' +
+                    '<div class="result-info">' +
+                        '<span class="result-name">' + loc.name + '</span>' +
+                        '<span class="result-category">' + loc.category + '</span>' +
+                    '</div>' +
+                    '<span class="result-status ' + (loc.unlocked ? 'unlocked' : 'locked') + '">' + (loc.unlocked ? '✅' : '🔒') + '</span>' +
+                '</div>';
+            }).join('');
+        }
+
+        function searchTag(tag) {
+            document.getElementById('searchInput').value = tag;
+            filterResults();
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            filterResults();
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                document.getElementById('searchInput').focus();
+            }
+            if (e.key === 'Escape') {
+                clearSearch();
+                document.getElementById('searchInput').blur();
+            }
+        });
+    </script>
+</body>
+</html>
