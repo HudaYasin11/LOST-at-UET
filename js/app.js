@@ -1,1 +1,1 @@
-console.log(locations);
+console.log("LOST@UET app initialized");
