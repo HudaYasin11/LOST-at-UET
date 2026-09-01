@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Map - LOST@UET</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+    <div id="app">
+
+        <!-- HEADER -->
+        <header id="global-header">
+            <div class="header-left">
+                <span class="logo-icon">🏛️</span>
+                <span class="logo-text">LOST@UET</span>
+            </div>
+            <nav class="header-nav">
+                <a href="index.html">Home</a>
+                <a href="map.html" class="active">Map</a>
+                <a href="quests.html">Quests</a>
+                <a href="discoveries.html">Discoveries</a>
+            </nav>
+            <div class="header-profile">
+                <div class="avatar">👤</div>
+                <div class="profile-info">
+                    <span class="level-text">Lv. 2 Explorer</span>
+                    <div class="mini-progress"><div class="mini-progress-bar" style="width:25%;"></div></div>
+                    <span class="progress-text">3/12</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- MAP PAGE -->
+        <section class="page active">
+            <div class="map-layout">
+                <!-- Sidebar -->
+                <aside class="map-sidebar">
+                    <h3>🏷️ Categories</h3>
+                    <button class="filter-btn active" data-filter="all">🎯 All</button>
+                    <button class="filter-btn" data-filter="academic">📚 Academic</button>
+                    <button class="filter-btn" data-filter="food">🍔 Food</button>
+                    <button class="filter-btn" data-filter="sports">⚽ Sports</button>
+                    <button class="filter-btn" data-filter="essential">🛠️ Essential</button>
+                    <button class="filter-btn" data-filter="hidden">💎 Hidden Gems</button>
+
+                    <div style="margin-top:20px;border-top:1px solid var(--border-blue);padding-top:16px;">
+                        <h3>📍 Legend</h3>
+                        <div style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--text-muted);">
+                            <span><span class="legend-dot green" style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#4CAF50;border:1px solid white;margin-right:8px;"></span> Discovered</span>
+                            <span><span class="legend-dot yellow" style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#F7B801;border:1px solid white;margin-right:8px;"></span> Undiscovered</span>
+                            <span><span class="legend-dot pink" style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#FF6B6B;border:1px solid white;margin-right:8px;"></span> Popular</span>
+                            <span><span class="legend-dot purple" style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#9B59B6;border:1px solid white;margin-right:8px;"></span> Hidden Gem</span>
+                            <span><span class="legend-dot blue" style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#4895EF;border:1px solid white;margin-right:8px;"></span> Quest Location</span>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Map -->
+                <div class="map-container">
+                    <div id="map-canvas">
+                        <div class="map-grid">
+                            <!-- Library -->
+                            <div class="map-marker" style="top:15%;left:12%;" data-location="library" onclick="openLocation('Library')">
+                                <span class="marker-dot blue"></span>
+                                <span class="marker-label">📚 Library</span>
+                            </div>
+                            <!-- CS Department -->
+                            <div class="map-marker" style="top:30%;left:40%;" data-location="cs" onclick="openLocation('CS Department')">
+                                <span class="marker-dot purple"></span>
+                                <span class="marker-label">💻 CS Dept</span>
+                            </div>
+                            <!-- Cafe -->
+                            <div class="map-marker" style="top:50%;left:25%;" data-location="cafe" onclick="openLocation('Main Cafe')">
+                                <span class="marker-dot orange"></span>
+                                <span class="marker-label">☕ Cafe</span>
+                            </div>
+                            <!-- Sports Complex -->
+                            <div class="map-marker" style="top:65%;left:55%;" data-location="sports" onclick="openLocation('Sports Complex')">
+                                <span class="marker-dot green"></span>
+                                <span class="marker-label">🏟️ Sports</span>
+                            </div>
+                            <!-- Mosque -->
+                            <div class="map-marker" style="top:40%;left:70%;" data-location="mosque" onclick="openLocation('Mosque')">
+                                <span class="marker-dot purple"></span>
+                                <span class="marker-label">🕌 Mosque</span>
+                            </div>
+                            <!-- Main Gate -->
+                            <div class="map-marker" style="top:80%;left:15%;" data-location="gate" onclick="openLocation('Main Gate')">
+                                <span class="marker-dot blue"></span>
+                                <span class="marker-label">🚪 Gate</span>
+                            </div>
+                            <!-- Medical Center -->
+                            <div class="map-marker" style="top:75%;left:75%;" data-location="medical" onclick="openLocation('Medical Center')">
+                                <span class="marker-dot pink"></span>
+                                <span class="marker-label">🏥 Medical</span>
+                            </div>
+                            <!-- Bus Stop -->
+                            <div class="map-marker" style="top:85%;left:45%;" data-location="bus" onclick="openLocation('Bus Stop')">
+                                <span class="marker-dot yellow"></span>
+                                <span class="marker-label">🚌 Bus Stop</span>
+                            </div>
+                            <!-- Hidden Garden -->
+                            <div class="map-marker" style="top:20%;left:85%;" data-location="garden" onclick="openLocation('Hidden Garden')">
+                                <span class="marker-dot purple"></span>
+                                <span class="marker-label">🌿 Hidden Garden</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Map Controls -->
+                    <div class="map-controls">
+                        <button class="map-btn" onclick="zoomMap('in')">+</button>
+                        <button class="map-btn" onclick="zoomMap('out')">−</button>
+                        <button class="map-btn" onclick="centerMap()">🧭</button>
+                        <button class="map-btn" onclick="findMyLocation()">🎯</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <span class="stat-icon">⭐</span>
+                    <span class="stat-value">100 XP</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-icon">📍</span>
+                    <span class="stat-value">3 Discovered</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-icon">🎯</span>
+                    <span class="stat-value">Next Level: 9 XP</span>
+                </div>
+            </div>
+
+            <!-- Progress Card -->
+            <div class="progress-card">
+                <div class="progress-header">
+                    <span>Level 2 Explorer</span>
+                    <span>3/12</span>
+                </div>
+                <div class="progress-bar-full">
+                    <div class="progress-fill-full" style="width:25%;"></div>
+                </div>
+                <div class="progress-stats">
+                    <span>⭐ 100 XP</span>
+                    <span>📍 3 Discovered</span>
+                    <span>🎯 Next Level: 9 XP</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- MODAL: LOCATION DETAILS -->
+        <div id="location-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="modal-icon">💻</span>
+                    <h3>CS DEPARTMENT</h3>
+                    <span class="modal-badge">Academic</span>
+                    <button class="modal-close" onclick="closeModal()">&times;</button>
+                </div>
+                <div class="modal-image">
+                    <div class="pixel-building-small">🏛️</div>
+                </div>
+                <div class="modal-body">
+                    <p>The heart of all things computer science. Where future developers, problem solvers and overthinkers are made.</p>
+                    <div class="modal-info">
+                        <span>📍 Near: Library</span>
+                        <span>⏱️ ~ 5 min walk from Main Gate</span>
+                        <span>🏆 Popular spot</span>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn-outline" onclick="window.open('https://maps.google.com','_blank')">📍 Open in Google Maps</button>
+                        <button class="btn-yellow" onclick="triggerUnlock()">START QUEST</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL: QR UNLOCK -->
+        <div id="qr-modal" class="modal">
+            <div class="modal-content qr-modal">
+                <div class="qr-sparkles">✦ ✦ ✦</div>
+                <div class="qr-icon">📱</div>
+                <h2>LOCATION UNLOCKED!</h2>
+                <div class="qr-building">🏛️</div>
+                <h3>CS DEPARTMENT</h3>
+                <p class="qr-xp">+100 XP</p>
+                <p class="qr-desc">You've discovered a new location! Keep exploring to unlock more and earn badges!</p>
+                <button class="btn-yellow" onclick="closeModal()">VIEW DETAILS</button>
+            </div>
+        </div>
+
+        <!-- BOTTOM NAVIGATION -->
+        <nav class="bottom-nav">
+            <a href="index.html">
+                <i class="fas fa-home"></i> Home
+            </a>
+            <a href="map.html" class="active">
+                <i class="fas fa-map"></i> Map
+            </a>
+            <a href="quests.html">
+                <i class="fas fa-tasks"></i> Quests
+            </a>
+            <a href="discoveries.html">
+                <i class="fas fa-trophy"></i> Discoveries
+            </a>
+        </nav>
+
+        <!-- MOBILE BOTTOM NAV -->
+        <nav class="mobile-nav">
+            <a href="index.html"><i class="fas fa-home"></i> Home</a>
+            <a href="map.html" class="active"><i class="fas fa-map"></i> Map</a>
+            <a href="quests.html"><i class="fas fa-tasks"></i> Quests</a>
+            <a href="discoveries.html"><i class="fas fa-trophy"></i> Discoveries</a>
+        </nav>
+
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        function zoomMap(direction) { console.log('Zoom ' + direction); }
+        function centerMap() { console.log('Centering map...'); }
+        function findMyLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (pos) => console.log('Location:', pos.coords),
+                    () => alert('Unable to get location')
+                );
+            } else {
+                alert('Geolocation not supported');
+            }
+        }
+    </script>
+</body>
+</html>

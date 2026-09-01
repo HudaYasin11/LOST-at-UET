@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Quests - LOST@UET</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+    <div id="app">
+
+        <!-- HEADER -->
+        <header id="global-header">
+            <div class="header-left">
+                <span class="logo-icon">🏛️</span>
+                <span class="logo-text">LOST@UET</span>
+            </div>
+            <nav class="header-nav">
+                <a href="index.html">Home</a>
+                <a href="map.html">Map</a>
+                <a href="quests.html" class="active">Quests</a>
+                <a href="discoveries.html">Discoveries</a>
+            </nav>
+            <div class="header-profile">
+                <div class="avatar">👤</div>
+                <div class="profile-info">
+                    <span class="level-text">Lv. 2 Explorer</span>
+                    <div class="mini-progress"><div class="mini-progress-bar" style="width:25%;"></div></div>
+                    <span class="progress-text">3/12</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- QUESTS PAGE -->
+        <section class="page active">
+            <div class="page-header">
+                <h2>🏆 ACTIVE QUESTS</h2>
+                <div class="level-bar">
+                    <span>⭐ 100 XP</span>
+                    <span>📍 3/12</span>
+                </div>
+            </div>
+
+            <!-- Quest Stats -->
+            <div class="quest-stats">
+                <div class="quest-stat">
+                    <span class="stat-number">3</span>
+                    <span class="stat-label">Active</span>
+                </div>
+                <div class="quest-stat">
+                    <span class="stat-number">2</span>
+                    <span class="stat-label">Completed</span>
+                </div>
+                <div class="quest-stat">
+                    <span class="stat-number">350</span>
+                    <span class="stat-label">Total XP</span>
+                </div>
+            </div>
+
+            <!-- Quest Filter -->
+            <div class="quest-filter">
+                <button class="filter-btn active">All</button>
+                <button class="filter-btn">Active</button>
+                <button class="filter-btn">Completed</button>
+                <button class="filter-btn">Daily</button>
+            </div>
+
+            <!-- Quest List -->
+            <div class="quest-list">
+
+                <!-- Quest 1 -->
+                <div class="quest-card">
+                    <div class="quest-icon">☕</div>
+                    <div class="quest-content">
+                        <h4>The Survivor Quest</h4>
+                        <p>Every UET student eventually discovers this place when they desperately need caffeine.</p>
+                        <div class="quest-meta">
+                            <span class="quest-progress">1/3</span>
+                            <span class="quest-reward">+100 XP</span>
+                            <div class="quest-progress-bar"><div class="quest-progress-fill" style="width:33%;"></div></div>
+                        </div>
+                    </div>
+                    <button class="quest-arrow" onclick="startQuest('The Survivor Quest')">></button>
+                </div>
+
+                <!-- Quest 2 -->
+                <div class="quest-card">
+                    <div class="quest-icon">🌳</div>
+                    <div class="quest-content">
+                        <h4>Touch Grass</h4>
+                        <p>You've been coding for 6 hours. Find the Sports Complex.</p>
+                        <div class="quest-meta">
+                            <span class="quest-progress">0/1</span>
+                            <span class="quest-reward">+100 XP</span>
+                            <div class="quest-progress-bar"><div class="quest-progress-fill" style="width:0%;"></div></div>
+                        </div>
+                    </div>
+                    <button class="quest-arrow" onclick="startQuest('Touch Grass')">></button>
+                </div>
+
+                <!-- Quest 3 -->
+                <div class="quest-card">
+                    <div class="quest-icon">💻</div>
+                    <div class="quest-content">
+                        <h4>The CS Pilgrimage</h4>
+                        <p>Find all important locations around the CS Department.</p>
+                        <div class="quest-meta">
+                            <span class="quest-progress">2/4</span>
+                            <span class="quest-reward">+150 XP</span>
+                            <div class="quest-progress-bar"><div class="quest-progress-fill" style="width:50%;"></div></div>
+                        </div>
+                    </div>
+                    <button class="quest-arrow" onclick="startQuest('The CS Pilgrimage')">></button>
+                </div>
+
+                <!-- Quest 4 (Completed) -->
+                <div class="quest-card completed">
+                    <div class="quest-icon">📚</div>
+                    <div class="quest-content">
+                        <h4>Library Explorer</h4>
+                        <p>Visit the main library and find 3 hidden books.</p>
+                        <div class="quest-meta">
+                            <span class="quest-progress">✅ 3/3</span>
+                            <span class="quest-reward">+80 XP</span>
+                            <div class="quest-progress-bar"><div class="quest-progress-fill" style="width:100%;background:#4CAF50;"></div></div>
+                        </div>
+                    </div>
+                    <span class="quest-done">✅ Done</span>
+                </div>
+
+                <!-- Quest 5 -->
+                <div class="quest-card">
+                    <div class="quest-icon">🏟️</div>
+                    <div class="quest-content">
+                        <h4>Sports Fanatic</h4>
+                        <p>Attend a match at the Sports Complex.</p>
+                        <div class="quest-meta">
+                            <span class="quest-progress">0/1</span>
+                            <span class="quest-reward">+120 XP</span>
+                            <div class="quest-progress-bar"><div class="quest-progress-fill" style="width:0%;"></div></div>
+                        </div>
+                    </div>
+                    <button class="quest-arrow" onclick="startQuest('Sports Fanatic')">></button>
+                </div>
+
+                <!-- Quest 6 (Daily) -->
+                <div class="quest-card daily">
+                    <div class="quest-icon">🔥</div>
+                    <div class="quest-content">
+                        <h4>Daily Explorer</h4>
+                        <p>Discover 1 location today!</p>
+                        <div class="quest-meta">
+                            <span class="quest-progress">0/1</span>
+                            <span class="quest-reward">+50 XP</span>
+                            <div class="quest-progress-bar"><div class="quest-progress-fill" style="width:0%;"></div></div>
+                        </div>
+                    </div>
+                    <span class="quest-daily-badge">🔥 Daily</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- BOTTOM NAVIGATION -->
+        <nav class="bottom-nav">
+            <a href="index.html">
+                <i class="fas fa-home"></i> Home
+            </a>
+            <a href="map.html">
+                <i class="fas fa-map"></i> Map
+            </a>
+            <a href="quests.html" class="active">
+                <i class="fas fa-tasks"></i> Quests
+            </a>
+            <a href="discoveries.html">
+                <i class="fas fa-trophy"></i> Discoveries
+            </a>
+        </nav>
+
+        <!-- MOBILE BOTTOM NAV -->
+        <nav class="mobile-nav">
+            <a href="index.html"><i class="fas fa-home"></i> Home</a>
+            <a href="map.html"><i class="fas fa-map"></i> Map</a>
+            <a href="quests.html" class="active"><i class="fas fa-tasks"></i> Quests</a>
+            <a href="discoveries.html"><i class="fas fa-trophy"></i> Discoveries</a>
+        </nav>
+
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        function startQuest(name) {
+            alert('🎯 Starting quest: ' + name);
+        }
+
+        document.querySelectorAll('.quest-filter .filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.quest-filter .filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
