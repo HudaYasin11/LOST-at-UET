@@ -1,3 +1,4 @@
+
 // ========================================
 // LOST@UET - Main Application
 // ========================================
@@ -328,3 +329,4 @@ console.log('  Ctrl+K: Search');
 console.log('  Escape: Close modals / Clear search');
 
 console.log('💡 Try: triggerUnlock() in console to demo QR scan');
+
