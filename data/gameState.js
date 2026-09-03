@@ -1,6 +1,8 @@
 const gameState = {
-  discoveredLocations: [],
-  collectedItems: [],
+    xp: 0,
+    discoveredLocations: [],
+    completedQuests: [],
+    badges: []
 };
 
-module.exports = gameState;
+export default gameState;
