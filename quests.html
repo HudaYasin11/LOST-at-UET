@@ -188,19 +188,9 @@
         </nav>
 
     </div>
-
-    <script src="js/app.js"></script>
-    <script>
-        function startQuest(name) {
-            alert('🎯 Starting quest: ' + name);
-        }
-
-        document.querySelectorAll('.quest-filter .filter-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.quest-filter .filter-btn').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
-    </script>
+    <div id="questsContainer">
+    <!-- Quests will be rendered here -->
+</div>
+<script type="module" src="js/app.js"></script>
 </body>
 </html>

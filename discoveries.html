@@ -187,48 +187,9 @@
         </nav>
 
     </div>
-
-    <script src="js/app.js"></script>
-    <script>
-        function exportSave() {
-            const data = {
-                xp: 100,
-                level: 2,
-                discoveries: ['CS Department', 'Main Cafe', 'Library', 'Mosque'],
-                badges: ['Campus Newbie', 'Caffeine Addict', 'CS Explorer']
-            };
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'lostuet_save_' + new Date().toISOString().split('T')[0] + '.json';
-            a.click();
-            URL.revokeObjectURL(url);
-        }
-
-        function importSave(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const data = JSON.parse(e.target.result);
-                    alert('✅ Save imported successfully!');
-                    console.log('Imported data:', data);
-                } catch (error) {
-                    alert('❌ Invalid save file!');
-                }
-            };
-            reader.readAsText(file);
-        }
-
-        function resetGame() {
-            if (confirm('⚠️ Are you sure you want to reset ALL progress?')) {
-                localStorage.removeItem('lostuet_save');
-                alert('🔄 Game reset! Refresh the page.');
-                location.reload();
-            }
-        }
-    </script>
+      <div id="discoveriesGrid">
+    <!-- Discoveries will be rendered here -->
+</div>
+<script type="module" src="js/app.js"></script>
 </body>
 </html>

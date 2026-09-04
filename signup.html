@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Sign Up - LOST@UET</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    
+    <style>
+        /* ========================================
+           AUTH PAGE STYLES
+           ======================================== */
+        .auth-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 75vh;
+            padding: 20px;
+        }
+
+        .auth-box {
+            background: var(--card-bg);
+            border: 2px solid var(--border-blue);
+            border-radius: 16px;
+            padding: 40px 36px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .auth-box .auth-logo {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .auth-box .auth-logo .logo-icon {
+            font-size: 48px;
+            display: block;
+        }
+
+        .auth-box .auth-logo h1 {
+            font-family: var(--font-pixel);
+            font-size: 24px;
+            color: var(--text-yellow);
+            margin-top: 8px;
+            letter-spacing: 2px;
+        }
+
+        .auth-box .auth-logo p {
+            font-family: var(--font-retro);
+            font-size: 14px;
+            color: var(--text-muted);
+            letter-spacing: 4px;
+        }
+
+        .auth-box h2 {
+            font-family: var(--font-pixel);
+            font-size: 16px;
+            color: var(--text-yellow);
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .auth-box .input-group {
+            margin-bottom: 16px;
+        }
+
+        .auth-box label {
+            display: block;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .auth-box label i {
+            margin-right: 6px;
+        }
+
+        .auth-box input {
+            width: 100%;
+            padding: 12px 14px;
+            background: var(--dark-bg);
+            border: 2px solid var(--border-blue);
+            border-radius: 8px;
+            color: var(--text-white);
+            font-size: 14px;
+            font-family: var(--font-body);
+            transition: border-color 0.2s;
+        }
+
+        .auth-box input:focus {
+            outline: none;
+            border-color: var(--text-yellow);
+            box-shadow: 0 0 0 3px rgba(247, 184, 1, 0.15);
+        }
+
+        .auth-box input::placeholder {
+            color: var(--text-muted);
+            opacity: 0.5;
+        }
+
+        .auth-box .btn-yellow {
+            width: 100%;
+            margin-top: 8px;
+            padding: 14px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .auth-box .auth-link {
+            text-align: center;
+            margin-top: 18px;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .auth-box .auth-link a {
+            color: var(--text-yellow);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .auth-box .auth-link a:hover {
+            text-decoration: underline;
+        }
+
+        .auth-error {
+            background: rgba(255, 107, 107, 0.15);
+            color: #FF6B6B;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 16px;
+            display: none;
+            border-left: 3px solid #FF6B6B;
+        }
+
+        .auth-success {
+            background: rgba(76, 175, 80, 0.15);
+            color: #4CAF50;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 16px;
+            display: none;
+            border-left: 3px solid #4CAF50;
+        }
+
+        .auth-loading {
+            text-align: center;
+            padding: 10px;
+            color: var(--text-muted);
+            font-size: 13px;
+            display: none;
+        }
+
+        .auth-loading .spinner-small {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--border-blue);
+            border-top: 2px solid var(--text-yellow);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Password Strength */
+        .password-strength {
+            display: flex;
+            gap: 4px;
+            margin-top: 6px;
+        }
+
+        .password-strength .bar {
+            flex: 1;
+            height: 3px;
+            background: var(--dark-bg);
+            border-radius: 2px;
+            transition: background 0.3s;
+        }
+
+        .password-strength .bar.weak { background: #FF6B6B; }
+        .password-strength .bar.medium { background: #FFA500; }
+        .password-strength .bar.strong { background: #4CAF50; }
+
+        .password-hint {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        @media (max-width: 480px) {
+            .auth-box {
+                padding: 28px 20px;
+            }
+            .auth-box .auth-logo h1 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+
+        <!-- ======================================== -->
+        <!-- HEADER -->
+        <!-- ======================================== -->
+        <header id="global-header">
+            <div class="header-left">
+                <span class="logo-icon">🏛️</span>
+                <span class="logo-text">LOST@UET</span>
+            </div>
+            <nav class="header-nav">
+                <a href="index.html">Home</a>
+                <a href="map.html">Map</a>
+                <a href="quests.html">Quests</a>
+                <a href="discoveries.html">Discoveries</a>
+                <a href="signup.html" class="active">Sign Up</a>
+            </nav>
+            <div class="header-profile" id="userProfile" style="display:none;">
+                <div class="avatar">👤</div>
+                <div class="profile-info">
+                    <span class="level-text" id="userDisplayName">Explorer</span>
+                    <div class="mini-progress"><div class="mini-progress-bar" id="userProgressBar" style="width:0%;"></div></div>
+                    <span class="progress-text" id="userProgressText">0/42</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- ======================================== -->
+        <!-- SIGNUP FORM -->
+        <!-- ======================================== -->
+        <div class="auth-page">
+            <div class="auth-box">
+                <div class="auth-logo">
+                    <span class="logo-icon">🏛️</span>
+                    <h1>LOST@UET</h1>
+                    <p>EXPLORE · DISCOVER · BELONG</p>
+                </div>
+
+                <h2>📝 SIGN UP</h2>
+
+                <div class="auth-error" id="authError"></div>
+                <div class="auth-success" id="authSuccess"></div>
+                <div class="auth-loading" id="authLoading">
+                    <span class="spinner-small"></span> Creating account...
+                </div>
+
+                <form id="signupForm" onsubmit="return false;">
+                    <div class="input-group">
+                        <label><i class="fas fa-user"></i> Username</label>
+                        <input 
+                            type="text" 
+                            id="signupUsername" 
+                            placeholder="Choose a username" 
+                            required 
+                            minlength="3"
+                            autocomplete="username"
+                        />
+                    </div>
+                    <div class="input-group">
+                        <label><i class="fas fa-envelope"></i> Email</label>
+                        <input 
+                            type="email" 
+                            id="signupEmail" 
+                            placeholder="Enter your email" 
+                            required 
+                            autocomplete="email"
+                        />
+                    </div>
+                    <div class="input-group">
+                        <label><i class="fas fa-lock"></i> Password</label>
+                        <input 
+                            type="password" 
+                            id="signupPassword" 
+                            placeholder="Min 6 characters" 
+                            required 
+                            minlength="6"
+                            autocomplete="new-password"
+                            oninput="checkPasswordStrength(this.value)"
+                        />
+                        <div class="password-strength" id="passwordStrength">
+                            <span class="bar"></span>
+                            <span class="bar"></span>
+                            <span class="bar"></span>
+                        </div>
+                        <div class="password-hint" id="passwordHint">Use 6+ characters</div>
+                    </div>
+                    <button type="submit" class="btn-yellow" id="signupBtn">
+                        <i class="fas fa-user-plus"></i> CREATE ACCOUNT
+                    </button>
+                </form>
+
+                <div class="auth-link">
+                    Already have an account? <a href="login.html">Login</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================================== -->
+        <!-- BOTTOM NAV -->
+        <!-- ======================================== -->
+        <nav class="bottom-nav">
+            <a href="index.html"><i class="fas fa-home"></i> Home</a>
+            <a href="map.html"><i class="fas fa-map"></i> Map</a>
+            <a href="quests.html"><i class="fas fa-tasks"></i> Quests</a>
+            <a href="discoveries.html"><i class="fas fa-trophy"></i> Discoveries</a>
+            <a href="signup.html" class="active"><i class="fas fa-user-plus"></i> Sign Up</a>
+        </nav>
+
+        <nav class="mobile-nav">
+            <a href="index.html"><i class="fas fa-home"></i> Home</a>
+            <a href="map.html"><i class="fas fa-map"></i> Map</a>
+            <a href="quests.html"><i class="fas fa-tasks"></i> Quests</a>
+            <a href="discoveries.html"><i class="fas fa-trophy"></i> Discoveries</a>
+            <a href="signup.html" class="active"><i class="fas fa-user-plus"></i> Sign Up</a>
+        </nav>
+
+    </div>
+
+    <!-- ======================================== -->
+    <!-- JAVASCRIPT (All inline, no imports for signup) -->
+    <!-- ======================================== -->
+    <script>
+        // ========================================
+        // PASSWORD STRENGTH - GLOBAL FUNCTION
+        // ========================================
+        window.checkPasswordStrength = function(password) {
+            const bars = document.querySelectorAll('#passwordStrength .bar');
+            const hint = document.getElementById('passwordHint');
+            
+            if (!bars.length || !hint) return;
+
+            let strength = 0;
+            if (password.length >= 6) strength++;
+            if (password.length >= 10) strength++;
+            if (/[A-Z]/.test(password) && /[a-z]/.test(password)) strength++;
+            if (/\d/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+            bars.forEach((bar, i) => {
+                bar.className = 'bar';
+                if (i < Math.min(strength, 3)) {
+                    if (strength <= 2) bar.classList.add('weak');
+                    else if (strength <= 4) bar.classList.add('medium');
+                    else bar.classList.add('strong');
+                }
+            });
+
+            if (password.length === 0) {
+                hint.textContent = 'Use 6+ characters';
+            } else if (strength <= 2) {
+                hint.textContent = '⚠️ Weak password';
+            } else if (strength <= 4) {
+                hint.textContent = '👍 Medium password';
+            } else {
+                hint.textContent = '✅ Strong password';
+            }
+        };
+    </script>
+
+    <script type="module">
+        import { signUp, getCurrentUser, signOut } from './js/api.js';
+
+        // ========================================
+        // DOM ELEMENTS
+        // ========================================
+        const form = document.getElementById('signupForm');
+        const usernameInput = document.getElementById('signupUsername');
+        const emailInput = document.getElementById('signupEmail');
+        const passwordInput = document.getElementById('signupPassword');
+        const signupBtn = document.getElementById('signupBtn');
+        const errorEl = document.getElementById('authError');
+        const successEl = document.getElementById('authSuccess');
+        const loadingEl = document.getElementById('authLoading');
+
+        // ========================================
+        // SHOW/HIDE HELPERS
+        // ========================================
+        function showError(message) {
+            errorEl.textContent = '❌ ' + message;
+            errorEl.style.display = 'block';
+            successEl.style.display = 'none';
+        }
+
+        function showSuccess(message) {
+            successEl.textContent = '✅ ' + message;
+            successEl.style.display = 'block';
+            errorEl.style.display = 'none';
+        }
+
+        function hideMessages() {
+            errorEl.style.display = 'none';
+            successEl.style.display = 'none';
+            loadingEl.style.display = 'none';
+        }
+
+        function setLoading(isLoading) {
+            if (isLoading) {
+                loadingEl.style.display = 'block';
+                signupBtn.disabled = true;
+                signupBtn.innerHTML = '<span class="spinner-small"></span> CREATING ACCOUNT...';
+            } else {
+                loadingEl.style.display = 'none';
+                signupBtn.disabled = false;
+                signupBtn.innerHTML = '<i class="fas fa-user-plus"></i> CREATE ACCOUNT';
+            }
+        }
+
+        // ========================================
+        // HANDLE SIGNUP
+        // ========================================
+        async function handleSignup(e) {
+            e.preventDefault();
+            hideMessages();
+
+            const username = usernameInput.value.trim();
+            const email = emailInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            // Validate
+            if (!username) {
+                showError('Please choose a username');
+                usernameInput.focus();
+                return;
+            }
+
+            if (username.length < 3) {
+                showError('Username must be at least 3 characters');
+                usernameInput.focus();
+                return;
+            }
+
+            if (!email) {
+                showError('Please enter your email');
+                emailInput.focus();
+                return;
+            }
+
+            if (!password) {
+                showError('Please choose a password');
+                passwordInput.focus();
+                return;
+            }
+
+            if (password.length < 6) {
+                showError('Password must be at least 6 characters');
+                passwordInput.focus();
+                return;
+            }
+
+            // Show loading
+            setLoading(true);
+
+            try {
+                const result = await signUp(username, email, password);
+                
+                if (result.success) {
+                    showSuccess('Account created successfully! Redirecting...');
+                    
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 1500);
+                } else {
+                    showError(result.error || 'Signup failed. Please try again.');
+                    setLoading(false);
+                }
+            } catch (error) {
+                showError('Something went wrong. Please try again.');
+                setLoading(false);
+                console.error('Signup error:', error);
+            }
+        }
+
+        // ========================================
+        // EVENT LISTENERS
+        // ========================================
+        form.addEventListener('submit', handleSignup);
+
+        passwordInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                form.dispatchEvent(new Event('submit'));
+            }
+        });
+
+        // ========================================
+        // CHECK IF USER IS ALREADY LOGGED IN
+        // ========================================
+        async function checkAuth() {
+            try {
+                const user = await getCurrentUser();
+                if (user.success) {
+                    document.getElementById('authNavLink').textContent = 'Logout';
+                    document.getElementById('authNavLink').href = '#';
+                    document.getElementById('authNavLink').onclick = async function(e) {
+                        e.preventDefault();
+                        await signOut();
+                        window.location.href = 'login.html';
+                    };
+                }
+            } catch (error) {
+                console.log('Not logged in');
+            }
+        }
+
+        checkAuth();
+    </script>
+</body>
+</html>
