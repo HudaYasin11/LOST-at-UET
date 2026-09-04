@@ -10,9 +10,6 @@
     <link rel="stylesheet" href="css/style.css" />
     
     <style>
-        /* ========================================
-           AUTH PAGE STYLES
-           ======================================== */
         .auth-page {
             display: flex;
             flex-direction: column;
@@ -21,7 +18,6 @@
             min-height: 75vh;
             padding: 20px;
         }
-
         .auth-box {
             background: var(--card-bg);
             border: 2px solid var(--border-blue);
@@ -31,17 +27,8 @@
             width: 100%;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
-
-        .auth-box .auth-logo {
-            text-align: center;
-            margin-bottom: 28px;
-        }
-
-        .auth-box .auth-logo .logo-icon {
-            font-size: 48px;
-            display: block;
-        }
-
+        .auth-box .auth-logo { text-align: center; margin-bottom: 28px; }
+        .auth-box .auth-logo .logo-icon { font-size: 48px; display: block; }
         .auth-box .auth-logo h1 {
             font-family: var(--font-pixel);
             font-size: 24px;
@@ -49,14 +36,12 @@
             margin-top: 8px;
             letter-spacing: 2px;
         }
-
         .auth-box .auth-logo p {
             font-family: var(--font-retro);
             font-size: 14px;
             color: var(--text-muted);
             letter-spacing: 4px;
         }
-
         .auth-box h2 {
             font-family: var(--font-pixel);
             font-size: 16px;
@@ -64,11 +49,7 @@
             text-align: center;
             margin-bottom: 24px;
         }
-
-        .auth-box .input-group {
-            margin-bottom: 16px;
-        }
-
+        .auth-box .input-group { margin-bottom: 16px; }
         .auth-box label {
             display: block;
             font-size: 11px;
@@ -78,11 +59,7 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-
-        .auth-box label i {
-            margin-right: 6px;
-        }
-
+        .auth-box label i { margin-right: 6px; }
         .auth-box input {
             width: 100%;
             padding: 12px 14px;
@@ -94,43 +71,46 @@
             font-family: var(--font-body);
             transition: border-color 0.2s;
         }
-
         .auth-box input:focus {
             outline: none;
             border-color: var(--text-yellow);
             box-shadow: 0 0 0 3px rgba(247, 184, 1, 0.15);
         }
-
-        .auth-box input::placeholder {
-            color: var(--text-muted);
-            opacity: 0.5;
-        }
-
+        .auth-box input::placeholder { color: var(--text-muted); opacity: 0.5; }
         .auth-box .btn-yellow {
             width: 100%;
             margin-top: 8px;
             padding: 14px;
             font-size: 14px;
             font-weight: 700;
+            cursor: pointer;
         }
-
+        .auth-box .btn-outline {
+            width: 100%;
+            margin-top: 8px;
+            padding: 14px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            background: transparent;
+            color: var(--text-white);
+            border: 2px solid var(--border-blue);
+            border-radius: 8px;
+            font-family: var(--font-body);
+            transition: all 0.2s;
+        }
+        .auth-box .btn-outline:hover {
+            background: var(--border-blue);
+            color: var(--dark-bg);
+        }
         .auth-box .auth-link {
             text-align: center;
             margin-top: 18px;
             color: var(--text-muted);
             font-size: 13px;
         }
-
-        .auth-box .auth-link a {
-            color: var(--text-yellow);
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .auth-box .auth-link a:hover {
-            text-decoration: underline;
-        }
-
+        .auth-box .auth-link a { color: var(--text-yellow); text-decoration: none; font-weight: 600; }
+        .auth-box .auth-link a:hover { text-decoration: underline; }
         .auth-error {
             background: rgba(255, 107, 107, 0.15);
             color: #FF6B6B;
@@ -141,7 +121,6 @@
             display: none;
             border-left: 3px solid #FF6B6B;
         }
-
         .auth-success {
             background: rgba(76, 175, 80, 0.15);
             color: #4CAF50;
@@ -152,7 +131,6 @@
             display: none;
             border-left: 3px solid #4CAF50;
         }
-
         .auth-loading {
             text-align: center;
             padding: 10px;
@@ -160,7 +138,6 @@
             font-size: 13px;
             display: none;
         }
-
         .auth-loading .spinner-small {
             display: inline-block;
             width: 16px;
@@ -172,19 +149,11 @@
             margin-right: 8px;
             vertical-align: middle;
         }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Password Strength */
         .password-strength {
             display: flex;
             gap: 4px;
             margin-top: 6px;
         }
-
         .password-strength .bar {
             flex: 1;
             height: 3px;
@@ -192,40 +161,46 @@
             border-radius: 2px;
             transition: background 0.3s;
         }
-
         .password-strength .bar.weak { background: #FF6B6B; }
         .password-strength .bar.medium { background: #FFA500; }
         .password-strength .bar.strong { background: #4CAF50; }
-
         .password-hint {
             font-size: 11px;
             color: var(--text-muted);
             margin-top: 4px;
         }
-
+        .already-logged-in {
+            text-align: center;
+            padding: 20px;
+            background: rgba(247, 184, 1, 0.1);
+            border: 2px solid var(--text-yellow);
+            border-radius: 12px;
+            margin-bottom: 16px;
+        }
+        .already-logged-in p {
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
         @media (max-width: 480px) {
-            .auth-box {
-                padding: 28px 20px;
-            }
-            .auth-box .auth-logo h1 {
-                font-size: 20px;
-            }
+            .auth-box { padding: 28px 20px; }
+            .auth-box .auth-logo h1 { font-size: 20px; }
         }
     </style>
 </head>
 <body>
     <div id="app">
 
-        <!-- ======================================== -->
-        <!-- HEADER -->
-        <!-- ======================================== -->
         <header id="global-header">
             <div class="header-left">
                 <span class="logo-icon">🏛️</span>
                 <span class="logo-text">LOST@UET</span>
             </div>
             <nav class="header-nav">
-                <a href="index.html">Home</a>
+                <a href="home.html">Home</a>
                 <a href="map.html">Map</a>
                 <a href="quests.html">Quests</a>
                 <a href="discoveries.html">Discoveries</a>
@@ -241,9 +216,6 @@
             </div>
         </header>
 
-        <!-- ======================================== -->
-        <!-- SIGNUP FORM -->
-        <!-- ======================================== -->
         <div class="auth-page">
             <div class="auth-box">
                 <div class="auth-logo">
@@ -254,68 +226,60 @@
 
                 <h2>📝 SIGN UP</h2>
 
-                <div class="auth-error" id="authError"></div>
-                <div class="auth-success" id="authSuccess"></div>
-                <div class="auth-loading" id="authLoading">
-                    <span class="spinner-small"></span> Creating account...
+                <!-- Already Logged In Message -->
+                <div id="alreadyLoggedIn" style="display:none;">
+                    <div class="already-logged-in">
+                        <p>✅ You are already logged in!</p>
+                        <button class="btn-outline" id="logoutFromSignupBtn">
+                            <i class="fas fa-sign-out-alt"></i> LOGOUT
+                        </button>
+                        <p style="margin-top:12px;font-size:12px;">
+                            Or <a href="home.html" style="color:var(--text-yellow);">go to Home</a>
+                        </p>
+                    </div>
                 </div>
 
-                <form id="signupForm" onsubmit="return false;">
-                    <div class="input-group">
-                        <label><i class="fas fa-user"></i> Username</label>
-                        <input 
-                            type="text" 
-                            id="signupUsername" 
-                            placeholder="Choose a username" 
-                            required 
-                            minlength="3"
-                            autocomplete="username"
-                        />
+                <!-- Signup Form -->
+                <div id="signupFormContainer">
+                    <div class="auth-error" id="authError"></div>
+                    <div class="auth-success" id="authSuccess"></div>
+                    <div class="auth-loading" id="authLoading">
+                        <span class="spinner-small"></span> Creating account...
                     </div>
-                    <div class="input-group">
-                        <label><i class="fas fa-envelope"></i> Email</label>
-                        <input 
-                            type="email" 
-                            id="signupEmail" 
-                            placeholder="Enter your email" 
-                            required 
-                            autocomplete="email"
-                        />
-                    </div>
-                    <div class="input-group">
-                        <label><i class="fas fa-lock"></i> Password</label>
-                        <input 
-                            type="password" 
-                            id="signupPassword" 
-                            placeholder="Min 6 characters" 
-                            required 
-                            minlength="6"
-                            autocomplete="new-password"
-                            oninput="checkPasswordStrength(this.value)"
-                        />
-                        <div class="password-strength" id="passwordStrength">
-                            <span class="bar"></span>
-                            <span class="bar"></span>
-                            <span class="bar"></span>
-                        </div>
-                        <div class="password-hint" id="passwordHint">Use 6+ characters</div>
-                    </div>
-                    <button type="submit" class="btn-yellow" id="signupBtn">
-                        <i class="fas fa-user-plus"></i> CREATE ACCOUNT
-                    </button>
-                </form>
 
-                <div class="auth-link">
-                    Already have an account? <a href="login.html">Login</a>
+                    <form id="signupForm">
+                        <div class="input-group">
+                            <label><i class="fas fa-user"></i> Username</label>
+                            <input type="text" id="signupUsername" placeholder="Choose a username" required minlength="3" autocomplete="username" />
+                        </div>
+                        <div class="input-group">
+                            <label><i class="fas fa-envelope"></i> Email</label>
+                            <input type="email" id="signupEmail" placeholder="Enter your email" required autocomplete="email" />
+                        </div>
+                        <div class="input-group">
+                            <label><i class="fas fa-lock"></i> Password</label>
+                            <input type="password" id="signupPassword" placeholder="Min 6 characters" required minlength="6" autocomplete="new-password" oninput="checkPasswordStrength(this.value)" />
+                            <div class="password-strength" id="passwordStrength">
+                                <span class="bar"></span>
+                                <span class="bar"></span>
+                                <span class="bar"></span>
+                            </div>
+                            <div class="password-hint" id="passwordHint">Use 6+ characters</div>
+                        </div>
+                        <button type="button" class="btn-yellow" id="signupBtn">
+                            <i class="fas fa-user-plus"></i> CREATE ACCOUNT
+                        </button>
+                    </form>
+
+                    <div class="auth-link">
+                        Already have an account? <a href="index.html">Login</a>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- ======================================== -->
-        <!-- BOTTOM NAV -->
-        <!-- ======================================== -->
         <nav class="bottom-nav">
-            <a href="index.html"><i class="fas fa-home"></i> Home</a>
+            <a href="home.html"><i class="fas fa-home"></i> Home</a>
             <a href="map.html"><i class="fas fa-map"></i> Map</a>
             <a href="quests.html"><i class="fas fa-tasks"></i> Quests</a>
             <a href="discoveries.html"><i class="fas fa-trophy"></i> Discoveries</a>
@@ -323,7 +287,7 @@
         </nav>
 
         <nav class="mobile-nav">
-            <a href="index.html"><i class="fas fa-home"></i> Home</a>
+            <a href="home.html"><i class="fas fa-home"></i> Home</a>
             <a href="map.html"><i class="fas fa-map"></i> Map</a>
             <a href="quests.html"><i class="fas fa-tasks"></i> Quests</a>
             <a href="discoveries.html"><i class="fas fa-trophy"></i> Discoveries</a>
@@ -332,26 +296,18 @@
 
     </div>
 
-    <!-- ======================================== -->
-    <!-- JAVASCRIPT (All inline, no imports for signup) -->
-    <!-- ======================================== -->
     <script>
-        // ========================================
-        // PASSWORD STRENGTH - GLOBAL FUNCTION
-        // ========================================
+        // Password strength checker
         window.checkPasswordStrength = function(password) {
             const bars = document.querySelectorAll('#passwordStrength .bar');
             const hint = document.getElementById('passwordHint');
-            
             if (!bars.length || !hint) return;
-
             let strength = 0;
             if (password.length >= 6) strength++;
             if (password.length >= 10) strength++;
             if (/[A-Z]/.test(password) && /[a-z]/.test(password)) strength++;
             if (/\d/.test(password)) strength++;
             if (/[^A-Za-z0-9]/.test(password)) strength++;
-
             bars.forEach((bar, i) => {
                 bar.className = 'bar';
                 if (i < Math.min(strength, 3)) {
@@ -360,7 +316,6 @@
                     else bar.classList.add('strong');
                 }
             });
-
             if (password.length === 0) {
                 hint.textContent = 'Use 6+ characters';
             } else if (strength <= 2) {
@@ -374,19 +329,24 @@
     </script>
 
     <script type="module">
-        import { signUp, getCurrentUser, signOut } from './js/api.js';
+        // ========================================
+        // IMPORT AUTH FUNCTIONS
+        // ========================================
+        import { signUp, getCurrentUser, logout, signOut } from './js/auth.js';
 
         // ========================================
         // DOM ELEMENTS
         // ========================================
-        const form = document.getElementById('signupForm');
+        const signupBtn = document.getElementById('signupBtn');
         const usernameInput = document.getElementById('signupUsername');
         const emailInput = document.getElementById('signupEmail');
         const passwordInput = document.getElementById('signupPassword');
-        const signupBtn = document.getElementById('signupBtn');
         const errorEl = document.getElementById('authError');
         const successEl = document.getElementById('authSuccess');
         const loadingEl = document.getElementById('authLoading');
+        const alreadyLoggedIn = document.getElementById('alreadyLoggedIn');
+        const signupFormContainer = document.getElementById('signupFormContainer');
+        const logoutFromSignupBtn = document.getElementById('logoutFromSignupBtn');
 
         // ========================================
         // SHOW/HIDE HELPERS
@@ -422,10 +382,53 @@
         }
 
         // ========================================
+        // CHECK IF USER IS ALREADY LOGGED IN
+        // ========================================
+        async function checkAuth() {
+            try {
+                const user = await getCurrentUser();
+                if (user) {
+                    // User is logged in - show message instead of redirecting
+                    console.log('✅ User is already logged in:', user);
+                    alreadyLoggedIn.style.display = 'block';
+                    signupFormContainer.style.display = 'none';
+                } else {
+                    console.log('❌ Not logged in - showing signup form');
+                    alreadyLoggedIn.style.display = 'none';
+                    signupFormContainer.style.display = 'block';
+                }
+            } catch (error) {
+                console.log('❌ Not logged in:', error);
+                alreadyLoggedIn.style.display = 'none';
+                signupFormContainer.style.display = 'block';
+            }
+        }
+
+        // ========================================
+        // HANDLE LOGOUT FROM SIGNUP PAGE
+        // ========================================
+        async function handleLogoutFromSignup() {
+            try {
+                await logout();
+                // Also try signOut from api.js
+                if (typeof signOut === 'function') {
+                    await signOut();
+                }
+                // Reload to show signup form
+                window.location.reload();
+            } catch (error) {
+                console.error('Logout error:', error);
+                // Force logout by clearing storage
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('refresh_token');
+                window.location.reload();
+            }
+        }
+
+        // ========================================
         // HANDLE SIGNUP
         // ========================================
-        async function handleSignup(e) {
-            e.preventDefault();
+        async function handleSignup() {
             hideMessages();
 
             const username = usernameInput.value.trim();
@@ -451,6 +454,12 @@
                 return;
             }
 
+            if (!email.includes('@') || !email.includes('.')) {
+                showError('Please enter a valid email address');
+                emailInput.focus();
+                return;
+            }
+
             if (!password) {
                 showError('Please choose a password');
                 passwordInput.focus();
@@ -463,60 +472,70 @@
                 return;
             }
 
-            // Show loading
             setLoading(true);
 
             try {
+                console.log('📝 Attempting signup for:', email);
                 const result = await signUp(username, email, password);
+                console.log('📝 Signup result:', result);
                 
-                if (result.success) {
-                    showSuccess('Account created successfully! Redirecting...');
+                if (result && result.user) {
+                    showSuccess('✅ Account created! Redirecting to login...');
+                    
+                    usernameInput.value = '';
+                    emailInput.value = '';
+                    passwordInput.value = '';
                     
                     setTimeout(() => {
-                        window.location.href = 'login.html';
-                    }, 1500);
+                        window.location.href = 'index.html';
+                    }, 2000);
                 } else {
-                    showError(result.error || 'Signup failed. Please try again.');
+                    showError('Signup failed. Please try again.');
                     setLoading(false);
                 }
             } catch (error) {
-                showError('Something went wrong. Please try again.');
+                console.error('❌ Signup error:', error);
+                let errorMessage = error.message || 'Something went wrong.';
+                
+                if (errorMessage.includes('User already registered')) {
+                    errorMessage = 'This email is already registered. Please login instead.';
+                } else if (errorMessage.includes('Password should be at least 6 characters')) {
+                    errorMessage = 'Password must be at least 6 characters.';
+                } else if (errorMessage.includes('Invalid email')) {
+                    errorMessage = 'Please enter a valid email address.';
+                }
+                
+                showError(errorMessage);
                 setLoading(false);
-                console.error('Signup error:', error);
             }
         }
 
         // ========================================
         // EVENT LISTENERS
         // ========================================
-        form.addEventListener('submit', handleSignup);
+        signupBtn.addEventListener('click', handleSignup);
+
+        if (logoutFromSignupBtn) {
+            logoutFromSignupBtn.addEventListener('click', handleLogoutFromSignup);
+        }
 
         passwordInput.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
-                form.dispatchEvent(new Event('submit'));
+                e.preventDefault();
+                handleSignup();
+            }
+        });
+
+        emailInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                passwordInput.focus();
             }
         });
 
         // ========================================
-        // CHECK IF USER IS ALREADY LOGGED IN
+        // INIT - Check auth status
         // ========================================
-        async function checkAuth() {
-            try {
-                const user = await getCurrentUser();
-                if (user.success) {
-                    document.getElementById('authNavLink').textContent = 'Logout';
-                    document.getElementById('authNavLink').href = '#';
-                    document.getElementById('authNavLink').onclick = async function(e) {
-                        e.preventDefault();
-                        await signOut();
-                        window.location.href = 'login.html';
-                    };
-                }
-            } catch (error) {
-                console.log('Not logged in');
-            }
-        }
-
         checkAuth();
     </script>
 </body>

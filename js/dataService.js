@@ -44,17 +44,23 @@ export function getState() {
 // ========================================
 
 export async function loadGameData() {
+    console.log('🔄 loadGameData: Starting...');
     appState.loading = true;
     appState.error = null;
     notifyListeners();
     
     try {
         // 1. Check if user is authenticated
+        console.log('📡 Getting current user...');
         const userResult = await api.getCurrentUser();
+        console.log('📡 User result:', userResult);
+        
         if (userResult.success) {
             appState.user = userResult.data;
             appState.isAuthenticated = true;
+            console.log('✅ User authenticated:', userResult.data);
         } else {
+            console.warn('❌ Not authenticated:', userResult.error);
             appState.isAuthenticated = false;
             appState.loading = false;
             notifyListeners();
@@ -62,27 +68,39 @@ export async function loadGameData() {
         }
         
         // 2. Load locations from API
+        console.log('📡 Loading locations...');
         const locationsResult = await api.getLocations();
+        console.log('📡 Locations result:', locationsResult);
+        
         if (locationsResult.success) {
-            appState.locations = locationsResult.data;
+            // ✅ Make sure we're getting the array correctly
+            appState.locations = locationsResult.data || [];
+            console.log('✅ Locations loaded:', appState.locations.length);
         } else {
-            console.warn('Failed to load locations:', locationsResult.error);
+            console.warn('⚠️ Failed to load locations:', locationsResult.error);
             appState.locations = [];
         }
         
         // 3. Load quests from API
+        console.log('📡 Loading quests...');
         const questsResult = await api.getQuests();
+        console.log('📡 Quests result:', questsResult);
+        
         if (questsResult.success) {
-            appState.quests = questsResult.data;
+            appState.quests = questsResult.data || [];
+            console.log('✅ Quests loaded:', appState.quests.length);
         } else {
-            console.warn('Failed to load quests:', questsResult.error);
+            console.warn('⚠️ Failed to load quests:', questsResult.error);
             appState.quests = [];
         }
         
         appState.loading = false;
         notifyListeners();
+        console.log('✅ loadGameData: Complete!');
         return { success: true };
+        
     } catch (error) {
+        console.error('❌ loadGameData error:', error);
         appState.loading = false;
         appState.error = error.message;
         notifyListeners();
@@ -177,7 +195,7 @@ export function getTotalXP() {
 
 export function getLevel() {
     const xp = appState.user?.xp || 0;
-    return Math.floor(xp / 1000) + 1;
+    return Math.floor(xp / 100) + 1;
 }
 
 export function getTotalDiscoveries() {

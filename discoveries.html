@@ -19,17 +19,19 @@
                 <span class="logo-text">LOST@UET</span>
             </div>
             <nav class="header-nav">
-                <a href="index.html">Home</a>
+                <a href="home.html">Home</a>
                 <a href="map.html">Map</a>
                 <a href="quests.html">Quests</a>
                 <a href="discoveries.html" class="active">Discoveries</a>
             </nav>
-            <div class="header-profile">
+            <div class="header-profile" id="userProfile">
                 <div class="avatar">👤</div>
                 <div class="profile-info">
-                    <span class="level-text">Lv. 2 Explorer</span>
-                    <div class="mini-progress"><div class="mini-progress-bar" style="width:25%;"></div></div>
-                    <span class="progress-text">3/12</span>
+                    <span class="level-text" id="userDisplayName">Loading...</span>
+                    <div class="mini-progress">
+                        <div class="mini-progress-bar" id="userProgressBar" style="width:0%;"></div>
+                    </div>
+                    <span class="progress-text" id="userProgressText">0/42</span>
                 </div>
             </div>
         </header>
@@ -39,117 +41,52 @@
             <div class="page-header">
                 <h2>⭐ MY DISCOVERIES</h2>
                 <div class="level-bar">
-                    <span>📍 3 / 12 locations</span>
-                    <span>⭐ +300 XP (Level 2)</span>
+                    <span>📍 <span id="discoveryCount">0</span> / <span id="totalLocations">0</span> locations</span>
+                    <span>⭐ <span id="discoveryXP">0</span> XP (Level <span id="discoveryLevel">1</span>)</span>
                 </div>
             </div>
 
-            <!-- Discovery Progress -->
+            <!-- Discovery Progress - Real Data -->
             <div class="discovery-progress">
                 <div class="progress-label">
                     <span>Progress</span>
-                    <span>25%</span>
+                    <span id="progressPercent">0%</span>
                 </div>
                 <div class="progress-bar-full">
-                    <div class="progress-fill-full" style="width:25%;"></div>
+                    <div class="progress-fill-full" id="discoveryProgressBar" style="width:0%;"></div>
                 </div>
             </div>
 
-            <!-- Discovery Stats -->
+            <!-- Discovery Stats - Real Data -->
             <div class="discovery-stats">
                 <div class="stat-card">
-                    <span class="stat-number">3</span>
+                    <span class="stat-number" id="discoveredCount">0</span>
                     <span class="stat-label">✅ Unlocked</span>
                 </div>
                 <div class="stat-card">
-                    <span class="stat-number">9</span>
+                    <span class="stat-number" id="lockedCount">0</span>
                     <span class="stat-label">🔒 Locked</span>
                 </div>
                 <div class="stat-card">
-                    <span class="stat-number">100</span>
+                    <span class="stat-number" id="totalXP">0</span>
                     <span class="stat-label">⭐ XP Earned</span>
                 </div>
             </div>
 
-            <!-- Location Grid -->
+            <!-- Location Grid - Real Data -->
             <h3 style="font-family:var(--font-pixel);font-size:14px;color:var(--text-yellow);margin:20px 0 12px;">📍 ALL LOCATIONS</h3>
-            <div class="discovery-grid">
-
-                <!-- Unlocked -->
-                <div class="discovery-item unlocked" onclick="openLocation('CS Department')">
-                    <span>💻</span>
-                    <span class="name">CS Department</span>
-                    <span class="badge">✅</span>
-                </div>
-                <div class="discovery-item unlocked" onclick="openLocation('Main Cafe')">
-                    <span>☕</span>
-                    <span class="name">Main Cafe</span>
-                    <span class="badge">✅</span>
-                </div>
-                <div class="discovery-item unlocked" onclick="openLocation('Library')">
-                    <span>📚</span>
-                    <span class="name">Library</span>
-                    <span class="badge">✅</span>
-                </div>
-                <div class="discovery-item unlocked" onclick="openLocation('Mosque')">
-                    <span>🕌</span>
-                    <span class="name">Mosque</span>
-                    <span class="badge">✅</span>
-                </div>
-
-                <!-- Locked -->
-                <div class="discovery-item locked">
-                    <span>🏟️</span>
-                    <span class="name">Sports Complex</span>
-                    <span class="badge">🔒</span>
-                </div>
-                <div class="discovery-item locked">
-                    <span>🏥</span>
-                    <span class="name">Medical Center</span>
-                    <span class="badge">🔒</span>
-                </div>
-                <div class="discovery-item locked">
-                    <span>🚌</span>
-                    <span class="name">Bus Stop</span>
-                    <span class="badge">🔒</span>
-                </div>
-                <div class="discovery-item locked">
-                    <span>🌿</span>
-                    <span class="name">Hidden Garden</span>
-                    <span class="badge">🔒</span>
-                </div>
-                <div class="discovery-item locked">
-                    <span>🚪</span>
-                    <span class="name">Main Gate</span>
-                    <span class="badge">🔒</span>
-                </div>
-                <div class="discovery-item locked">
-                    <span>🏛️</span>
-                    <span class="name">Admin Building</span>
-                    <span class="badge">🔒</span>
-                </div>
-                <div class="discovery-item locked">
-                    <span>🔬</span>
-                    <span class="name">Research Lab</span>
-                    <span class="badge">🔒</span>
-                </div>
-                <div class="discovery-item locked">
-                    <span>🎭</span>
-                    <span class="name">Auditorium</span>
-                    <span class="badge">🔒</span>
+            <div class="discovery-grid" id="discoveriesGrid">
+                <div class="loading-spinner" style="grid-column:1/-1;">
+                    <div class="spinner"></div>
+                    <p style="margin-top:12px;color:var(--text-muted);">Loading locations...</p>
                 </div>
             </div>
 
             <!-- Badges Section -->
             <div class="badges-section">
                 <h3>🏅 BADGES</h3>
-                <div class="badges-grid">
-                    <div class="badge unlocked">🎒 Campus Newbie</div>
-                    <div class="badge unlocked">☕ Caffeine Addict</div>
-                    <div class="badge unlocked">💻 CS Explorer</div>
-                    <div class="badge locked">🔒 ??? Locked</div>
-                    <div class="badge locked">🔒 ??? Locked</div>
-                    <div class="badge locked">🔒 ??? Locked</div>
+                <div class="badges-grid" id="badgesContainer">
+                    <div class="badge locked">🔒 Explore to unlock badges!</div>
                 </div>
             </div>
 
@@ -158,38 +95,197 @@
                 <button class="btn-outline" onclick="exportSave()">💾 Export Save</button>
                 <button class="btn-outline" onclick="document.getElementById('importFile').click()">📂 Import Save</button>
                 <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importSave(event)" />
-                <button class="btn-danger" onclick="resetGame()">🔄 Reset Game</button>
             </div>
         </section>
 
-        <!-- BOTTOM NAVIGATION -->
+        <!-- BOTTOM NAV -->
         <nav class="bottom-nav">
-            <a href="index.html">
-                <i class="fas fa-home"></i> Home
-            </a>
-            <a href="map.html">
-                <i class="fas fa-map"></i> Map
-            </a>
-            <a href="quests.html">
-                <i class="fas fa-tasks"></i> Quests
-            </a>
-            <a href="discoveries.html" class="active">
-                <i class="fas fa-trophy"></i> Discoveries
-            </a>
+            <a href="home.html"><i class="fas fa-home"></i> Home</a>
+            <a href="map.html"><i class="fas fa-map"></i> Map</a>
+            <a href="quests.html"><i class="fas fa-tasks"></i> Quests</a>
+            <a href="discoveries.html" class="active"><i class="fas fa-trophy"></i> Discoveries</a>
         </nav>
 
-        <!-- MOBILE BOTTOM NAV -->
         <nav class="mobile-nav">
-            <a href="index.html"><i class="fas fa-home"></i> Home</a>
+            <a href="home.html"><i class="fas fa-home"></i> Home</a>
             <a href="map.html"><i class="fas fa-map"></i> Map</a>
             <a href="quests.html"><i class="fas fa-tasks"></i> Quests</a>
             <a href="discoveries.html" class="active"><i class="fas fa-trophy"></i> Discoveries</a>
         </nav>
 
     </div>
-      <div id="discoveriesGrid">
-    <!-- Discoveries will be rendered here -->
-</div>
-<script type="module" src="js/app.js"></script>
+
+    <script type="module">
+        import { getCurrentUser } from './js/auth.js';
+        import { 
+            loadGameData, 
+            getState, 
+            getTotalXP, 
+            getLevel, 
+            getTotalDiscoveries, 
+            getTotalLocations, 
+            getLocationStatus,
+            getCompletionPercentage  // ✅ ADDED
+        } from './js/dataService.js';
+
+        // ========================================
+        // DOM REFS
+        // ========================================
+        const grid = document.getElementById('discoveriesGrid');
+
+        // ========================================
+        // LOAD DATA
+        // ========================================
+        async function loadData() {
+            try {
+                const user = await getCurrentUser();
+                if (!user || !user.success) {
+                    window.location.href = 'index.html';
+                    return;
+                }
+
+                await loadGameData();
+                const state = getState();
+                
+                updateHeader();
+                updateStats();
+                renderDiscoveries();
+                
+            } catch (error) {
+                console.error('Error loading data:', error);
+            }
+        }
+
+        // ========================================
+        // UPDATE HEADER
+        // ========================================
+        function updateHeader() {
+            const state = getState();
+            const user = state.user;
+            const discoveries = getTotalDiscoveries();
+            const total = getTotalLocations();
+            const progress = getCompletionPercentage();  // ✅ NOW DEFINED
+
+            const displayName = document.getElementById('userDisplayName');
+            const progressBar = document.getElementById('userProgressBar');
+            const progressText = document.getElementById('userProgressText');
+
+            if (displayName) {
+                displayName.textContent = user?.name || user?.username || 'Explorer';
+            }
+            if (progressBar) {
+                progressBar.style.width = progress + '%';
+            }
+            if (progressText) {
+                progressText.textContent = `${discoveries}/${total}`;
+            }
+        }
+
+        // ========================================
+        // UPDATE STATS
+        // ========================================
+        function updateStats() {
+            const discovered = getTotalDiscoveries();
+            const total = getTotalLocations();
+            const progress = getCompletionPercentage();
+            const xp = getTotalXP();
+            const level = getLevel();
+
+            document.getElementById('discoveryCount').textContent = discovered;
+            document.getElementById('totalLocations').textContent = total;
+            document.getElementById('discoveryXP').textContent = xp;
+            document.getElementById('discoveryLevel').textContent = level;
+            document.getElementById('progressPercent').textContent = progress + '%';
+            document.getElementById('discoveryProgressBar').style.width = progress + '%';
+            document.getElementById('discoveredCount').textContent = discovered;
+            document.getElementById('lockedCount').textContent = total - discovered;
+            document.getElementById('totalXP').textContent = xp;
+        }
+
+        // ========================================
+        // RENDER DISCOVERIES
+        // ========================================
+        function renderDiscoveries() {
+            if (!grid) return;
+
+            const state = getState();
+            const locations = state.locations || [];
+
+            if (locations.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state" style="grid-column:1/-1;">
+                        <span class="empty-icon">🔍</span>
+                        <p>No locations found</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = locations.map(loc => {
+                const isDiscovered = getLocationStatus(loc.id) === 'discovered';
+                return `
+                    <div class="discovery-item ${isDiscovered ? 'unlocked' : 'locked'}"
+                         onclick="window.openLocation('${loc.id}')">
+                        <span>${loc.icon || '📍'}</span>
+                        <span class="name">${loc.name}</span>
+                        <span class="badge">${isDiscovered ? '✅' : '🔒'}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ========================================
+        // OPEN LOCATION (reuse from map page)
+        // ========================================
+        window.openLocation = function(locationId) {
+            window.location.href = `map.html?location=${locationId}`;
+        };
+
+        // ========================================
+        // EXPORT/IMPORT
+        // ========================================
+        window.exportSave = function() {
+            const state = getState();
+            const data = {
+                user: state.user,
+                discoveries: state.user?.discoveries || [],
+                xp: getTotalXP(),
+                level: getLevel(),
+                exportedAt: new Date().toISOString()
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `lostuet_save_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        };
+
+        window.importSave = function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    alert('✅ Save imported successfully!');
+                    console.log('Imported data:', data);
+                } catch (error) {
+                    alert('❌ Invalid save file!');
+                }
+            };
+            reader.readAsText(file);
+        };
+
+        // ========================================
+        // INIT
+        // ========================================
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadData);
+        } else {
+            loadData();
+        }
+    </script>
 </body>
 </html>

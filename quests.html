@@ -19,17 +19,19 @@
                 <span class="logo-text">LOST@UET</span>
             </div>
             <nav class="header-nav">
-                <a href="index.html">Home</a>
+                <a href="home.html">Home</a>
                 <a href="map.html">Map</a>
                 <a href="quests.html" class="active">Quests</a>
                 <a href="discoveries.html">Discoveries</a>
             </nav>
-            <div class="header-profile">
+            <div class="header-profile" id="userProfile">
                 <div class="avatar">👤</div>
                 <div class="profile-info">
-                    <span class="level-text">Lv. 2 Explorer</span>
-                    <div class="mini-progress"><div class="mini-progress-bar" style="width:25%;"></div></div>
-                    <span class="progress-text">3/12</span>
+                    <span class="level-text" id="userDisplayName">Loading...</span>
+                    <div class="mini-progress">
+                        <div class="mini-progress-bar" id="userProgressBar" style="width:0%;"></div>
+                    </div>
+                    <span class="progress-text" id="userProgressText">0/42</span>
                 </div>
             </div>
         </header>
@@ -39,158 +41,243 @@
             <div class="page-header">
                 <h2>🏆 ACTIVE QUESTS</h2>
                 <div class="level-bar">
-                    <span>⭐ 100 XP</span>
-                    <span>📍 3/12</span>
+                    <span>⭐ <span id="questXP">0</span> XP</span>
+                    <span>📍 <span id="questDiscoveries">0</span>/<span id="questTotal">0</span></span>
                 </div>
             </div>
 
-            <!-- Quest Stats -->
+            <!-- Quest Stats - Real Data -->
             <div class="quest-stats">
                 <div class="quest-stat">
-                    <span class="stat-number">3</span>
+                    <span class="stat-number" id="activeQuests">0</span>
                     <span class="stat-label">Active</span>
                 </div>
                 <div class="quest-stat">
-                    <span class="stat-number">2</span>
+                    <span class="stat-number" id="completedQuests">0</span>
                     <span class="stat-label">Completed</span>
                 </div>
                 <div class="quest-stat">
-                    <span class="stat-number">350</span>
+                    <span class="stat-number" id="totalQuestXP">0</span>
                     <span class="stat-label">Total XP</span>
                 </div>
             </div>
 
             <!-- Quest Filter -->
             <div class="quest-filter">
-                <button class="filter-btn active">All</button>
-                <button class="filter-btn">Active</button>
-                <button class="filter-btn">Completed</button>
-                <button class="filter-btn">Daily</button>
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="active">Active</button>
+                <button class="filter-btn" data-filter="completed">Completed</button>
             </div>
 
-            <!-- Quest List -->
-            <div class="quest-list">
-
-                <!-- Quest 1 -->
-                <div class="quest-card">
-                    <div class="quest-icon">☕</div>
-                    <div class="quest-content">
-                        <h4>The Survivor Quest</h4>
-                        <p>Every UET student eventually discovers this place when they desperately need caffeine.</p>
-                        <div class="quest-meta">
-                            <span class="quest-progress">1/3</span>
-                            <span class="quest-reward">+100 XP</span>
-                            <div class="quest-progress-bar"><div class="quest-progress-fill" style="width:33%;"></div></div>
-                        </div>
-                    </div>
-                    <button class="quest-arrow" onclick="startQuest('The Survivor Quest')">></button>
-                </div>
-
-                <!-- Quest 2 -->
-                <div class="quest-card">
-                    <div class="quest-icon">🌳</div>
-                    <div class="quest-content">
-                        <h4>Touch Grass</h4>
-                        <p>You've been coding for 6 hours. Find the Sports Complex.</p>
-                        <div class="quest-meta">
-                            <span class="quest-progress">0/1</span>
-                            <span class="quest-reward">+100 XP</span>
-                            <div class="quest-progress-bar"><div class="quest-progress-fill" style="width:0%;"></div></div>
-                        </div>
-                    </div>
-                    <button class="quest-arrow" onclick="startQuest('Touch Grass')">></button>
-                </div>
-
-                <!-- Quest 3 -->
-                <div class="quest-card">
-                    <div class="quest-icon">💻</div>
-                    <div class="quest-content">
-                        <h4>The CS Pilgrimage</h4>
-                        <p>Find all important locations around the CS Department.</p>
-                        <div class="quest-meta">
-                            <span class="quest-progress">2/4</span>
-                            <span class="quest-reward">+150 XP</span>
-                            <div class="quest-progress-bar"><div class="quest-progress-fill" style="width:50%;"></div></div>
-                        </div>
-                    </div>
-                    <button class="quest-arrow" onclick="startQuest('The CS Pilgrimage')">></button>
-                </div>
-
-                <!-- Quest 4 (Completed) -->
-                <div class="quest-card completed">
-                    <div class="quest-icon">📚</div>
-                    <div class="quest-content">
-                        <h4>Library Explorer</h4>
-                        <p>Visit the main library and find 3 hidden books.</p>
-                        <div class="quest-meta">
-                            <span class="quest-progress">✅ 3/3</span>
-                            <span class="quest-reward">+80 XP</span>
-                            <div class="quest-progress-bar"><div class="quest-progress-fill" style="width:100%;background:#4CAF50;"></div></div>
-                        </div>
-                    </div>
-                    <span class="quest-done">✅ Done</span>
-                </div>
-
-                <!-- Quest 5 -->
-                <div class="quest-card">
-                    <div class="quest-icon">🏟️</div>
-                    <div class="quest-content">
-                        <h4>Sports Fanatic</h4>
-                        <p>Attend a match at the Sports Complex.</p>
-                        <div class="quest-meta">
-                            <span class="quest-progress">0/1</span>
-                            <span class="quest-reward">+120 XP</span>
-                            <div class="quest-progress-bar"><div class="quest-progress-fill" style="width:0%;"></div></div>
-                        </div>
-                    </div>
-                    <button class="quest-arrow" onclick="startQuest('Sports Fanatic')">></button>
-                </div>
-
-                <!-- Quest 6 (Daily) -->
-                <div class="quest-card daily">
-                    <div class="quest-icon">🔥</div>
-                    <div class="quest-content">
-                        <h4>Daily Explorer</h4>
-                        <p>Discover 1 location today!</p>
-                        <div class="quest-meta">
-                            <span class="quest-progress">0/1</span>
-                            <span class="quest-reward">+50 XP</span>
-                            <div class="quest-progress-bar"><div class="quest-progress-fill" style="width:0%;"></div></div>
-                        </div>
-                    </div>
-                    <span class="quest-daily-badge">🔥 Daily</span>
+            <!-- Quest List - Real Data -->
+            <div class="quest-list" id="questsContainer">
+                <div class="loading-spinner">
+                    <div class="spinner"></div>
+                    <p style="margin-top:12px;color:var(--text-muted);">Loading quests...</p>
                 </div>
             </div>
         </section>
 
-        <!-- BOTTOM NAVIGATION -->
+        <!-- BOTTOM NAV -->
         <nav class="bottom-nav">
-            <a href="index.html">
-                <i class="fas fa-home"></i> Home
-            </a>
-            <a href="map.html">
-                <i class="fas fa-map"></i> Map
-            </a>
-            <a href="quests.html" class="active">
-                <i class="fas fa-tasks"></i> Quests
-            </a>
-            <a href="discoveries.html">
-                <i class="fas fa-trophy"></i> Discoveries
-            </a>
+            <a href="home.html"><i class="fas fa-home"></i> Home</a>
+            <a href="map.html"><i class="fas fa-map"></i> Map</a>
+            <a href="quests.html" class="active"><i class="fas fa-tasks"></i> Quests</a>
+            <a href="discoveries.html"><i class="fas fa-trophy"></i> Discoveries</a>
         </nav>
 
-        <!-- MOBILE BOTTOM NAV -->
         <nav class="mobile-nav">
-            <a href="index.html"><i class="fas fa-home"></i> Home</a>
+            <a href="home.html"><i class="fas fa-home"></i> Home</a>
             <a href="map.html"><i class="fas fa-map"></i> Map</a>
             <a href="quests.html" class="active"><i class="fas fa-tasks"></i> Quests</a>
             <a href="discoveries.html"><i class="fas fa-trophy"></i> Discoveries</a>
         </nav>
 
     </div>
-    <div id="questsContainer">
-    <!-- Quests will be rendered here -->
-</div>
-<script type="module" src="js/app.js"></script>
+
+    <script type="module">
+        import { getCurrentUser } from './js/auth.js';
+        import { 
+            loadGameData, 
+            getState, 
+            getTotalXP, 
+            getLevel, 
+            getTotalDiscoveries, 
+            getTotalLocations, 
+            getQuestProgress, 
+            completeQuest, 
+            refreshUserData,
+            getCompletionPercentage  // ✅ ADDED
+        } from './js/dataService.js';
+        import { getQuests } from './js/api.js';
+
+        // ========================================
+        // STATE
+        // ========================================
+        let questFilter = 'all';
+        let allQuests = [];
+
+        // ========================================
+        // DOM REFS
+        // ========================================
+        const questsContainer = document.getElementById('questsContainer');
+
+        // ========================================
+        // LOAD DATA
+        // ========================================
+        async function loadData() {
+            try {
+                const user = await getCurrentUser();
+                if (!user || !user.success) {
+                    window.location.href = 'index.html';
+                    return;
+                }
+
+                await loadGameData();
+                const state = getState();
+                allQuests = state.quests || [];
+                
+                updateHeader();
+                updateStats();
+                renderQuests();
+                
+            } catch (error) {
+                console.error('Error loading data:', error);
+            }
+        }
+
+        // ========================================
+        // UPDATE HEADER
+        // ========================================
+        function updateHeader() {
+            const state = getState();
+            const user = state.user;
+            const discoveries = getTotalDiscoveries();
+            const total = getTotalLocations();
+            const progress = getCompletionPercentage();  // ✅ NOW DEFINED
+
+            const displayName = document.getElementById('userDisplayName');
+            const progressBar = document.getElementById('userProgressBar');
+            const progressText = document.getElementById('userProgressText');
+
+            if (displayName) {
+                displayName.textContent = user?.name || user?.username || 'Explorer';
+            }
+            if (progressBar) {
+                progressBar.style.width = progress + '%';
+            }
+            if (progressText) {
+                progressText.textContent = `${discoveries}/${total}`;
+            }
+        }
+
+        // ========================================
+        // UPDATE STATS
+        // ========================================
+        function updateStats() {
+            document.getElementById('questXP').textContent = getTotalXP();
+            document.getElementById('questDiscoveries').textContent = getTotalDiscoveries();
+            document.getElementById('questTotal').textContent = getTotalLocations();
+
+            const completed = allQuests.filter(q => getQuestProgress(q.id) === 100);
+            const active = allQuests.filter(q => getQuestProgress(q.id) > 0 && getQuestProgress(q.id) < 100);
+            
+            document.getElementById('activeQuests').textContent = active.length;
+            document.getElementById('completedQuests').textContent = completed.length;
+            document.getElementById('totalQuestXP').textContent = completed.reduce((sum, q) => sum + (q.xp || 0), 0);
+        }
+
+        // ========================================
+        // RENDER QUESTS
+        // ========================================
+        function renderQuests() {
+            if (!questsContainer) return;
+
+            let filtered = allQuests;
+            if (questFilter === 'active') {
+                filtered = allQuests.filter(q => getQuestProgress(q.id) > 0 && getQuestProgress(q.id) < 100);
+            } else if (questFilter === 'completed') {
+                filtered = allQuests.filter(q => getQuestProgress(q.id) === 100);
+            }
+
+            if (filtered.length === 0) {
+                questsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <span class="empty-icon">🎯</span>
+                        <p>No quests available</p>
+                    </div>
+                `;
+                return;
+            }
+
+            questsContainer.innerHTML = filtered.map(quest => {
+                const progress = getQuestProgress(quest.id);
+                const completed = progress === 100;
+                
+                return `
+                    <div class="quest-card ${completed ? 'completed' : ''}">
+                        <div class="quest-icon">${quest.icon || '📋'}</div>
+                        <div class="quest-content">
+                            <h4>${quest.title || quest.name || 'Quest'}</h4>
+                            <p>${quest.description || 'Complete this quest to earn XP!'}</p>
+                            <div class="quest-meta">
+                                <span class="quest-progress">${completed ? '✅ Completed' : '🔄 ' + progress + '%'}</span>
+                                <span class="quest-reward">+${quest.xp || 0} XP</span>
+                                <div class="quest-progress-bar">
+                                    <div class="quest-progress-fill" style="width:${progress}%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        ${completed 
+                            ? '<span class="quest-done">✅ Done</span>' 
+                            : `<button class="quest-arrow" onclick="window.completeQuest('${quest.id}')">></button>`
+                        }
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ========================================
+        // COMPLETE QUEST
+        // ========================================
+        window.completeQuest = async function(questId) {
+            try {
+                const result = await completeQuest(questId);
+                if (result.success) {
+                    alert('🎉 Quest completed! +' + (result.data?.xp_awarded || 0) + ' XP');
+                    await refreshUserData();
+                    await loadGameData();
+                    updateStats();
+                    renderQuests();
+                } else {
+                    alert('❌ Failed to complete quest: ' + (result.error || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Complete quest error:', error);
+                alert('❌ Failed to complete quest');
+            }
+        };
+
+        // ========================================
+        // FILTERS
+        // ========================================
+        document.querySelectorAll('.quest-filter .filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.quest-filter .filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                questFilter = this.dataset.filter;
+                renderQuests();
+            });
+        });
+
+        // ========================================
+        // INIT
+        // ========================================
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadData);
+        } else {
+            loadData();
+        }
+    </script>
 </body>
 </html>

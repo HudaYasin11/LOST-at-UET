@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>LOST@UET - Campus Explorer</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+    <div id="app">
+
+        <!-- HEADER -->
+        <header id="global-header">
+            <div class="header-left">
+                <span class="logo-icon">🏛️</span>
+                <span class="logo-text">LOST@UET</span>
+            </div>
+            <nav class="header-nav">
+                <a href="home.html" class="active">Home</a>
+                <a href="map.html">Map</a>
+                <a href="quests.html">Quests</a>
+                <a href="discoveries.html">Discoveries</a>
+            </nav>
+            <div class="header-profile" id="userProfile">
+                <div class="avatar">👤</div>
+                <div class="profile-info">
+                    <span class="level-text" id="userDisplayName">Loading...</span>
+                    <div class="mini-progress">
+                        <div class="mini-progress-bar" id="userProgressBar" style="width:0%;"></div>
+                    </div>
+                    <span class="progress-text" id="userProgressText">0/42</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- LANDING PAGE -->
+        <section class="page active">
+            <div class="landing-container">
+                <div class="landing-banner">
+                    <h1 class="landing-title">LOST@UET</h1>
+                    <p class="landing-tagline">EXPLORE · DISCOVER · BELONG</p>
+                </div>
+
+                <div class="pixel-art-container">
+                    <div class="pixel-building">
+                        <div class="building-block"></div>
+                        <div class="building-block"></div>
+                        <div class="building-block"></div>
+                        <div class="building-window"></div>
+                        <div class="building-window"></div>
+                        <div class="building-window"></div>
+                    </div>
+                    <div class="student-avatar">🧑‍🎓</div>
+                </div>
+
+                <div class="speech-bubble">
+                    NEW CAMPUS. SAME YOU. JUST MORE LOST.
+                </div>
+
+                <!-- Stats Cards - Real Data -->
+                <div class="stats-grid" style="width:100%;max-width:300px;margin-bottom:20px;">
+                    <div class="stat-card">
+                        <span class="stat-number" id="homeXP">0</span>
+                        <span class="stat-label">⭐ XP</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="homeLevel">1</span>
+                        <span class="stat-label">📊 Level</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="homeDiscoveries">0</span>
+                        <span class="stat-label">📍 Found</span>
+                    </div>
+                </div>
+
+                <div class="button-stack">
+                    <a href="map.html" class="btn-yellow" style="text-decoration:none;text-align:center;">
+                        START EXPLORING
+                    </a>
+                    <a href="map.html" class="btn-outline" style="text-decoration:none;text-align:center;">
+                        EXPLORE MAP
+                    </a>
+                    <a href="quests.html" class="btn-outline" style="text-decoration:none;text-align:center;">
+                        VIEW QUESTS
+                    </a>
+                    <a href="discoveries.html" class="btn-outline" style="text-decoration:none;text-align:center;">
+                        MY DISCOVERIES
+                    </a>
+                    <button id="logoutBtn" class="btn-outline" style="text-decoration:none;text-align:center;width:100%;">
+                        <i class="fas fa-sign-out-alt"></i> LOGOUT
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- BOTTOM NAV -->
+        <nav class="bottom-nav">
+            <a href="home.html" class="active"><i class="fas fa-home"></i> Home</a>
+            <a href="map.html"><i class="fas fa-map"></i> Map</a>
+            <a href="quests.html"><i class="fas fa-tasks"></i> Quests</a>
+            <a href="discoveries.html"><i class="fas fa-trophy"></i> Discoveries</a>
+        </nav>
+
+        <nav class="mobile-nav">
+            <a href="home.html" class="active"><i class="fas fa-home"></i> Home</a>
+            <a href="map.html"><i class="fas fa-map"></i> Map</a>
+            <a href="quests.html"><i class="fas fa-tasks"></i> Quests</a>
+            <a href="discoveries.html"><i class="fas fa-trophy"></i> Discoveries</a>
+        </nav>
+
+    </div>
+
+    <script type="module">
+        import { getCurrentUser, signOut } from './js/auth.js';
+        import { loadGameData, getTotalXP, getLevel, getTotalDiscoveries, getTotalLocations, getCompletionPercentage } from './js/dataService.js';
+
+        // ========================================
+        // LOAD USER DATA
+        // ========================================
+        async function loadUserData() {
+            try {
+                const user = await getCurrentUser();
+                if (!user) {
+                    window.location.href = 'index.html';
+                    return;
+                }
+
+                // Load game data from backend
+                await loadGameData();
+                
+                // Update stats with real data
+                const xp = getTotalXP();
+                const level = getLevel();
+                const discoveries = getTotalDiscoveries();
+                const totalLocations = getTotalLocations();
+                const progress = getCompletionPercentage();
+
+                // Update header
+                document.getElementById('userDisplayName').textContent = user.user_metadata?.name || user.email || 'Explorer';
+                document.getElementById('userProgressBar').style.width = progress + '%';
+                document.getElementById('userProgressText').textContent = `${discoveries}/${totalLocations}`;
+
+                // Update home stats
+                document.getElementById('homeXP').textContent = xp;
+                document.getElementById('homeLevel').textContent = level;
+                document.getElementById('homeDiscoveries').textContent = discoveries;
+
+            } catch (error) {
+                console.error('Error loading user data:', error);
+                // Show error state
+                document.getElementById('userDisplayName').textContent = 'Error loading';
+            }
+        }
+
+        // ========================================
+        // LOGOUT
+        // ========================================
+        document.getElementById('logoutBtn').addEventListener('click', async function() {
+            try {
+                await signOut();
+                // Also clear any local data
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('refresh_token');
+                window.location.href = 'index.html';
+            } catch (error) {
+                console.error('Logout error:', error);
+                // Force logout
+                localStorage.clear();
+                window.location.href = 'index.html';
+            }
+        });
+
+        // ========================================
+        // INIT
+        // ========================================
+        loadUserData();
+    </script>
+</body>
+</html>

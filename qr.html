@@ -8,6 +8,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="css/style.css" />
+    
+    <!-- QR Scanner Library -->
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 </head>
 <body>
     <div id="app">
@@ -19,17 +22,19 @@
                 <span class="logo-text">LOST@UET</span>
             </div>
             <nav class="header-nav">
-                <a href="index.html">Home</a>
+                <a href="home.html">Home</a>
                 <a href="map.html">Map</a>
                 <a href="quests.html">Quests</a>
                 <a href="discoveries.html">Discoveries</a>
             </nav>
-            <div class="header-profile">
+            <div class="header-profile" id="userProfile">
                 <div class="avatar">👤</div>
                 <div class="profile-info">
-                    <span class="level-text">Lv. 2 Explorer</span>
-                    <div class="mini-progress"><div class="mini-progress-bar" style="width:25%;"></div></div>
-                    <span class="progress-text">3/12</span>
+                    <span class="level-text" id="userDisplayName">Loading...</span>
+                    <div class="mini-progress">
+                        <div class="mini-progress-bar" id="userProgressBar" style="width:0%;"></div>
+                    </div>
+                    <span class="progress-text" id="userProgressText">0/42</span>
                 </div>
             </div>
         </header>
@@ -38,68 +43,40 @@
         <section class="page active">
             <div class="qr-page-container">
 
+                <!-- Location Info -->
+                <div id="locationInfo" style="text-align:center; margin-bottom:16px;">
+                    <h3 id="scanLocationName" style="color:var(--text-yellow); font-family:var(--font-pixel); font-size:14px;">
+                        📍 Scanning for: Loading...
+                    </h3>
+                </div>
+
                 <!-- QR Scanner Section -->
                 <div class="qr-scanner-section">
                     <h2>📱 QR SCANNER</h2>
-                    <p class="qr-instruction">Point your camera at a QR code to unlock a location</p>
+                    <p class="qr-instruction">Point your camera at a QR code to unlock this location</p>
 
-                    <div class="qr-scanner-box">
-                        <div class="qr-scanner-frame">
-                            <div class="qr-corner top-left"></div>
-                            <div class="qr-corner top-right"></div>
-                            <div class="qr-corner bottom-left"></div>
-                            <div class="qr-corner bottom-right"></div>
-                            <div class="qr-scanner-line"></div>
-                            <div class="qr-placeholder">
-                                <span class="qr-camera-icon">📷</span>
-                                <p>Camera feed will appear here</p>
-                            </div>
-                        </div>
+                    <!-- QR Reader Container -->
+                    <div id="qr-reader" style="width:100%; max-width:400px; margin: 0 auto;"></div>
+                    
+                    <div id="qr-reader-results" style="margin-top: 12px; padding: 12px; background: var(--card-bg); border-radius: 8px; display: none;">
+                        <p id="qr-result-text" style="color: var(--text-yellow);"></p>
                     </div>
 
                     <div class="qr-actions">
-                        <button class="btn-yellow" onclick="startScanning()">
+                        <button class="btn-yellow" id="startScanBtn">
                             <i class="fas fa-camera"></i> START SCANNING
                         </button>
-                        <button class="btn-outline" onclick="stopScanning()">
+                        <button class="btn-outline" id="stopScanBtn">
                             <i class="fas fa-stop"></i> STOP
+                        </button>
+                        <button class="btn-outline" id="backBtn" onclick="window.history.back()">
+                            <i class="fas fa-arrow-left"></i> BACK
                         </button>
                     </div>
 
                     <div class="qr-status" id="qrStatus">
                         <span class="status-dot idle"></span>
                         <span class="status-text">Ready to scan</span>
-                    </div>
-                </div>
-
-                <!-- QR Code Examples -->
-                <div class="qr-examples">
-                    <h3>📍 LOCATION QR CODES</h3>
-                    <div class="qr-code-grid">
-                        <div class="qr-code-item" onclick="triggerQRUnlock('Library')">
-                            <div class="qr-code-box">📚</div>
-                            <span>Library</span>
-                        </div>
-                        <div class="qr-code-item" onclick="triggerQRUnlock('CS Department')">
-                            <div class="qr-code-box">💻</div>
-                            <span>CS Dept</span>
-                        </div>
-                        <div class="qr-code-item" onclick="triggerQRUnlock('Main Cafe')">
-                            <div class="qr-code-box">☕</div>
-                            <span>Cafe</span>
-                        </div>
-                        <div class="qr-code-item" onclick="triggerQRUnlock('Sports Complex')">
-                            <div class="qr-code-box">🏟️</div>
-                            <span>Sports</span>
-                        </div>
-                        <div class="qr-code-item" onclick="triggerQRUnlock('Mosque')">
-                            <div class="qr-code-box">🕌</div>
-                            <span>Mosque</span>
-                        </div>
-                        <div class="qr-code-item" onclick="triggerQRUnlock('Hidden Garden')">
-                            <div class="qr-code-box">🌿</div>
-                            <span>Garden</span>
-                        </div>
                     </div>
                 </div>
 
@@ -119,37 +96,28 @@
             <div class="modal-content qr-modal">
                 <div class="qr-sparkles">✦ ✦ ✦</div>
                 <div class="qr-icon">📱</div>
-                <h2>LOCATION UNLOCKED!</h2>
-                <div class="qr-building">💻</div>
-                <h3>CS DEPARTMENT</h3>
-                <p class="qr-xp">+100 XP</p>
+                <h2>🎉 LOCATION UNLOCKED!</h2>
+                <div class="qr-building">🏛️</div>
+                <h3 id="unlockedName">LOCATION</h3>
+                <p class="qr-xp" id="unlockedXP">+100 XP</p>
                 <p class="qr-desc">You've discovered a new location! Keep exploring to unlock more and earn badges!</p>
                 <div class="modal-actions">
-                    <button class="btn-yellow" onclick="closeModal()">VIEW DETAILS</button>
-                    <button class="btn-outline" onclick="closeModal()">CONTINUE</button>
+                    <button class="btn-yellow" onclick="window.location.href='map.html'">VIEW DETAILS</button>
+                    <button class="btn-outline" onclick="window.location.href='map.html'">CONTINUE</button>
                 </div>
             </div>
         </div>
 
-        <!-- BOTTOM NAVIGATION -->
+        <!-- BOTTOM NAV -->
         <nav class="bottom-nav">
-            <a href="index.html">
-                <i class="fas fa-home"></i> Home
-            </a>
-            <a href="map.html" class="active">
-                <i class="fas fa-map"></i> Map
-            </a>
-            <a href="quests.html">
-                <i class="fas fa-tasks"></i> Quests
-            </a>
-            <a href="discoveries.html">
-                <i class="fas fa-trophy"></i> Discoveries
-            </a>
+            <a href="home.html"><i class="fas fa-home"></i> Home</a>
+            <a href="map.html" class="active"><i class="fas fa-map"></i> Map</a>
+            <a href="quests.html"><i class="fas fa-tasks"></i> Quests</a>
+            <a href="discoveries.html"><i class="fas fa-trophy"></i> Discoveries</a>
         </nav>
 
-        <!-- MOBILE BOTTOM NAV -->
         <nav class="mobile-nav">
-            <a href="index.html"><i class="fas fa-home"></i> Home</a>
+            <a href="home.html"><i class="fas fa-home"></i> Home</a>
             <a href="map.html" class="active"><i class="fas fa-map"></i> Map</a>
             <a href="quests.html"><i class="fas fa-tasks"></i> Quests</a>
             <a href="discoveries.html"><i class="fas fa-trophy"></i> Discoveries</a>
@@ -157,36 +125,234 @@
 
     </div>
 
-    <script src="js/app.js"></script>
-    <script>
+    <script type="module">
+        import { getCurrentUser } from './js/auth.js';
+import { loadGameData, unlockLocation, refreshUserData, getState } from './js/dataService.js';
+import { getLocations } from './js/api.js';
+
+        // ========================================
+        // DOM ELEMENTS
+        // ========================================
+        const startScanBtn = document.getElementById('startScanBtn');
+        const stopScanBtn = document.getElementById('stopScanBtn');
+        const backBtn = document.getElementById('backBtn');
+        const statusDot = document.querySelector('.status-dot');
+        const statusText = document.querySelector('.status-text');
+        const resultText = document.getElementById('qr-result-text');
+        const resultContainer = document.getElementById('qr-reader-results');
+        const scanLocationName = document.getElementById('scanLocationName');
+
+        let html5QrCode = null;
         let isScanning = false;
+        let targetLocationId = null;
 
-        function startScanning() {
-            isScanning = true;
-            const status = document.getElementById('qrStatus');
-            status.querySelector('.status-dot').className = 'status-dot scanning';
-            status.querySelector('.status-text').textContent = 'Scanning...';
-
-            setTimeout(function() {
-                if (isScanning) {
-                    triggerQRUnlock('CS Department');
-                }
-            }, 3000);
+        // ========================================
+        // GET LOCATION ID FROM URL
+        // ========================================
+        function getLocationIdFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('location');
         }
 
-        function stopScanning() {
-            isScanning = false;
-            const status = document.getElementById('qrStatus');
-            status.querySelector('.status-dot').className = 'status-dot idle';
-            status.querySelector('.status-text').textContent = 'Stopped';
+        // ========================================
+        // CHECK AUTH
+        // ========================================
+        async function checkAuth() {
+            const user = await getCurrentUser();
+            if (!user || !user.success) {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            await loadGameData();
+            
+            // Get location ID from URL
+            targetLocationId = getLocationIdFromURL();
+            
+            // Load all locations to find the name
+            const state = getState();
+            const locations = state.locations || [];
+            const targetLocation = locations.find(l => l.id === targetLocationId);
+            
+            if (targetLocation) {
+                scanLocationName.textContent = `📍 Scanning for: ${targetLocation.name}`;
+            } else if (targetLocationId) {
+                scanLocationName.textContent = `📍 Scanning for: ${targetLocationId}`;
+            } else {
+                scanLocationName.textContent = '📍 Scan any QR code to unlock!';
+            }
+
+            const userData = state.user;
+            const displayName = document.getElementById('userDisplayName');
+            const progressBar = document.getElementById('userProgressBar');
+            const progressText = document.getElementById('userProgressText');
+
+            if (displayName) displayName.textContent = userData?.name || 'Explorer';
+            if (progressBar) {
+                const progress = (userData?.discoveries?.length || 0) / 42 * 100;
+                progressBar.style.width = progress + '%';
+            }
+            if (progressText) {
+                progressText.textContent = `${userData?.discoveries?.length || 0}/42`;
+            }
         }
 
-        function triggerQRUnlock(location) {
+        // ========================================
+        // QR SCANNER
+        // ========================================
+        function onScanSuccess(decodedText) {
+            console.log('✅ QR Scanned:', decodedText);
+            
+            // Show result
+            resultContainer.style.display = 'block';
+            resultText.textContent = `📍 Decoded: ${decodedText}...`;
+            
+            // Stop scanning
             stopScanning();
-            document.querySelector('.qr-scanner-box .qr-placeholder p').textContent = '✅ Unlocked: ' + location + '!';
-            document.querySelector('.qr-scanner-box .qr-placeholder .qr-camera-icon').textContent = '🎉';
-            openModal('scan-result-modal');
+            
+            // Use the scanned text as location ID
+            const locationId = decodedText.trim();
+            
+            // Or use the target location ID from URL
+            const finalLocationId = targetLocationId || locationId;
+            
+            // Try to unlock the location
+            unlockLocation(finalLocationId).then(result => {
+                if (result.success) {
+                    const xp = result.data?.xp_awarded || 100;
+                    resultText.textContent = `✅ Unlocked! +${xp} XP`;
+                    document.getElementById('unlockedName').textContent = result.data?.locationName || finalLocationId;
+                    document.getElementById('unlockedXP').textContent = `+${xp} XP`;
+                    
+                    // Show success modal
+                    setTimeout(() => {
+                        openModal('scan-result-modal');
+                    }, 500);
+                    
+                    // Update header
+                    refreshUserData();
+                } else {
+                    resultText.textContent = `❌ ${result.error || 'Failed to unlock'}`;
+                    if (result.error?.includes('already')) {
+                        resultText.textContent = '⚠️ This location is already discovered!';
+                    }
+                }
+            });
         }
+
+        function onScanError(err) {
+            // Ignore errors - they happen during normal scanning
+            console.debug('Scan error:', err);
+        }
+
+        async function startScanning() {
+            if (isScanning) return;
+            
+            try {
+                // Check if camera is available
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                const cameras = devices.filter(d => d.kind === 'videoinput');
+                
+                if (cameras.length === 0) {
+                    alert('No camera found! Please connect a camera.');
+                    return;
+                }
+
+                // Clear previous scanner
+                if (html5QrCode) {
+                    try {
+                        await html5QrCode.stop();
+                        html5QrCode.clear();
+                    } catch (e) {}
+                }
+
+                html5QrCode = new Html5Qrcode('qr-reader');
+                
+                await html5QrCode.start(
+                    { facingMode: 'environment' },
+                    {
+                        fps: 10,
+                        qrbox: { width: 250, height: 250 },
+                        aspectRatio: 1.0
+                    },
+                    onScanSuccess,
+                    onScanError
+                );
+                
+                isScanning = true;
+                statusDot.className = 'status-dot scanning';
+                statusText.textContent = 'Scanning...';
+                startScanBtn.disabled = true;
+                resultContainer.style.display = 'none';
+                
+            } catch (error) {
+                console.error('Error starting scanner:', error);
+                alert('Failed to start camera: ' + error.message);
+            }
+        }
+
+        async function stopScanning() {
+            if (html5QrCode && isScanning) {
+                try {
+                    await html5QrCode.stop();
+                    html5QrCode.clear();
+                } catch (error) {
+                    console.warn('Error stopping scanner:', error);
+                }
+            }
+            
+            isScanning = false;
+            statusDot.className = 'status-dot idle';
+            statusText.textContent = 'Stopped';
+            startScanBtn.disabled = false;
+        }
+
+        // ========================================
+        // MODAL CONTROLS
+        // ========================================
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        window.closeModal = function() {
+            document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
+            document.body.style.overflow = '';
+        };
+
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal')) {
+                closeModal();
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // ========================================
+        // EVENT LISTENERS
+        // ========================================
+        startScanBtn.addEventListener('click', startScanning);
+        stopScanBtn.addEventListener('click', stopScanning);
+        backBtn.addEventListener('click', function() {
+            window.history.back();
+        });
+
+        // ========================================
+        // INIT
+        // ========================================
+        checkAuth();
+
+        // Clean up on page unload
+        window.addEventListener('beforeunload', function() {
+            stopScanning();
+        });
     </script>
 </body>
 </html>
