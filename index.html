@@ -224,9 +224,6 @@
     </div>
 
     <script type="module">
-        // ========================================
-        // USE THE SHARED AUTH MODULE
-        // ========================================
         import { signIn, getCurrentUser } from './js/auth.js';
 
         // ========================================
@@ -272,55 +269,57 @@
             }
         }
 
-       // ========================================
-// HANDLE LOGIN
-// ========================================
-async function handleLogin() {
-    hideMessages();
-
-    const email = emailInput.value.trim();
-    const password = passwordInput.value.trim();
-
-    if (!email) {
-        showError('Please enter your email');
-        emailInput.focus();
-        return;
-    }
-
-    if (!password) {
-        showError('Please enter your password');
-        passwordInput.focus();
-        return;
-    }
-
-    setLoading(true);
-
-    try {
-        console.log('Attempting login for:', email);
-        const result = await signIn(email, password);
-        console.log('Login result:', result);
-        
-        if (result) {
-            showSuccess('Login successful! Redirecting...');
-            setTimeout(() => {
-                window.location.href = 'home.html';
-            }, 1500);
-        } else {
-            showError('Invalid email or password');
-            setLoading(false);
-        }
-    } catch (error) {
-        console.error('Login error:', error);
-        showError(error.message || 'Something went wrong. Please try again.');
-        setLoading(false);
-    }
-}
         // ========================================
-        // EVENT LISTENERS - Direct button click
+        // HANDLE LOGIN
+        // ========================================
+        async function handleLogin() {
+            hideMessages();
+
+            const email = emailInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            if (!email) {
+                showError('Please enter your email');
+                emailInput.focus();
+                return;
+            }
+
+            if (!password) {
+                showError('Please enter your password');
+                passwordInput.focus();
+                return;
+            }
+
+            setLoading(true);
+
+            try {
+                console.log('Attempting login for:', email);
+                const result = await signIn(email, password);
+                console.log('Login result:', result);
+                
+                if (result && result.user) {
+                    localStorage.setItem('user', JSON.stringify(result.user));
+                    
+                    showSuccess('Login successful! Redirecting...');
+                    setTimeout(() => {
+                        window.location.href = 'home.html';
+                    }, 1500);
+                } else {
+                    showError('Invalid email or password');
+                    setLoading(false);
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showError(error.message || 'Something went wrong. Please try again.');
+                setLoading(false);
+            }
+        }
+
+        // ========================================
+        // EVENT LISTENERS
         // ========================================
         loginBtn.addEventListener('click', handleLogin);
 
-        // Enter key support
         passwordInput.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 e.preventDefault();
@@ -341,8 +340,7 @@ async function handleLogin() {
         async function checkAuth() {
             try {
                 const user = await getCurrentUser();
-                if (user.success) {
-                    // Already logged in - go to home
+                if (user && user.success) {
                     window.location.href = 'home.html';
                 }
             } catch (error) {

@@ -95,7 +95,7 @@ export async function login(email, password) {
             if (data.session.refresh_token) {
                 localStorage.setItem('refresh_token', data.session.refresh_token);
             }
-            console.log('Token stored successfully');
+            console.log('✅ Token stored successfully');
         }
 
         return data;
@@ -115,6 +115,7 @@ export async function logout() {
         if (error) throw error;
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
+        localStorage.removeItem('user');
         console.log('Logout successful');
     } catch (error) {
         console.error('Logout error:', error);
@@ -123,7 +124,7 @@ export async function logout() {
 }
 
 // ========================================
-// GET CURRENT USER
+// GET CURRENT USER - FIXED with discoveries
 // ========================================
 
 export async function getCurrentUser() {
@@ -142,8 +143,14 @@ export async function getCurrentUser() {
             return { success: false, error: 'No user logged in', data: null };
         }
 
-        // Get profile data - ONLY select columns that exist
+        // Get profile data
         const profile = await getCurrentProfile();
+        
+        // ✅ Get discoveries from the discoveries table
+        const discoveries = await getUserDiscoveries(user.id);
+        
+        // ✅ Get completed quests
+        const completedQuests = await getUserCompletedQuests(user.id);
         
         return { 
             success: true, 
@@ -153,14 +160,60 @@ export async function getCurrentUser() {
                 name: user.user_metadata?.name || profile?.name || 'Explorer',
                 xp: profile?.xp || 0,
                 level: profile?.level || 1,
-                discoveries: [],
-                completedQuests: [],
+                discoveries: discoveries || [],
+                completedQuests: completedQuests || [],
                 ...profile
             } 
         };
     } catch (error) {
         console.error('Get user error:', error);
         return { success: false, error: error.message, data: null };
+    }
+}
+
+// ========================================
+// ✅ GET USER DISCOVERIES
+// ========================================
+
+export async function getUserDiscoveries(userId) {
+    try {
+        const { data, error } = await supabase
+            .from("discoveries")
+            .select("location_id")
+            .eq("user_id", userId);
+
+        if (error) {
+            console.error('Get discoveries error:', error);
+            return [];
+        }
+
+        return data.map(d => d.location_id);
+    } catch (error) {
+        console.error('Get discoveries error:', error);
+        return [];
+    }
+}
+
+// ========================================
+// ✅ GET USER COMPLETED QUESTS
+// ========================================
+
+export async function getUserCompletedQuests(userId) {
+    try {
+        const { data, error } = await supabase
+            .from("quest_completions")
+            .select("quest_id")
+            .eq("user_id", userId);
+
+        if (error) {
+            console.error('Get completed quests error:', error);
+            return [];
+        }
+
+        return data.map(q => q.quest_id);
+    } catch (error) {
+        console.error('Get completed quests error:', error);
+        return [];
     }
 }
 
@@ -191,7 +244,6 @@ export async function getCurrentProfile() {
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return null;
 
-        // ✅ ONLY select columns that exist in your profiles table
         const { data, error } = await supabase
             .from("profiles")
             .select("id, name, xp, level, created_at")
@@ -199,7 +251,6 @@ export async function getCurrentProfile() {
             .single();
 
         if (error) {
-            // If profile doesn't exist, create one
             if (error.code === 'PGRST116') {
                 console.log('📝 Profile not found, creating one...');
                 const { error: insertError } = await supabase
@@ -216,7 +267,6 @@ export async function getCurrentProfile() {
                     return null;
                 }
 
-                // Fetch the newly created profile
                 const { data: newProfile, error: fetchError } = await supabase
                     .from("profiles")
                     .select("id, name, xp, level, created_at")
@@ -302,5 +352,7 @@ export default {
     getCurrentProfile,
     getUserWithProfile,
     getAccessToken,
-    isAuthenticated
+    isAuthenticated,
+    getUserDiscoveries,
+    getUserCompletedQuests
 };

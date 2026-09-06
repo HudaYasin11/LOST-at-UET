@@ -46,7 +46,7 @@
                 </div>
             </div>
 
-            <!-- Discovery Progress - Real Data -->
+            <!-- Discovery Progress -->
             <div class="discovery-progress">
                 <div class="progress-label">
                     <span>Progress</span>
@@ -57,7 +57,7 @@
                 </div>
             </div>
 
-            <!-- Discovery Stats - Real Data -->
+            <!-- Discovery Stats -->
             <div class="discovery-stats">
                 <div class="stat-card">
                     <span class="stat-number" id="discoveredCount">0</span>
@@ -73,7 +73,7 @@
                 </div>
             </div>
 
-            <!-- Location Grid - Real Data -->
+            <!-- Location Grid -->
             <h3 style="font-family:var(--font-pixel);font-size:14px;color:var(--text-yellow);margin:20px 0 12px;">📍 ALL LOCATIONS</h3>
             <div class="discovery-grid" id="discoveriesGrid">
                 <div class="loading-spinner" style="grid-column:1/-1;">
@@ -125,13 +125,29 @@
             getTotalDiscoveries, 
             getTotalLocations, 
             getLocationStatus,
-            getCompletionPercentage  // ✅ ADDED
+            getCompletionPercentage,
+            subscribe,
+            refreshUserData,
+            refreshLocations
         } from './js/dataService.js';
 
         // ========================================
         // DOM REFS
         // ========================================
         const grid = document.getElementById('discoveriesGrid');
+        const displayName = document.getElementById('userDisplayName');
+        const progressBar = document.getElementById('userProgressBar');
+        const progressText = document.getElementById('userProgressText');
+
+        // ========================================
+        // SUBSCRIBE TO STATE CHANGES - AUTO UPDATE
+        // ========================================
+        subscribe((state) => {
+            console.log('🔄 Discoveries page: State changed!');
+            updateHeader();
+            updateStats();
+            renderDiscoveries();
+        });
 
         // ========================================
         // LOAD DATA
@@ -164,11 +180,7 @@
             const user = state.user;
             const discoveries = getTotalDiscoveries();
             const total = getTotalLocations();
-            const progress = getCompletionPercentage();  // ✅ NOW DEFINED
-
-            const displayName = document.getElementById('userDisplayName');
-            const progressBar = document.getElementById('userProgressBar');
-            const progressText = document.getElementById('userProgressText');
+            const progress = getCompletionPercentage();
 
             if (displayName) {
                 displayName.textContent = user?.name || user?.username || 'Explorer';
@@ -182,7 +194,7 @@
         }
 
         // ========================================
-        // UPDATE STATS
+        // UPDATE STATS - ALL COUNTS UPDATE HERE
         // ========================================
         function updateStats() {
             const discovered = getTotalDiscoveries();
@@ -191,15 +203,25 @@
             const xp = getTotalXP();
             const level = getLevel();
 
-            document.getElementById('discoveryCount').textContent = discovered;
-            document.getElementById('totalLocations').textContent = total;
-            document.getElementById('discoveryXP').textContent = xp;
-            document.getElementById('discoveryLevel').textContent = level;
-            document.getElementById('progressPercent').textContent = progress + '%';
-            document.getElementById('discoveryProgressBar').style.width = progress + '%';
-            document.getElementById('discoveredCount').textContent = discovered;
-            document.getElementById('lockedCount').textContent = total - discovered;
-            document.getElementById('totalXP').textContent = xp;
+            const discoveryCount = document.getElementById('discoveryCount');
+            const totalLocations = document.getElementById('totalLocations');
+            const discoveryXP = document.getElementById('discoveryXP');
+            const discoveryLevel = document.getElementById('discoveryLevel');
+            const progressPercent = document.getElementById('progressPercent');
+            const discoveryProgressBar = document.getElementById('discoveryProgressBar');
+            const discoveredCount = document.getElementById('discoveredCount');
+            const lockedCount = document.getElementById('lockedCount');
+            const totalXP = document.getElementById('totalXP');
+
+            if (discoveryCount) discoveryCount.textContent = discovered;
+            if (totalLocations) totalLocations.textContent = total;
+            if (discoveryXP) discoveryXP.textContent = xp;
+            if (discoveryLevel) discoveryLevel.textContent = level;
+            if (progressPercent) progressPercent.textContent = progress + '%';
+            if (discoveryProgressBar) discoveryProgressBar.style.width = progress + '%';
+            if (discoveredCount) discoveredCount.textContent = discovered;
+            if (lockedCount) lockedCount.textContent = total - discovered;
+            if (totalXP) totalXP.textContent = xp;
         }
 
         // ========================================
@@ -210,6 +232,8 @@
 
             const state = getState();
             const locations = state.locations || [];
+
+            console.log('📍 Rendering discoveries, locations:', locations.length);
 
             if (locations.length === 0) {
                 grid.innerHTML = `
@@ -235,7 +259,7 @@
         }
 
         // ========================================
-        // OPEN LOCATION (reuse from map page)
+        // OPEN LOCATION
         // ========================================
         window.openLocation = function(locationId) {
             window.location.href = `map.html?location=${locationId}`;
@@ -277,6 +301,15 @@
             };
             reader.readAsText(file);
         };
+
+        // ========================================
+        // PERIODIC REFRESH (Every 10 seconds)
+        // ========================================
+        setInterval(async () => {
+            console.log('🔄 Auto-refreshing discoveries...');
+            await refreshUserData();
+            await refreshLocations();
+        }, 10000);
 
         // ========================================
         // INIT

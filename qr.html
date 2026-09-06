@@ -9,8 +9,195 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="css/style.css" />
     
-    <!-- QR Scanner Library -->
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+
+    <style>
+        .upload-section {
+            max-width: 400px;
+            margin: 0 auto 16px;
+        }
+        .upload-section .upload-area {
+            border: 2px dashed var(--border-blue);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--dark-bg);
+        }
+        .upload-section .upload-area:hover {
+            border-color: var(--text-yellow);
+            background: rgba(247, 184, 1, 0.05);
+        }
+        .upload-section .upload-area .upload-icon {
+            font-size: 36px;
+            display: block;
+            margin-bottom: 8px;
+        }
+        .upload-section .upload-area p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        .upload-section .upload-area .upload-sub {
+            font-size: 11px;
+            color: var(--text-muted);
+            opacity: 0.7;
+        }
+        .upload-section .upload-area input[type="file"] {
+            display: none;
+        }
+        .upload-preview {
+            max-width: 200px;
+            margin: 12px auto;
+            display: none;
+        }
+        .upload-preview img {
+            width: 100%;
+            border-radius: 8px;
+            border: 2px solid var(--border-blue);
+        }
+        .upload-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+        .upload-actions .btn-yellow {
+            padding: 6px 16px;
+            font-size: 12px;
+        }
+        .upload-actions .btn-outline {
+            padding: 6px 16px;
+            font-size: 12px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .btn-group .btn-outline {
+            padding: 8px 16px;
+            font-size: 12px;
+        }
+        .btn-group .btn-yellow {
+            padding: 8px 16px;
+            font-size: 12px;
+        }
+
+        .status-text-result {
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .status-text-result.success { color: #4CAF50; }
+        .status-text-result.error { color: #FF6B6B; }
+        .status-text-result.warning { color: #FFA500; }
+        .status-text-result.info { color: #4895EF; }
+
+        .manual-entry {
+            max-width: 400px;
+            margin: 12px auto 0;
+            padding: 12px;
+            background: var(--card-bg);
+            border-radius: 8px;
+            border: 1px solid var(--border-blue);
+            display: none;
+        }
+        .manual-entry .manual-input-row {
+            display: flex;
+            gap: 8px;
+        }
+        .manual-entry input {
+            flex: 1;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 2px solid var(--border-blue);
+            background: var(--dark-bg);
+            color: white;
+            font-family: var(--font-body);
+        }
+        .manual-entry input:focus {
+            outline: none;
+            border-color: var(--text-yellow);
+        }
+        .manual-entry .btn-yellow {
+            padding: 8px 16px;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+        .manual-entry .manual-hint {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 6px;
+            text-align: center;
+        }
+
+        .success-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.85);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        .success-overlay.active { display: flex; }
+        .success-overlay .success-card {
+            background: var(--card-bg);
+            border: 2px solid var(--text-yellow);
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            animation: popIn 0.5s ease;
+        }
+        .success-overlay .success-card .big-icon { font-size: 64px; display: block; margin-bottom: 12px; }
+        .success-overlay .success-card h2 { font-family: var(--font-pixel); color: var(--text-yellow); font-size: 18px; }
+        .success-overlay .success-card .xp-gain { font-size: 32px; color: #4CAF50; font-weight: 700; margin: 8px 0; }
+        .success-overlay .success-card .level-up { color: #F7B801; font-size: 16px; }
+        .success-overlay .success-card .details { color: var(--text-muted); font-size: 13px; margin: 12px 0; }
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            70% { transform: scale(1.05); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .legend-container {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            padding: 12px 16px;
+            background: var(--card-bg);
+            border-radius: 8px;
+            border: 1px solid var(--border-blue);
+            margin-top: 16px;
+        }
+        .legend-container span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 1px solid var(--text-white);
+            display: inline-block;
+        }
+        .legend-dot.green { background: #4CAF50; }
+        .legend-dot.yellow { background: #F7B801; }
+        .legend-dot.pink { background: #FF6B6B; }
+        .legend-dot.purple { background: #9B59B6; }
+        .legend-dot.blue { background: #4895EF; }
+    </style>
 </head>
 <body>
     <div id="app">
@@ -43,34 +230,63 @@
         <section class="page active">
             <div class="qr-page-container">
 
-                <!-- Location Info -->
-                <div id="locationInfo" style="text-align:center; margin-bottom:16px;">
-                    <h3 id="scanLocationName" style="color:var(--text-yellow); font-family:var(--font-pixel); font-size:14px;">
-                        📍 Scanning for: Loading...
-                    </h3>
+                <!-- ======================================== -->
+                <!-- UPLOAD QR CODE SECTION -->
+                <!-- ======================================== -->
+                <div class="upload-section">
+                    <div class="upload-area" id="uploadArea">
+                        <span class="upload-icon">📤</span>
+                        <p>Upload a QR code image</p>
+                        <span class="upload-sub">Click or drag &amp; drop (PNG, JPG, WEBP)</span>
+                        <input type="file" id="fileInput" accept="image/*" />
+                    </div>
+                    <div class="upload-preview" id="uploadPreview">
+                        <img id="previewImage" src="" alt="QR Code Preview" />
+                        <div class="upload-actions">
+                            <button class="btn-yellow" id="scanUploadedBtn">
+                                <i class="fas fa-scan"></i> Scan Uploaded
+                            </button>
+                            <button class="btn-outline" onclick="clearUpload()">
+                                <i class="fas fa-times"></i> Clear
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- QR Scanner Section -->
-                <div class="qr-scanner-section">
-                    <h2>📱 QR SCANNER</h2>
-                    <p class="qr-instruction">Point your camera at a QR code to unlock this location</p>
+                <!-- ======================================== -->
+                <!-- MANUAL ENTRY (Fallback) -->
+                <!-- ======================================== -->
+                <div id="manualEntry" class="manual-entry">
+                    <p style="color:var(--text-yellow); font-size:12px; text-align:center; margin-bottom:8px;">
+                        ⚠️ Couldn't scan? Enter manually:
+                    </p>
+                    <div class="manual-input-row">
+                        <input type="text" id="manualLocationId" placeholder="e.g., cs-department" />
+                        <button onclick="manualUnlock()" class="btn-yellow">UNLOCK</button>
+                    </div>
+                    <div class="manual-hint">💡 Try: cs-department, mosque, national-library, bhola-cafe</div>
+                </div>
 
-                    <!-- QR Reader Container -->
+                <!-- ======================================== -->
+                <!-- QR SCANNER (Camera) -->
+                <!-- ======================================== -->
+                <div class="qr-scanner-section">
+                    <p style="text-align:center; font-size:13px; color:var(--text-muted); margin-bottom:12px;">
+                        <i class="fas fa-camera"></i> Or scan with your camera
+                    </p>
+
                     <div id="qr-reader" style="width:100%; max-width:400px; margin: 0 auto;"></div>
                     
                     <div id="qr-reader-results" style="margin-top: 12px; padding: 12px; background: var(--card-bg); border-radius: 8px; display: none;">
-                        <p id="qr-result-text" style="color: var(--text-yellow);"></p>
+                        <p id="qr-result-text" class="status-text-result" style="color: var(--text-yellow);"></p>
                     </div>
 
-                    <div class="qr-actions">
+                    <div class="btn-group">
                         <button class="btn-yellow" id="startScanBtn">
                             <i class="fas fa-camera"></i> START SCANNING
                         </button>
                         <button class="btn-outline" id="stopScanBtn">
                             <i class="fas fa-stop"></i> STOP
-                        </button>
-                        <button class="btn-outline" id="backBtn" onclick="window.history.back()">
-                            <i class="fas fa-arrow-left"></i> BACK
                         </button>
                     </div>
 
@@ -91,19 +307,18 @@
             </div>
         </section>
 
-        <!-- MODAL: SCAN RESULT -->
-        <div id="scan-result-modal" class="modal">
-            <div class="modal-content qr-modal">
-                <div class="qr-sparkles">✦ ✦ ✦</div>
-                <div class="qr-icon">📱</div>
-                <h2>🎉 LOCATION UNLOCKED!</h2>
-                <div class="qr-building">🏛️</div>
-                <h3 id="unlockedName">LOCATION</h3>
-                <p class="qr-xp" id="unlockedXP">+100 XP</p>
-                <p class="qr-desc">You've discovered a new location! Keep exploring to unlock more and earn badges!</p>
-                <div class="modal-actions">
-                    <button class="btn-yellow" onclick="window.location.href='map.html'">VIEW DETAILS</button>
-                    <button class="btn-outline" onclick="window.location.href='map.html'">CONTINUE</button>
+        <!-- SUCCESS OVERLAY -->
+        <div class="success-overlay" id="successOverlay">
+            <div class="success-card">
+                <span class="big-icon">🎉</span>
+                <h2>LOCATION UNLOCKED!</h2>
+                <p id="successLocation" style="font-size:24px; font-weight:700; margin:4px 0;">CS Department</p>
+                <p class="xp-gain" id="successXP">+100 XP</p>
+                <p class="level-up" id="successLevel">⭐ Level 2</p>
+                <p class="details" id="successDetails">You've discovered a new location!</p>
+                <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-top:12px;">
+                    <button class="btn-yellow" onclick="goToMap()">🗺️ VIEW MAP</button>
+                    <button class="btn-outline" onclick="closeSuccess()">CONTINUE</button>
                 </div>
             </div>
         </div>
@@ -127,37 +342,52 @@
 
     <script type="module">
         import { getCurrentUser } from './js/auth.js';
-import { loadGameData, unlockLocation, refreshUserData, getState } from './js/dataService.js';
-import { getLocations } from './js/api.js';
+        import { 
+            loadGameData, 
+            unlockLocation, 
+            refreshUserData, 
+            refreshLocations,
+            refreshQuests,
+            getState, 
+            getTotalXP, 
+            getLevel, 
+            getTotalDiscoveries, 
+            getTotalLocations,
+            getCompletionPercentage
+        } from './js/dataService.js';
 
         // ========================================
         // DOM ELEMENTS
         // ========================================
         const startScanBtn = document.getElementById('startScanBtn');
         const stopScanBtn = document.getElementById('stopScanBtn');
-        const backBtn = document.getElementById('backBtn');
         const statusDot = document.querySelector('.status-dot');
         const statusText = document.querySelector('.status-text');
         const resultText = document.getElementById('qr-result-text');
         const resultContainer = document.getElementById('qr-reader-results');
-        const scanLocationName = document.getElementById('scanLocationName');
+        const displayName = document.getElementById('userDisplayName');
+        const progressBar = document.getElementById('userProgressBar');
+        const progressText = document.getElementById('userProgressText');
+        const successOverlay = document.getElementById('successOverlay');
+
+        // Upload elements
+        const fileInput = document.getElementById('fileInput');
+        const uploadArea = document.getElementById('uploadArea');
+        const uploadPreview = document.getElementById('uploadPreview');
+        const previewImage = document.getElementById('previewImage');
+        const scanUploadedBtn = document.getElementById('scanUploadedBtn');
+        const manualEntry = document.getElementById('manualEntry');
+        const manualInput = document.getElementById('manualLocationId');
 
         let html5QrCode = null;
         let isScanning = false;
-        let targetLocationId = null;
+        let allLocations = [];
+        let uploadedFileData = null;
 
         // ========================================
-        // GET LOCATION ID FROM URL
+        // CHECK AUTH & LOAD DATA
         // ========================================
-        function getLocationIdFromURL() {
-            const params = new URLSearchParams(window.location.search);
-            return params.get('location');
-        }
-
-        // ========================================
-        // CHECK AUTH
-        // ========================================
-        async function checkAuth() {
+        async function init() {
             const user = await getCurrentUser();
             if (!user || !user.success) {
                 window.location.href = 'index.html';
@@ -166,115 +396,187 @@ import { getLocations } from './js/api.js';
             
             await loadGameData();
             
-            // Get location ID from URL
-            targetLocationId = getLocationIdFromURL();
-            
-            // Load all locations to find the name
             const state = getState();
-            const locations = state.locations || [];
-            const targetLocation = locations.find(l => l.id === targetLocationId);
+            allLocations = state.locations || [];
             
-            if (targetLocation) {
-                scanLocationName.textContent = `📍 Scanning for: ${targetLocation.name}`;
-            } else if (targetLocationId) {
-                scanLocationName.textContent = `📍 Scanning for: ${targetLocationId}`;
-            } else {
-                scanLocationName.textContent = '📍 Scan any QR code to unlock!';
+            updateHeader();
+        }
+
+        // ========================================
+        // UPDATE HEADER - COUNTS UPDATE HERE
+        // ========================================
+        function updateHeader() {
+            const state = getState();
+            const user = state.user;
+            const discoveries = getTotalDiscoveries();
+            const total = getTotalLocations();
+            const progress = getCompletionPercentage();
+
+            if (displayName) {
+                displayName.textContent = user?.name || 'Explorer';
             }
-
-            const userData = state.user;
-            const displayName = document.getElementById('userDisplayName');
-            const progressBar = document.getElementById('userProgressBar');
-            const progressText = document.getElementById('userProgressText');
-
-            if (displayName) displayName.textContent = userData?.name || 'Explorer';
             if (progressBar) {
-                const progress = (userData?.discoveries?.length || 0) / 42 * 100;
                 progressBar.style.width = progress + '%';
             }
             if (progressText) {
-                progressText.textContent = `${userData?.discoveries?.length || 0}/42`;
+                progressText.textContent = `${discoveries}/${total}`;
             }
         }
 
         // ========================================
-        // QR SCANNER
+        // PROCESS UNLOCK - UPDATES COUNTS
         // ========================================
-        function onScanSuccess(decodedText) {
-            console.log('✅ QR Scanned:', decodedText);
+        async function processUnlock(locationId) {
+            if (!locationId) {
+                alert('No location ID provided');
+                return;
+            }
             
-            // Show result
+            const state = getState();
+            const locations = state.locations || [];
+            const validIds = locations.map(l => l.id);
+            
+            if (!validIds.includes(locationId)) {
+                resultContainer.style.display = 'block';
+                resultText.textContent = `❌ Unknown location: "${locationId}"`;
+                resultText.className = 'status-text-result error';
+                manualEntry.style.display = 'block';
+                return;
+            }
+
+            const location = locations.find(l => l.id === locationId);
+            const locationName = location?.name || locationId;
+            
             resultContainer.style.display = 'block';
-            resultText.textContent = `📍 Decoded: ${decodedText}...`;
+            resultText.textContent = `⏳ Unlocking ${locationName}...`;
+            resultText.className = 'status-text-result info';
+            manualEntry.style.display = 'none';
             
-            // Stop scanning
-            stopScanning();
-            
-            // Use the scanned text as location ID
-            const locationId = decodedText.trim();
-            
-            // Or use the target location ID from URL
-            const finalLocationId = targetLocationId || locationId;
-            
-            // Try to unlock the location
-            unlockLocation(finalLocationId).then(result => {
+            try {
+                const result = await unlockLocation(locationId);
+                
                 if (result.success) {
                     const xp = result.data?.xp_awarded || 100;
-                    resultText.textContent = `✅ Unlocked! +${xp} XP`;
-                    document.getElementById('unlockedName').textContent = result.data?.locationName || finalLocationId;
-                    document.getElementById('unlockedXP').textContent = `+${xp} XP`;
+                    const totalXP = result.data?.total_xp || getTotalXP();
+                    const level = result.data?.level || getLevel();
                     
-                    // Show success modal
-                    setTimeout(() => {
-                        openModal('scan-result-modal');
-                    }, 500);
+                    document.getElementById('successLocation').textContent = locationName;
+                    document.getElementById('successXP').textContent = `+${xp} XP`;
+                    document.getElementById('successLevel').textContent = `⭐ Level ${level}`;
+                    document.getElementById('successDetails').textContent = 
+                        `You've discovered "${locationName}"! Total XP: ${totalXP}`;
                     
-                    // Update header
-                    refreshUserData();
+                    successOverlay.classList.add('active');
+                    
+                    // ✅ THIS UPDATES THE COUNTS
+                    await refreshUserData();
+                    await refreshLocations();
+                    await refreshQuests();
+                    await loadGameData();
+                    
+                    // ✅ Update header with new counts
+                    updateHeader();
+                    
+                    resultText.textContent = `✅ Unlocked! +${xp} XP (Level ${level})`;
+                    resultText.className = 'status-text-result success';
+                    
                 } else {
-                    resultText.textContent = `❌ ${result.error || 'Failed to unlock'}`;
-                    if (result.error?.includes('already')) {
-                        resultText.textContent = '⚠️ This location is already discovered!';
+                    let errorMessage = result.error || 'Failed to unlock';
+                    
+                    if (result.status === 401 || result.requiresLogin) {
+                        errorMessage = '🔐 Session expired. Please login again.';
+                        resultText.textContent = errorMessage;
+                        resultText.className = 'status-text-result warning';
+                        resultText.innerHTML = errorMessage + 
+                            `<br><button onclick="window.location.href='index.html'" class="btn-yellow" style="margin-top:8px; padding:4px 16px; font-size:12px;">Login</button>`;
+                    } else if (result.error?.includes('already') || result.status === 409) {
+                        errorMessage = `⚠️ "${locationName}" is already discovered!`;
+                        resultText.textContent = errorMessage;
+                        resultText.className = 'status-text-result warning';
+                    } else {
+                        resultText.textContent = `❌ ${errorMessage}`;
+                        resultText.className = 'status-text-result error';
+                        console.error('Full error details:', result);
                     }
                 }
-            });
+            } catch (err) {
+                resultText.textContent = `❌ ${err.message}`;
+                resultText.className = 'status-text-result error';
+                console.error('Full error:', err);
+            }
+        }
+
+        // ========================================
+        // MANUAL UNLOCK (Fallback)
+        // ========================================
+        window.manualUnlock = function() {
+            const locationId = manualInput.value.trim().toLowerCase();
+            if (!locationId) {
+                alert('Please enter a location ID');
+                return;
+            }
+            processUnlock(locationId);
+        };
+
+        manualInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                manualUnlock();
+            }
+        });
+
+        // ========================================
+        // SUCCESS OVERLAY CONTROLS
+        // ========================================
+        window.goToMap = function() {
+            closeSuccess();
+            window.location.href = 'map.html';
+        };
+
+        window.closeSuccess = function() {
+            successOverlay.classList.remove('active');
+            refreshUserData();
+            refreshLocations();
+            refreshQuests();
+            updateHeader();
+        };
+
+        // ========================================
+        // QR SCANNER (Camera)
+        // ========================================
+        function onScanSuccess(decodedText) {
+            stopScanning();
+            
+            let locationId = decodedText.trim().toLowerCase();
+            if (locationId.includes('/')) locationId = locationId.split('/').pop();
+            if (locationId.includes('?')) locationId = locationId.split('?')[0];
+            if (locationId.includes('#')) locationId = locationId.split('#')[0];
+            
+            processUnlock(locationId);
         }
 
         function onScanError(err) {
-            // Ignore errors - they happen during normal scanning
-            console.debug('Scan error:', err);
+            // Ignore normal scan errors
         }
 
         async function startScanning() {
             if (isScanning) return;
             
             try {
-                // Check if camera is available
                 const devices = await navigator.mediaDevices.enumerateDevices();
                 const cameras = devices.filter(d => d.kind === 'videoinput');
-                
                 if (cameras.length === 0) {
-                    alert('No camera found! Please connect a camera.');
+                    alert('No camera found!');
                     return;
                 }
 
-                // Clear previous scanner
                 if (html5QrCode) {
-                    try {
-                        await html5QrCode.stop();
-                        html5QrCode.clear();
-                    } catch (e) {}
+                    try { await html5QrCode.stop(); html5QrCode.clear(); } catch (e) {}
                 }
 
                 html5QrCode = new Html5Qrcode('qr-reader');
-                
                 await html5QrCode.start(
                     { facingMode: 'environment' },
-                    {
-                        fps: 10,
-                        qrbox: { width: 250, height: 250 },
-                        aspectRatio: 1.0
-                    },
+                    { fps: 10, qrbox: { width: 250, height: 250 } },
                     onScanSuccess,
                     onScanError
                 );
@@ -283,24 +585,16 @@ import { getLocations } from './js/api.js';
                 statusDot.className = 'status-dot scanning';
                 statusText.textContent = 'Scanning...';
                 startScanBtn.disabled = true;
-                resultContainer.style.display = 'none';
                 
             } catch (error) {
-                console.error('Error starting scanner:', error);
                 alert('Failed to start camera: ' + error.message);
             }
         }
 
         async function stopScanning() {
             if (html5QrCode && isScanning) {
-                try {
-                    await html5QrCode.stop();
-                    html5QrCode.clear();
-                } catch (error) {
-                    console.warn('Error stopping scanner:', error);
-                }
+                try { await html5QrCode.stop(); html5QrCode.clear(); } catch (e) {}
             }
-            
             isScanning = false;
             statusDot.className = 'status-dot idle';
             statusText.textContent = 'Stopped';
@@ -308,48 +602,122 @@ import { getLocations } from './js/api.js';
         }
 
         // ========================================
-        // MODAL CONTROLS
+        // UPLOAD QR CODE
         // ========================================
-        function openModal(id) {
-            const modal = document.getElementById(id);
-            if (modal) {
-                modal.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }
+        function handleFile(file) {
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                uploadedFileData = e.target.result;
+                previewImage.src = uploadedFileData;
+                uploadPreview.style.display = 'block';
+                uploadArea.style.display = 'none';
+                manualEntry.style.display = 'none';
+            };
+            reader.readAsDataURL(file);
         }
 
-        window.closeModal = function() {
-            document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
-            document.body.style.overflow = '';
+        uploadArea.addEventListener('click', function() {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', function(e) {
+            if (this.files && this.files[0]) {
+                handleFile(this.files[0]);
+            }
+        });
+
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.style.borderColor = 'var(--text-yellow)';
+            this.style.background = 'rgba(247, 184, 1, 0.05)';
+        });
+
+        uploadArea.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            this.style.borderColor = 'var(--border-blue)';
+            this.style.background = 'transparent';
+        });
+
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.style.borderColor = 'var(--border-blue)';
+            this.style.background = 'transparent';
+            if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                handleFile(e.dataTransfer.files[0]);
+            }
+        });
+
+        // ========================================
+        // SCAN UPLOADED QR
+        // ========================================
+        scanUploadedBtn.addEventListener('click', async function() {
+            if (!uploadedFileData) {
+                alert('Please upload a QR code image first.');
+                return;
+            }
+
+            resultContainer.style.display = 'block';
+            resultText.textContent = '⏳ Scanning uploaded image...';
+            resultText.className = 'status-text-result info';
+
+            try {
+                const imageScanner = new Html5Qrcode('qr-reader');
+                const decodedText = await imageScanner.scanFile(uploadedFileData, true);
+                await imageScanner.clear();
+                
+                let locationId = decodedText.trim().toLowerCase();
+                if (locationId.includes('/')) locationId = locationId.split('/').pop();
+                if (locationId.includes('?')) locationId = locationId.split('?')[0];
+                if (locationId.includes('#')) locationId = locationId.split('#')[0];
+                
+                const state = getState();
+                const locations = state.locations || [];
+                const validIds = locations.map(l => l.id);
+                
+                if (validIds.includes(locationId)) {
+                    resultText.textContent = `✅ QR decoded: ${locationId}`;
+                    resultText.className = 'status-text-result success';
+                    setTimeout(() => {
+                        processUnlock(locationId);
+                    }, 500);
+                } else {
+                    resultText.textContent = `❌ Unknown location: "${locationId}"`;
+                    resultText.className = 'status-text-result error';
+                    manualEntry.style.display = 'block';
+                    manualInput.value = locationId;
+                }
+                
+            } catch (error) {
+                console.error('❌ Scan failed:', error);
+                resultText.textContent = '⚠️ Could not scan QR. Please enter manually:';
+                resultText.className = 'status-text-result warning';
+                manualEntry.style.display = 'block';
+            }
+        });
+
+        window.clearUpload = function() {
+            uploadedFileData = null;
+            previewImage.src = '';
+            uploadPreview.style.display = 'none';
+            uploadArea.style.display = 'block';
+            fileInput.value = '';
+            manualEntry.style.display = 'none';
+            resultContainer.style.display = 'none';
         };
-
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('modal')) {
-                closeModal();
-            }
-        });
-
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeModal();
-            }
-        });
 
         // ========================================
         // EVENT LISTENERS
         // ========================================
         startScanBtn.addEventListener('click', startScanning);
         stopScanBtn.addEventListener('click', stopScanning);
-        backBtn.addEventListener('click', function() {
-            window.history.back();
-        });
 
         // ========================================
         // INIT
         // ========================================
-        checkAuth();
+        init();
 
-        // Clean up on page unload
         window.addEventListener('beforeunload', function() {
             stopScanning();
         });

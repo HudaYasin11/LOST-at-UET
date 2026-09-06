@@ -24,14 +24,23 @@ const listeners = [];
 // ========================================
 
 function notifyListeners() {
-    listeners.forEach(listener => listener(appState));
+    console.log('🔄 Notifying listeners...');
+    listeners.forEach(listener => {
+        try {
+            listener(appState);
+        } catch (e) {
+            console.error('Listener error:', e);
+        }
+    });
 }
 
 export function subscribe(listener) {
     listeners.push(listener);
+    console.log(`📡 Listener added. Total: ${listeners.length}`);
     return () => {
         const index = listeners.indexOf(listener);
         if (index > -1) listeners.splice(index, 1);
+        console.log(`📡 Listener removed. Total: ${listeners.length}`);
     };
 }
 
@@ -50,30 +59,23 @@ export async function loadGameData() {
     notifyListeners();
     
     try {
-        // 1. Check if user is authenticated
-        console.log('📡 Getting current user...');
         const userResult = await api.getCurrentUser();
         console.log('📡 User result:', userResult);
         
         if (userResult.success) {
             appState.user = userResult.data;
             appState.isAuthenticated = true;
-            console.log('✅ User authenticated:', userResult.data);
+            console.log('✅ User authenticated. Discoveries:', appState.user?.discoveries?.length || 0);
         } else {
             console.warn('❌ Not authenticated:', userResult.error);
             appState.isAuthenticated = false;
             appState.loading = false;
             notifyListeners();
-            return { success: false, error: 'Not authenticated' };
+            return { success: false, error: userResult.error || 'Not authenticated' };
         }
         
-        // 2. Load locations from API
-        console.log('📡 Loading locations...');
         const locationsResult = await api.getLocations();
-        console.log('📡 Locations result:', locationsResult);
-        
         if (locationsResult.success) {
-            // ✅ Make sure we're getting the array correctly
             appState.locations = locationsResult.data || [];
             console.log('✅ Locations loaded:', appState.locations.length);
         } else {
@@ -81,11 +83,7 @@ export async function loadGameData() {
             appState.locations = [];
         }
         
-        // 3. Load quests from API
-        console.log('📡 Loading quests...');
         const questsResult = await api.getQuests();
-        console.log('📡 Quests result:', questsResult);
-        
         if (questsResult.success) {
             appState.quests = questsResult.data || [];
             console.log('✅ Quests loaded:', appState.quests.length);
@@ -109,48 +107,77 @@ export async function loadGameData() {
 }
 
 // ========================================
-// REFRESH DATA
+// REFRESH DATA - WITH NOTIFY
 // ========================================
 
 export async function refreshUserData() {
+    console.log('🔄 Refreshing user data...');
     const result = await api.getCurrentUser();
     if (result.success) {
         appState.user = result.data;
+        console.log('✅ User data refreshed. Discoveries:', appState.user?.discoveries?.length || 0);
         notifyListeners();
+    } else {
+        console.warn('⚠️ Failed to refresh user data:', result.error);
     }
     return result;
 }
 
 export async function refreshLocations() {
+    console.log('🔄 Refreshing locations...');
     const result = await api.getLocations();
     if (result.success) {
         appState.locations = result.data;
+        console.log('✅ Locations refreshed:', appState.locations.length);
         notifyListeners();
+    } else {
+        console.warn('⚠️ Failed to refresh locations:', result.error);
     }
     return result;
 }
 
 export async function refreshQuests() {
+    console.log('🔄 Refreshing quests...');
     const result = await api.getQuests();
     if (result.success) {
         appState.quests = result.data;
+        console.log('✅ Quests refreshed:', appState.quests.length);
         notifyListeners();
+    } else {
+        console.warn('⚠️ Failed to refresh quests:', result.error);
     }
     return result;
 }
 
 // ========================================
-// GAME ACTIONS (CALL API)
+// GAME ACTIONS
 // ========================================
 
 export async function unlockLocation(locationId) {
-    const result = await api.unlockLocation(locationId);
-    if (result.success) {
+    console.log(`🔓 Unlocking location: ${locationId}`);
+    
+    try {
+        const result = await api.unlockLocation(locationId);
+        console.log('🔓 Unlock result:', result);
+        
+        if (!result.success) {
+            return result;
+        }
+        
+        // ✅ CRITICAL: Refresh ALL data after unlock
+        console.log('🔄 Refreshing all data after unlock...');
         await refreshUserData();
         await refreshLocations();
+        await refreshQuests();
+        
+        // ✅ Force notify to update all subscribers
         notifyListeners();
+        
+        return result;
+    } catch (error) {
+        console.error('❌ Unlock error:', error);
+        return { success: false, error: error.message };
     }
-    return result;
 }
 
 export async function completeQuest(questId) {
@@ -199,7 +226,8 @@ export function getLevel() {
 }
 
 export function getTotalDiscoveries() {
-    return appState.user?.discoveries?.length || 0;
+    const discoveries = appState.user?.discoveries || [];
+    return discoveries.length;
 }
 
 export function getTotalLocations() {
@@ -215,10 +243,6 @@ export function getCompletionPercentage() {
 export function isAuthenticated() {
     return appState.isAuthenticated;
 }
-
-// ========================================
-// LEADERBOARD
-// ========================================
 
 export async function getLeaderboard(limit = 10) {
     return await api.getLeaderboard(limit);

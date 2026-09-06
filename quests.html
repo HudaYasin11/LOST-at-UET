@@ -8,6 +8,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="css/style.css" />
+    
+    <style>
+        /* HIDE completed quests */
+        .quest-card.hidden {
+            display: none !important;
+        }
+    </style>
 </head>
 <body>
     <div id="app">
@@ -46,7 +53,7 @@
                 </div>
             </div>
 
-            <!-- Quest Stats - Real Data -->
+            <!-- Quest Stats -->
             <div class="quest-stats">
                 <div class="quest-stat">
                     <span class="stat-number" id="activeQuests">0</span>
@@ -69,7 +76,7 @@
                 <button class="filter-btn" data-filter="completed">Completed</button>
             </div>
 
-            <!-- Quest List - Real Data -->
+            <!-- Quest List -->
             <div class="quest-list" id="questsContainer">
                 <div class="loading-spinner">
                     <div class="spinner"></div>
@@ -107,7 +114,9 @@
             getQuestProgress, 
             completeQuest, 
             refreshUserData,
-            getCompletionPercentage  // ✅ ADDED
+            refreshQuests,
+            getCompletionPercentage,
+            subscribe
         } from './js/dataService.js';
         import { getQuests } from './js/api.js';
 
@@ -121,6 +130,17 @@
         // DOM REFS
         // ========================================
         const questsContainer = document.getElementById('questsContainer');
+
+        // ========================================
+        // SUBSCRIBE TO STATE CHANGES
+        // ========================================
+        subscribe((state) => {
+            console.log('🔄 Quests page: State changed!');
+            allQuests = state.quests || [];
+            updateHeader();
+            updateStats();
+            renderQuests();
+        });
 
         // ========================================
         // LOAD DATA
@@ -154,7 +174,7 @@
             const user = state.user;
             const discoveries = getTotalDiscoveries();
             const total = getTotalLocations();
-            const progress = getCompletionPercentage();  // ✅ NOW DEFINED
+            const progress = getCompletionPercentage();
 
             const displayName = document.getElementById('userDisplayName');
             const progressBar = document.getElementById('userProgressBar');
@@ -175,20 +195,27 @@
         // UPDATE STATS
         // ========================================
         function updateStats() {
-            document.getElementById('questXP').textContent = getTotalXP();
-            document.getElementById('questDiscoveries').textContent = getTotalDiscoveries();
-            document.getElementById('questTotal').textContent = getTotalLocations();
+            const xpEl = document.getElementById('questXP');
+            const discoveriesEl = document.getElementById('questDiscoveries');
+            const totalEl = document.getElementById('questTotal');
+            const activeEl = document.getElementById('activeQuests');
+            const completedEl = document.getElementById('completedQuests');
+            const totalXpEl = document.getElementById('totalQuestXP');
+
+            if (xpEl) xpEl.textContent = getTotalXP();
+            if (discoveriesEl) discoveriesEl.textContent = getTotalDiscoveries();
+            if (totalEl) totalEl.textContent = getTotalLocations();
 
             const completed = allQuests.filter(q => getQuestProgress(q.id) === 100);
             const active = allQuests.filter(q => getQuestProgress(q.id) > 0 && getQuestProgress(q.id) < 100);
             
-            document.getElementById('activeQuests').textContent = active.length;
-            document.getElementById('completedQuests').textContent = completed.length;
-            document.getElementById('totalQuestXP').textContent = completed.reduce((sum, q) => sum + (q.xp || 0), 0);
+            if (activeEl) activeEl.textContent = active.length;
+            if (completedEl) completedEl.textContent = completed.length;
+            if (totalXpEl) totalXpEl.textContent = completed.reduce((sum, q) => sum + (q.xp || 0), 0);
         }
 
         // ========================================
-        // RENDER QUESTS
+        // RENDER QUESTS - HIDE COMPLETED
         // ========================================
         function renderQuests() {
             if (!questsContainer) return;
@@ -205,6 +232,7 @@
                     <div class="empty-state">
                         <span class="empty-icon">🎯</span>
                         <p>No quests available</p>
+                        <p style="font-size:12px;color:var(--text-muted);">You've completed all quests! 🎉</p>
                     </div>
                 `;
                 return;
@@ -214,8 +242,11 @@
                 const progress = getQuestProgress(quest.id);
                 const completed = progress === 100;
                 
+                // HIDE completed quests
+                const hiddenClass = completed ? 'hidden' : '';
+                
                 return `
-                    <div class="quest-card ${completed ? 'completed' : ''}">
+                    <div class="quest-card ${completed ? 'completed' : ''} ${hiddenClass}">
                         <div class="quest-icon">${quest.icon || '📋'}</div>
                         <div class="quest-content">
                             <h4>${quest.title || quest.name || 'Quest'}</h4>
@@ -246,6 +277,7 @@
                 if (result.success) {
                     alert('🎉 Quest completed! +' + (result.data?.xp_awarded || 0) + ' XP');
                     await refreshUserData();
+                    await refreshQuests();
                     await loadGameData();
                     updateStats();
                     renderQuests();

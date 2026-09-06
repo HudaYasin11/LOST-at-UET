@@ -9,7 +9,9 @@ import { API_BASE_URL } from './config.js';
 // ========================================
 
 function getToken() {
-    return localStorage.getItem('access_token');
+    const token = localStorage.getItem('access_token');
+    console.log('🔑 Token:', token ? `${token.substring(0, 20)}...` : 'No token found');
+    return token;
 }
 
 function setToken(token) {
@@ -35,6 +37,7 @@ function removeTokens() {
 
 async function apiRequest(endpoint, method = 'GET', data = null) {
     const url = `${API_BASE_URL}${endpoint}`;
+    console.log(`🌐 API Request: ${method} ${url}`);
     
     const publicEndpoints = ['/auth/login', '/auth/signup', '/locations', '/quests', '/users/leaderboard'];
     const isPublic = publicEndpoints.some(e => endpoint.includes(e));
@@ -47,6 +50,8 @@ async function apiRequest(endpoint, method = 'GET', data = null) {
         const token = getToken();
         if (token) {
             headers['Authorization'] = `Bearer ${token}`;
+        } else {
+            console.warn('⚠️ No token found for protected endpoint');
         }
     }
     
@@ -57,29 +62,45 @@ async function apiRequest(endpoint, method = 'GET', data = null) {
     
     if (data && (method === 'POST' || method === 'PUT' || method === 'PATCH')) {
         options.body = JSON.stringify(data);
+        console.log('📦 Request body:', data);
     }
     
     try {
         const response = await fetch(url, options);
+        console.log(`📥 Response status: ${response.status}`);
+        
+        let result;
+        const text = await response.text();
+        try {
+            result = JSON.parse(text);
+        } catch (e) {
+            result = { error: text || 'Invalid response from server' };
+        }
+        console.log('📦 Response:', result);
         
         if (response.status === 401) {
+            console.warn('⚠️ 401 Unauthorized - Token may be expired');
             removeTokens();
-            if (!window.location.pathname.includes('index.html') && 
-                !window.location.pathname.includes('signup.html') &&
-                !window.location.pathname.includes('login.html')) {
-                window.location.href = 'index.html';
-            }
-            return { success: false, error: 'Session expired. Please login again.' };
+            return { 
+                success: false, 
+                error: result.error || 'Session expired. Please login again.',
+                status: 401,
+                requiresLogin: true
+            };
         }
         
-        const result = await response.json();
-        
         if (!response.ok) {
-            throw new Error(result.error || result.message || 'API request failed');
+            return { 
+                success: false, 
+                error: result.error || result.message || 'API request failed',
+                status: response.status,
+                data: result
+            };
         }
         
         return { success: true, data: result };
     } catch (error) {
+        console.error('❌ Network Error:', error);
         return { success: false, error: error.message };
     }
 }
@@ -90,7 +111,6 @@ async function apiRequest(endpoint, method = 'GET', data = null) {
 
 import { signUp, signIn, getCurrentUser as authGetCurrentUser } from './auth.js';
 
-// Wrap getCurrentUser to ensure it always returns { success, data }
 export async function getCurrentUser() {
     try {
         const result = await authGetCurrentUser();
@@ -120,7 +140,6 @@ export async function getLeaderboard(limit = 10) {
 
 export async function getLocations() {
     const result = await apiRequest('/locations', 'GET');
-    // If the API returns { locations: [...] }, extract it
     if (result.success && result.data && result.data.locations) {
         return { success: true, data: result.data.locations };
     }
@@ -129,15 +148,22 @@ export async function getLocations() {
 
 export async function getLocation(locationId) {
     const result = await apiRequest(`/locations/${locationId}`, 'GET');
-    // If the API returns { location: {...} }, extract it
     if (result.success && result.data && result.data.location) {
         return { success: true, data: result.data.location };
     }
     return result;
 }
 
+// ========================================
+// ✅ FIXED: locationId → location_id
+// ========================================
+
 export async function unlockLocation(locationId) {
-    return await apiRequest('/discover', 'POST', { locationId });
+    console.log(`🔓 API: Unlocking ${locationId}`);
+    // ✅ The API expects "location_id" with an underscore
+    const result = await apiRequest('/discover', 'POST', { location_id: locationId });
+    console.log(`🔓 API Result:`, result);
+    return result;
 }
 
 // ========================================
@@ -146,7 +172,6 @@ export async function unlockLocation(locationId) {
 
 export async function getQuests() {
     const result = await apiRequest('/quests', 'GET');
-    // If the API returns { quests: [...] }, extract it
     if (result.success && result.data && result.data.quests) {
         return { success: true, data: result.data.quests };
     }
