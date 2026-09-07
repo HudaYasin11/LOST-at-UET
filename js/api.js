@@ -39,8 +39,12 @@ async function apiRequest(endpoint, method = 'GET', data = null) {
     const url = `${API_BASE_URL}${endpoint}`;
     console.log(`🌐 API Request: ${method} ${url}`);
     
-    const publicEndpoints = ['/auth/login', '/auth/signup', '/locations', '/quests', '/users/leaderboard'];
-    const isPublic = publicEndpoints.some(e => endpoint.includes(e));
+    const isPublic = endpoint === '/auth/login' || endpoint === '/auth/signup' ||
+        (method === 'GET' && (
+            endpoint.startsWith('/locations') ||
+            endpoint.startsWith('/quests') ||
+            endpoint.startsWith('/users/leaderboard')
+        ));
     
     const headers = {
         'Content-Type': 'application/json',

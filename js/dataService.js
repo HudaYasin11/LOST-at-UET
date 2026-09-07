@@ -169,6 +169,7 @@ export async function unlockLocation(locationId) {
         await refreshUserData();
         await refreshLocations();
         await refreshQuests();
+        await syncDiscoveredQuests();
         
         // ✅ Force notify to update all subscribers
         notifyListeners();
@@ -178,6 +179,31 @@ export async function unlockLocation(locationId) {
         console.error('❌ Unlock error:', error);
         return { success: false, error: error.message };
     }
+}
+
+// A quest is earned by discovering its linked location. This keeps the reward
+// tied to QR exploration instead of allowing the UI to complete quests by click.
+export async function syncDiscoveredQuests() {
+    if (!appState.user) return { success: true, completed: 0 };
+
+    const discoveries = new Set(appState.user.discoveries || []);
+    const completed = new Set(appState.user.completedQuests || []);
+    const readyQuests = appState.quests.filter(quest =>
+        quest.location_id && discoveries.has(quest.location_id) && !completed.has(quest.id)
+    );
+
+    if (!readyQuests.length) return { success: true, completed: 0 };
+
+    const results = await Promise.all(readyQuests.map(quest => api.completeQuest(quest.id)));
+    const successful = results.filter(result => result.success).length;
+
+    if (successful) {
+        await refreshUserData();
+        await refreshQuests();
+        notifyListeners();
+    }
+
+    return { success: successful === readyQuests.length, completed: successful };
 }
 
 export async function completeQuest(questId) {
@@ -259,6 +285,7 @@ export default {
     refreshQuests,
     unlockLocation,
     completeQuest,
+    syncDiscoveredQuests,
     scanQR,
     getState,
     subscribe,

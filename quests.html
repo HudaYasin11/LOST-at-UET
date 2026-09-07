@@ -112,7 +112,7 @@
             getTotalDiscoveries, 
             getTotalLocations, 
             getQuestProgress, 
-            completeQuest, 
+            syncDiscoveredQuests,
             refreshUserData,
             refreshQuests,
             getCompletionPercentage,
@@ -156,6 +156,8 @@
                 await loadGameData();
                 const state = getState();
                 allQuests = state.quests || [];
+                await syncDiscoveredQuests();
+                allQuests = getState().quests || [];
                 
                 updateHeader();
                 updateStats();
@@ -207,7 +209,7 @@
             if (totalEl) totalEl.textContent = getTotalLocations();
 
             const completed = allQuests.filter(q => getQuestProgress(q.id) === 100);
-            const active = allQuests.filter(q => getQuestProgress(q.id) > 0 && getQuestProgress(q.id) < 100);
+            const active = allQuests.filter(q => getQuestProgress(q.id) < 100);
             
             if (activeEl) activeEl.textContent = active.length;
             if (completedEl) completedEl.textContent = completed.length;
@@ -222,7 +224,7 @@
 
             let filtered = allQuests;
             if (questFilter === 'active') {
-                filtered = allQuests.filter(q => getQuestProgress(q.id) > 0 && getQuestProgress(q.id) < 100);
+                filtered = allQuests.filter(q => getQuestProgress(q.id) < 100);
             } else if (questFilter === 'completed') {
                 filtered = allQuests.filter(q => getQuestProgress(q.id) === 100);
             }
@@ -242,8 +244,8 @@
                 const progress = getQuestProgress(quest.id);
                 const completed = progress === 100;
                 
-                // HIDE completed quests
-                const hiddenClass = completed ? 'hidden' : '';
+                const hiddenClass = completed && questFilter !== 'completed' ? 'hidden' : '';
+                const locationFound = quest.location_id && getState().user?.discoveries?.includes(quest.location_id);
                 
                 return `
                     <div class="quest-card ${completed ? 'completed' : ''} ${hiddenClass}">
@@ -252,16 +254,16 @@
                             <h4>${quest.title || quest.name || 'Quest'}</h4>
                             <p>${quest.description || 'Complete this quest to earn XP!'}</p>
                             <div class="quest-meta">
-                                <span class="quest-progress">${completed ? '✅ Completed' : '🔄 ' + progress + '%'}</span>
+                                <span class="quest-progress">${completed ? '✅ Completed' : locationFound ? '🎉 Location found' : '📍 Find the location'}</span>
                                 <span class="quest-reward">+${quest.xp || 0} XP</span>
                                 <div class="quest-progress-bar">
                                     <div class="quest-progress-fill" style="width:${progress}%;"></div>
                                 </div>
                             </div>
                         </div>
-                        ${completed 
-                            ? '<span class="quest-done">✅ Done</span>' 
-                            : `<button class="quest-arrow" onclick="window.completeQuest('${quest.id}')">></button>`
+                        ${completed
+                            ? '<span class="quest-done">✅ Done</span>'
+                            : `<button class="quest-arrow" onclick="window.openQuestMap(\'${quest.location_id}\')" aria-label="Show quest on map">🗺️</button>`
                         }
                     </div>
                 `;
@@ -269,25 +271,10 @@
         }
 
         // ========================================
-        // COMPLETE QUEST
+        // QUEST NAVIGATION
         // ========================================
-        window.completeQuest = async function(questId) {
-            try {
-                const result = await completeQuest(questId);
-                if (result.success) {
-                    alert('🎉 Quest completed! +' + (result.data?.xp_awarded || 0) + ' XP');
-                    await refreshUserData();
-                    await refreshQuests();
-                    await loadGameData();
-                    updateStats();
-                    renderQuests();
-                } else {
-                    alert('❌ Failed to complete quest: ' + (result.error || 'Unknown error'));
-                }
-            } catch (error) {
-                console.error('Complete quest error:', error);
-                alert('❌ Failed to complete quest');
-            }
+        window.openQuestMap = function(locationId) {
+            window.location.href = `map.html?location=${encodeURIComponent(locationId || '')}`;
         };
 
         // ========================================
