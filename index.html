@@ -176,7 +176,7 @@
                     <p>EXPLORE · DISCOVER · BELONG</p>
                 </div>
 
-                <h2>🔐 LOGIN</h2>
+                <h2>LOGIN</h2>
 
                 <div class="auth-error" id="authError"></div>
                 <div class="auth-success" id="authSuccess"></div>
@@ -298,6 +298,7 @@
                 console.log('Login result:', result);
                 
                 if (result && result.user) {
+                    // Store user data (only for session)
                     localStorage.setItem('user', JSON.stringify(result.user));
                     
                     showSuccess('Login successful! Redirecting...');
@@ -335,20 +336,15 @@
         });
 
         // ========================================
-        // CHECK IF USER IS ALREADY LOGGED IN
+        // ✅ FIXED: REMOVED AUTO-LOGIN
+        // Only check auth on protected pages, NOT on login page
         // ========================================
-        async function checkAuth() {
-            try {
-                const user = await getCurrentUser();
-                if (user && user.success) {
-                    window.location.href = 'home.html';
-                }
-            } catch (error) {
-                console.log('Not logged in');
-            }
-        }
-
-        checkAuth();
+        // The login page should NOT auto-redirect.
+        // User must click the LOGIN button.
+        // If they are already logged in and go to login page,
+        // they can still see the login page.
+        
+        console.log(' Login page loaded. Please enter your credentials.');
     </script>
 </body>
 </html>
