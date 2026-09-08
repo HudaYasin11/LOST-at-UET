@@ -303,8 +303,8 @@
             }
         };
 
-        // ========================================
-// ✅ FIXED: SUBMIT ANSWER
+    // ========================================
+// ✅ SUBMIT ANSWER - FIXED
 // ========================================
 window.submitAnswer = function(questId) {
     const id = String(questId);
@@ -336,21 +336,18 @@ window.submitAnswer = function(questId) {
         questAnswerState[id].locked = true;
         input.disabled = true;
         
-        // ✅ Mark as completed
+        // ✅ Complete the quest (updates state immediately)
         setTimeout(async () => {
-            // ✅ Use completeQuest (which handles both API and local)
             const result = await completeQuest(quest.id);
             console.log('Quest completion result:', result);
             
-            // ✅ Force refresh
-            await refreshUserData();
-            await refreshQuests();
-            
-            // ✅ Re-render
-            renderQuests();
+            // ✅ Update header and stats
             updateHeader();
             updateStats();
-        }, 500);
+            
+            // ✅ Re-render quests (will show as completed)
+            renderQuests();
+        }, 300);
         
     } else {
         questAnswerState[id].attempts = (questAnswerState[id].attempts || 0) + 1;
@@ -369,8 +366,7 @@ window.submitAnswer = function(questId) {
         input.value = '';
         input.focus();
     }
-};
-        // ========================================
+};          //==========
         // ✅ FIXED: RENDER QUESTS
         // ========================================
         function renderQuests() {
