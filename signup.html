@@ -149,6 +149,32 @@
             margin-right: 8px;
             vertical-align: middle;
         }
+        .auth-rate-limit {
+            background: rgba(255, 165, 0, 0.15);
+            color: #FFA500;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 16px;
+            display: none;
+            border-left: 3px solid #FFA500;
+            text-align: center;
+        }
+        .auth-rate-limit .timer {
+            font-weight: 700;
+            color: var(--text-yellow);
+            font-size: 18px;
+        }
+        .auth-rate-limit .workaround {
+            margin-top: 8px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .auth-rate-limit .workaround a {
+            color: var(--text-yellow);
+            text-decoration: underline;
+            cursor: pointer;
+        }
         .password-strength {
             display: flex;
             gap: 4px;
@@ -169,25 +195,100 @@
             color: var(--text-muted);
             margin-top: 4px;
         }
-        .already-logged-in {
-            text-align: center;
+
+        /* ✅ VERIFICATION POPUP */
+        .verification-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
             padding: 20px;
-            background: rgba(247, 184, 1, 0.1);
-            border: 2px solid var(--text-yellow);
-            border-radius: 12px;
-            margin-bottom: 16px;
         }
-        .already-logged-in p {
-            color: var(--text-muted);
+        .verification-overlay.active {
+            display: flex;
+        }
+        .verification-modal {
+            background: var(--card-bg);
+            border: 2px solid var(--border-blue);
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            animation: popIn 0.5s ease;
+        }
+        .verification-modal .big-icon {
+            font-size: 64px;
+            display: block;
             margin-bottom: 12px;
         }
+        .verification-modal h2 {
+            font-family: var(--font-pixel);
+            font-size: 18px;
+            color: var(--text-yellow);
+            margin-bottom: 8px;
+        }
+        .verification-modal p {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+        .verification-modal .email-display {
+            color: var(--text-white);
+            font-weight: 700;
+            font-size: 16px;
+            background: var(--dark-bg);
+            padding: 8px 16px;
+            border-radius: 8px;
+            display: inline-block;
+            margin: 8px 0 16px;
+        }
+        .verification-modal .btn-yellow {
+            width: 100%;
+            padding: 12px;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+        .verification-modal .btn-outline {
+            width: 100%;
+            padding: 12px;
+            font-size: 14px;
+            margin-top: 8px;
+        }
+        .verification-modal .resend-status {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 12px;
+        }
+        .verification-modal .resend-status.success {
+            color: #4CAF50;
+        }
+        .verification-modal .resend-status.error {
+            color: #FF6B6B;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.7); opacity: 0; }
+            70% { transform: scale(1.03); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
         @media (max-width: 480px) {
             .auth-box { padding: 28px 20px; }
             .auth-box .auth-logo h1 { font-size: 20px; }
+            .verification-modal { padding: 28px 20px; }
         }
     </style>
 </head>
@@ -226,16 +327,12 @@
 
                 <h2>📝 SIGN UP</h2>
 
-                <!-- Already Logged In Message -->
-                <div id="alreadyLoggedIn" style="display:none;">
-                    <div class="already-logged-in">
-                        <p>✅ You are already logged in!</p>
-                        <button class="btn-outline" id="logoutFromSignupBtn">
-                            <i class="fas fa-sign-out-alt"></i> LOGOUT
-                        </button>
-                        <p style="margin-top:12px;font-size:12px;">
-                            Or <a href="home.html" style="color:var(--text-yellow);">go to Home</a>
-                        </p>
+                <!-- Rate Limit Message -->
+                <div class="auth-rate-limit" id="rateLimitMessage">
+                    ⚠️ Too many signup attempts. Please wait <span class="timer" id="countdownTimer">5:00</span>
+                    <div class="workaround">
+                        💡 Already have an account? <a href="index.html">Login here</a>
+                        <br>Or use a different email address.
                     </div>
                 </div>
 
@@ -275,6 +372,30 @@
                         Already have an account? <a href="index.html">Login</a>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- ✅ VERIFICATION POPUP -->
+        <div class="verification-overlay" id="verificationOverlay">
+            <div class="verification-modal">
+                <span class="big-icon">📧</span>
+                <h2>CHECK YOUR EMAIL</h2>
+                <p>We've sent a verification link to:</p>
+                <div class="email-display" id="verificationEmail">user@email.com</div>
+                <p style="font-size:13px; color:var(--text-muted);">
+                    Please check your inbox and click the verification link to activate your account.
+                    <br><br>
+                    <span style="font-size:12px; color:var(--text-muted);">
+                        💡 Check your spam folder if you don't see it.
+                    </span>
+                </p>
+                <button class="btn-yellow" onclick="window.location.href='index.html'">
+                    GO TO LOGIN
+                </button>
+                <button class="btn-outline" id="resendVerificationBtn">
+                    🔄 Resend Verification Email
+                </button>
+                <div class="resend-status" id="resendStatus"></div>
             </div>
         </div>
 
@@ -333,6 +454,7 @@
         // IMPORT AUTH FUNCTIONS
         // ========================================
         import { signUp, getCurrentUser, logout, signOut } from './js/auth.js';
+        import { supabase } from './js/config.js';
 
         // ========================================
         // DOM ELEMENTS
@@ -344,9 +466,18 @@
         const errorEl = document.getElementById('authError');
         const successEl = document.getElementById('authSuccess');
         const loadingEl = document.getElementById('authLoading');
-        const alreadyLoggedIn = document.getElementById('alreadyLoggedIn');
         const signupFormContainer = document.getElementById('signupFormContainer');
-        const logoutFromSignupBtn = document.getElementById('logoutFromSignupBtn');
+        const rateLimitMessage = document.getElementById('rateLimitMessage');
+        const countdownTimer = document.getElementById('countdownTimer');
+
+        // Verification popup
+        const verificationOverlay = document.getElementById('verificationOverlay');
+        const verificationEmail = document.getElementById('verificationEmail');
+        const resendVerificationBtn = document.getElementById('resendVerificationBtn');
+        const resendStatus = document.getElementById('resendStatus');
+
+        let cooldownInterval = null;
+        let currentSignupEmail = '';
 
         // ========================================
         // SHOW/HIDE HELPERS
@@ -355,18 +486,21 @@
             errorEl.textContent = '❌ ' + message;
             errorEl.style.display = 'block';
             successEl.style.display = 'none';
+            rateLimitMessage.style.display = 'none';
         }
 
         function showSuccess(message) {
             successEl.textContent = '✅ ' + message;
             successEl.style.display = 'block';
             errorEl.style.display = 'none';
+            rateLimitMessage.style.display = 'none';
         }
 
         function hideMessages() {
             errorEl.style.display = 'none';
             successEl.style.display = 'none';
             loadingEl.style.display = 'none';
+            rateLimitMessage.style.display = 'none';
         }
 
         function setLoading(isLoading) {
@@ -382,51 +516,65 @@
         }
 
         // ========================================
-        // CHECK IF USER IS ALREADY LOGGED IN
+        // RATE LIMIT COUNTDOWN TIMER
         // ========================================
-        async function checkAuth() {
+        function startCooldownTimer(seconds) {
+            if (cooldownInterval) {
+                clearInterval(cooldownInterval);
+            }
+
+            rateLimitMessage.style.display = 'block';
+            let remaining = seconds;
+
+            const updateTimer = () => {
+                const mins = Math.floor(remaining / 60);
+                const secs = remaining % 60;
+                countdownTimer.textContent = `${mins}:${String(secs).padStart(2, '0')}`;
+                
+                if (remaining <= 0) {
+                    clearInterval(cooldownInterval);
+                    cooldownInterval = null;
+                    rateLimitMessage.style.display = 'none';
+                }
+                remaining--;
+            };
+
+            updateTimer();
+            cooldownInterval = setInterval(updateTimer, 1000);
+        }
+
+        // ========================================
+        // ✅ RESEND VERIFICATION EMAIL
+        // ========================================
+        async function resendVerification(email) {
+            resendStatus.textContent = '⏳ Sending...';
+            resendStatus.className = 'resend-status';
+
             try {
-                const user = await getCurrentUser();
-                if (user) {
-                    // User is logged in - show message instead of redirecting
-                    console.log('✅ User is already logged in:', user);
-                    alreadyLoggedIn.style.display = 'block';
-                    signupFormContainer.style.display = 'none';
+                const { error } = await supabase.auth.resend({
+                    type: 'signup',
+                    email: email
+                });
+
+                if (error) {
+                    throw error;
+                }
+
+                resendStatus.textContent = '✅ Verification email resent! Check your inbox.';
+                resendStatus.className = 'resend-status success';
+            } catch (error) {
+                console.error('Resend error:', error);
+                if (error.message?.includes('rate_limit')) {
+                    resendStatus.textContent = '⚠️ Too many requests. Please wait a few minutes.';
                 } else {
-                    console.log('❌ Not logged in - showing signup form');
-                    alreadyLoggedIn.style.display = 'none';
-                    signupFormContainer.style.display = 'block';
+                    resendStatus.textContent = '❌ Failed to resend: ' + error.message;
                 }
-            } catch (error) {
-                console.log('❌ Not logged in:', error);
-                alreadyLoggedIn.style.display = 'none';
-                signupFormContainer.style.display = 'block';
+                resendStatus.className = 'resend-status error';
             }
         }
 
         // ========================================
-        // HANDLE LOGOUT FROM SIGNUP PAGE
-        // ========================================
-        async function handleLogoutFromSignup() {
-            try {
-                await logout();
-                // Also try signOut from api.js
-                if (typeof signOut === 'function') {
-                    await signOut();
-                }
-                // Reload to show signup form
-                window.location.reload();
-            } catch (error) {
-                console.error('Logout error:', error);
-                // Force logout by clearing storage
-                localStorage.removeItem('access_token');
-                localStorage.removeItem('refresh_token');
-                window.location.reload();
-            }
-        }
-
-        // ========================================
-        // HANDLE SIGNUP
+        // ✅ HANDLE SIGNUP
         // ========================================
         async function handleSignup() {
             hideMessages();
@@ -480,32 +628,48 @@
                 console.log('📝 Signup result:', result);
                 
                 if (result && result.user) {
-                    showSuccess('✅ Account created! Redirecting to login...');
+                    // ✅ Store email for verification popup
+                    currentSignupEmail = email;
+
+                    // ✅ Show verification popup
+                    verificationEmail.textContent = email;
+                    verificationOverlay.classList.add('active');
                     
+                    // Reset resend status
+                    resendStatus.textContent = '';
+                    resendStatus.className = 'resend-status';
+
+                    // Clear form
                     usernameInput.value = '';
                     emailInput.value = '';
                     passwordInput.value = '';
                     
-                    setTimeout(() => {
-                        window.location.href = 'index.html';
-                    }, 2000);
+                    setLoading(false);
+                    
+                } else if (result?.error?.includes('rate_limit') || result?.error?.includes('too many')) {
+                    showError('⚠️ Too many signup attempts. Please wait 5-10 minutes.');
+                    startCooldownTimer(600);
+                    setLoading(false);
                 } else {
-                    showError('Signup failed. Please try again.');
+                    showError(result?.error || 'Signup failed. Please try again.');
                     setLoading(false);
                 }
             } catch (error) {
                 console.error('❌ Signup error:', error);
                 let errorMessage = error.message || 'Something went wrong.';
                 
-                if (errorMessage.includes('User already registered')) {
+                if (errorMessage.includes('rate_limit') || errorMessage.includes('too many')) {
+                    showError('⚠️ Too many signup attempts. Please wait 5-10 minutes.');
+                    startCooldownTimer(600);
+                } else if (errorMessage.includes('User already registered')) {
                     errorMessage = 'This email is already registered. Please login instead.';
+                    showError(errorMessage);
                 } else if (errorMessage.includes('Password should be at least 6 characters')) {
                     errorMessage = 'Password must be at least 6 characters.';
-                } else if (errorMessage.includes('Invalid email')) {
-                    errorMessage = 'Please enter a valid email address.';
+                    showError(errorMessage);
+                } else {
+                    showError(errorMessage);
                 }
-                
-                showError(errorMessage);
                 setLoading(false);
             }
         }
@@ -515,9 +679,12 @@
         // ========================================
         signupBtn.addEventListener('click', handleSignup);
 
-        if (logoutFromSignupBtn) {
-            logoutFromSignupBtn.addEventListener('click', handleLogoutFromSignup);
-        }
+        // Resend verification email
+        resendVerificationBtn.addEventListener('click', function() {
+            if (currentSignupEmail) {
+                resendVerification(currentSignupEmail);
+            }
+        });
 
         passwordInput.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
@@ -534,9 +701,10 @@
         });
 
         // ========================================
-        // INIT - Check auth status
+        // INIT
         // ========================================
-        checkAuth();
+        // No checkAuth() - always show signup form
+        console.log('📝 Signup page loaded');
     </script>
 </body>
 </html>
