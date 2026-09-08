@@ -200,6 +200,7 @@
                 <!-- Map -->
                 <div class="map-container">
                     <div class="map-titlebar"><span>UET EXPLORATION MAP</span><small id="mapPositionNote">Schematic campus view</small></div>
+                    <div class="map-help" aria-hidden="true">SCROLL TO ZOOM · DRAG TO EXPLORE · ARROWS TO MOVE</div>
                     <div id="mapToast" class="map-toast" role="status" aria-live="polite"></div>
                     <div id="campusMap" aria-label="Interactive UET campus exploration map"></div>
                     <div class="map-vignette" aria-hidden="true"></div>
@@ -269,6 +270,24 @@
         </div>
 
         <!-- ======================================== -->
+        <!-- MODAL: AERIAL LANDMARK DETAIL -->
+        <!-- ======================================== -->
+        <div id="aerial-modal" class="modal aerial-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="modal-icon">🛰️</span>
+                    <h3 id="aerialTitle">Campus aerial detail</h3>
+                    <span class="modal-badge">Real view</span>
+                    <button class="modal-close" onclick="closeModal()">&times;</button>
+                </div>
+                <div class="aerial-modal-body">
+                    <img id="aerialImage" class="aerial-detail-image" src="" alt="">
+                    <p id="aerialCaption" class="aerial-caption"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================================== -->
         <!-- MODAL: QR UNLOCK SUCCESS -->
         <!-- ======================================== -->
         <div id="qr-modal" class="modal">
@@ -321,6 +340,7 @@
             getCompletionPercentage
         } from './js/dataService.js';
         import { getLocations, getLocation } from './js/api.js';
+        import { getBuildingIcon } from './js/building-icons.js';
 
         // ========================================
         // STATE
@@ -331,15 +351,124 @@
         let markers = [];
         let userLocationMarker = null;
         let mapToastTimer = null;
-        // Real UET Lahore campus bounds. The satellite layer supplies the actual roads,
-        // trees and building footprints; API locations remain the interactive layer.
-        const CAMPUS_BOUNDS = [[31.5769, 74.3536], [31.5835, 74.3623]];
-        const CAMPUS_CENTER = [31.5799, 74.3561];
+        // Coordinates for the integrated illustrated campus world (not GPS).
+        const CAMPUS_BOUNDS = [[0, 0], [1024, 1536]];
+        const CAMPUS_CENTER = [512, 768];
         const CATEGORY_LANES = {
             academic: [20, 44], food: [82, 36], sports: [24, 122],
             services: [70, 132], essential: [54, 82], 'student-life': [78, 102],
             explore: [45, 112], hidden: [61, 56], landmark: [36, 92]
         };
+        // Hand-placed landmarks. These are the x/y percentages of the visible
+        // map window supplied in annotated screenshots, not percentages of the
+        // source PNG. They are translated to campus coordinates at map startup.
+        const MANUAL_MARKER_VIEWPORT_POSITIONS = {
+            'gssc': [69.2, 50],
+            'mosque': [37.8, 51],
+            'fries hidden': [35.5, 63.9]
+        };
+
+        // Verified placements exported from the in-map placement tool. Values are
+        // native [y, x] campus coordinates and therefore stay correct at any zoom.
+        const PERMANENT_MAP_POSITIONS = {
+            'architectural-engineering-department': [401.94848649127556, 202.6560360761452],
+            'architecture-department': [561.7188053894813, 520.5148810420493],
+            'chemical-engineering-department': [795.488008830014, 500.33336707596015],
+            'chemical-seminar-hall-crp': [812.3059371350882, 458.2885463132744],
+            'city-regional-planning-department': [720.659511691649, 479.2504673460966],
+            'civil-engineering-department': [489.40171367766186, 1162.9597422958873],
+            'computer-engineering-department': [660.9445823894197, 1117.5513358721867],
+            'computing-block': [911.5317141350266, 996.4622520756518],
+            'cs-department': [366.63083705061956, 1258.8219336348106],
+            'electrical-engineering-department': [196.76976116936922, 586.1048014318391],
+            'humanities-department': [302.72270949133724, 397.744004415007],
+            'ibm': [475.94737103360245, 78.20336661859545],
+            'ids-department': [679.4443035250014, 283.3820919405018],
+            'ime-block': [216.95127513545836, 374.19890478790296],
+            'lecture-theatre': [371.67621554214185, 1057.0067939739192],
+            'main-block': [881.2594431858929, 1048.597829821382],
+            'mathematics-department': [874.5322718638631, 888.8275109231763],
+            'mechanical-engineering-department': [270.7686457116961, 1371.5020532788085],
+            'national-library': [375.0398012031567, 596.1955584148836],
+            'polymer-process-engineering-department': [729.8980884402242, 969.5535667875329],
+            'badminton-court': [958.5009346921933, 878.8240579870109],
+            'football-ground': [956.1225204621878, 507.79143810616193],
+            'gym': [903.7974074020681, 564.8733796262925],
+            'jj-stadium': [932.3383781621334, 1109.5302382975387],
+            'sports-complex': [906.1758216320735, 267.57160087561226],
+            'annex': [929.959963932128, 60.649562865138776],
+            'bhola-cafe': [846.7154658819375, 441.19583966600953],
+            'gssc': [508.98064522116465, 1413.9672597382355],
+            'que-cafe': [749.2004824517143, 189.08393128543267],
+            'ssc': [535.1432017512245, 155.78613206535647],
+            'syalani-cafe': [839.5802231919212, 488.76412426611836],
+            'mosque': [420.9793187109633, 79.67687670518231],
+            'fries-hidden-spot': [285.40970760065306, 67.7848055551551],
+            'lalazar-park': [340.11323489077824, 612.4416642264014],
+            'security-office': [432.87138986099046, 1454.400301648328],
+            'main-gate': [161.73216764037008, 788.4443172468041],
+            'bank': [130.8127826502993, 151.02930360534558],
+            'new-girls-hostel': [1006.069219292302, 786.0659030167986],
+            'metallurgy-department': [737.3084113016871, 398.3843835259116]
+        };
+
+        function locationKey(value) {
+            return String(value || '')
+                .toLowerCase()
+                .replace(/&/g, ' and ')
+                .replace(/[^a-z0-9]+/g, ' ')
+                .trim();
+        }
+
+        function findManualViewportPosition(loc) {
+            const locationKeys = [locationKey(loc.id), locationKey(loc.name)];
+            return Object.entries(MANUAL_MARKER_VIEWPORT_POSITIONS).find(([key]) =>
+                locationKeys.some(value => value.includes(key) || key.includes(value))
+            )?.[1] || null;
+        }
+
+        const PLACEMENT_STORAGE_KEY = 'lost-uet-map-placements';
+
+        function getSavedMapPositions() {
+            try {
+                return JSON.parse(localStorage.getItem(PLACEMENT_STORAGE_KEY) || '{}');
+            } catch {
+                return {};
+            }
+        }
+
+        function getSavedMapPosition(locationId) {
+            const position = getSavedMapPositions()[locationId];
+            return Array.isArray(position) && position.length === 2 ? position : null;
+        }
+
+
+        // Real drone views supplied for campus landmarks. They open as a close-up
+        // detail view, rather than being stretched over the top-down game map.
+        const AERIAL_VIEWS = {
+            'civil engineering': { src: 'assets/aerial/civil-mining.jpeg', title: 'Civil Engineering aerial angle', caption: 'Civil Engineering is in the foreground; Mining Department is at the upper left.' },
+            'new girls hostel': { src: 'assets/aerial/central-academic.jpeg', title: 'Central academic district', caption: 'Girls Hostels, Main Auditorium, GSSC, CS, Mechatronics, Lecture Theatre and Civil Engineering.' },
+            'main auditorium': { src: 'assets/aerial/central-academic.jpeg', title: 'Main Auditorium aerial angle', caption: 'The Main Auditorium sits at the top-centre of this academic district view.' },
+            'mechatronics': { src: 'assets/aerial/central-academic.jpeg', title: 'Mechatronics aerial angle', caption: 'Mechatronics is on the right side of this view, beyond the Main Auditorium.' },
+            'gssc': { src: 'assets/aerial/central-academic.jpeg', title: 'GSSC aerial angle', caption: 'GSSC Canteen is visible on the left side, opposite the central academic road.' },
+            'cs department': { src: 'assets/aerial/central-academic.jpeg', title: 'CS Department aerial angle', caption: 'CS Department appears mid-right, between GSSC and the Lecture Theatre district.' },
+            'lecture theatre': { src: 'assets/aerial/central-academic.jpeg', title: 'Lecture Theatre aerial angle', caption: 'The Lecture Theatre block is in the lower-right of this aerial view.' },
+            'main gate': { src: 'assets/aerial/gate-lalazar.jpeg', title: 'Main Gate & Lalazar aerial angle', caption: 'Main Gate, Electrical Department, Lalazar Park and the Main Library district.' },
+            'electrical engineering': { src: 'assets/aerial/gate-lalazar.jpeg', title: 'Electrical Engineering aerial angle', caption: 'Electrical Engineering is immediately east of the Main Gate road.' },
+            'lalazar park': { src: 'assets/aerial/gate-lalazar.jpeg', title: 'Lalazar Park aerial angle', caption: 'Lalazar Park is the landscaped green space in the lower centre.' },
+            'national library': { src: 'assets/aerial/gate-lalazar.jpeg', title: 'National Library aerial angle', caption: 'The building labelled Main Library appears at the lower-right edge of this view.' },
+            'bhola cafe': { src: 'assets/aerial/sports-engineering.jpeg', title: 'Sports & engineering aerial angle', caption: 'Bhola Cafe overlooks the Football Ground and JJ Stadium.' },
+            'jj stadium': { src: 'assets/aerial/sports-engineering.jpeg', title: 'JJ Stadium aerial angle', caption: 'JJ Stadium is the large ground in the upper-right of this view.' },
+            'football ground': { src: 'assets/aerial/sports-engineering.jpeg', title: 'Football Ground aerial angle', caption: 'Football Ground is the large field on the left of this view.' },
+            'metallurgy': { src: 'assets/aerial/sports-engineering.jpeg', title: 'Metallurgy aerial angle', caption: 'Metallurgy Department lies between the football ground and Polymer Department.' },
+            'polymer': { src: 'assets/aerial/sports-engineering.jpeg', title: 'Polymer & Process Engineering aerial angle', caption: 'Polymer & Process Engineering is the red block right of Metallurgy.' },
+            'city regional planning': { src: 'assets/aerial/sports-engineering.jpeg', title: 'CRP aerial angle', caption: 'The CRP Department is in the lower-left of this view.' }
+        };
+
+        function aerialViewFor(location) {
+            const name = String(location?.name || '').toLowerCase();
+            return Object.entries(AERIAL_VIEWS).find(([key]) => name.includes(key))?.[1] || null;
+        }
 
         // ========================================
         // DOM REFS
@@ -486,22 +615,31 @@
             }
 
             map = L.map('campusMap', {
+                crs: L.CRS.Simple,
                 center: CAMPUS_CENTER,
-                minZoom: 17,
-                maxZoom: 19,
-                zoom: 17,
-                zoomControl: false
+                minZoom: -2,
+                maxZoom: 1,
+                zoom: 0,
+                zoomControl: false,
+                zoomAnimation: true,
+                fadeAnimation: true,
+                markerZoomAnimation: true,
+                keyboard: true,
+                scrollWheelZoom: true,
+                zoomSnap: 0.25,
+                zoomDelta: 0.5
             });
 
-            L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-                attribution: 'Tiles © Esri',
-                maxZoom: 19
-            }).addTo(map);
-            map.setView(CAMPUS_CENTER, 17);
+            L.imageOverlay('assets/uet-retro-campus-map-v2.png', CAMPUS_BOUNDS, { interactive: false }).addTo(map);
+            map.fitBounds(CAMPUS_BOUNDS, { padding: [8, 8] });
+            // Open at the central roundabout: a useful game-world starting viewpoint.
+            map.setView([540, 768], map.getZoom() + 0.5, { animate: false });
+            map.on('zoomend', updateMarkerLabels);
 
             addLocationMarkers();
 
-            map.setMaxBounds([[31.5758, 74.3525], [31.5846, 74.3634]]);
+            map.setMaxBounds([[-80, -120], [1104, 1656]]);
+            updateMarkerLabels();
         }
 
         // ========================================
@@ -520,7 +658,13 @@
             if (note) note.textContent = positionedCount === filtered.length
                 ? 'Live campus positions' : `${positionedCount}/${filtered.length} precise API positions`;
 
-            filtered.forEach(loc => {
+            // While a category is being calibrated, show only its confirmed pins.
+            // This prevents fallback positions from looking like verified locations.
+            const locationsToRender = currentFilter === 'all'
+                ? filtered
+                : filtered.filter(hasMapPosition);
+
+            locationsToRender.forEach(loc => {
                 const [lat, lng] = getMapPosition(loc);
                 
                 const isDiscovered = getLocationStatus(loc.id) === 'discovered';
@@ -529,8 +673,8 @@
                 const marker = L.marker([lat, lng], {
                     icon: L.divIcon({
                         className: 'custom-marker',
-                        html: `<div class="game-marker ${isDiscovered ? 'is-discovered' : 'is-locked'}" style="--marker-color:${color}"><span>${isDiscovered ? (loc.icon || '📍') : '🔒'}</span></div>`,
-                        iconSize: [42, 48], iconAnchor: [21, 44], popupAnchor: [0, -44]
+                        html: `<div class="world-pin" style="--marker-color:${color}">${isDiscovered ? '✦' : '🔒'}<b class="marker-name">${loc.name}</b></div>`,
+                        iconSize: [26, 30], iconAnchor: [13, 26], popupAnchor: [0, -26]
                     })
                 });
 
@@ -562,15 +706,56 @@
             }
         }
 
+        function updateMarkerLabels() {
+            const container = document.getElementById('campusMap');
+            if (container && map) container.classList.toggle('show-landmark-labels', map.getZoom() >= 2);
+        }
+
+        function landmarkMarkup(loc, isDiscovered, color) {
+            const special = {
+                'cs-department': 'photo', 'football-ground': 'field', 'badminton-court': 'court',
+                'jj-stadium': 'stadium', 'lalazar-park': 'park', mosque: 'mosque', 'swimming-pool': 'pool'
+            }[loc.id] || (loc.category === 'food' ? 'cafe' : loc.category === 'sports' ? 'field' : 'building');
+            const art = special === 'photo'
+                ? '<img class="landmark-photo" src="assets/landmarks/cs-department.png" alt="">'
+                : `<span class="svg-landmark ${special}">${getBuildingIcon(loc.name, !isDiscovered)}</span>`;
+            return `<div class="landmark-marker ${special === 'photo' ? 'has-3d-sprite' : ''} ${isDiscovered ? 'is-discovered' : 'is-locked'}">${art}<span class="landmark-status" style="--marker-color:${color}">${isDiscovered ? '✓' : '🔒'}</span><b class="marker-name">${loc.name}</b></div>`;
+        }
+
         function hasMapPosition(loc) {
-            const lat = Number(loc.map_lat ?? loc.latitude ?? loc.lat ?? loc.position?.y);
-            const lng = Number(loc.map_lng ?? loc.longitude ?? loc.lng ?? loc.position?.x);
-            return Number.isFinite(lat) && Number.isFinite(lng) && Math.abs(lat) > 20 && Math.abs(lng) > 20;
+            return Boolean(getSavedMapPosition(loc.id)) || Boolean(PERMANENT_MAP_POSITIONS[loc.id]) || Boolean(findManualViewportPosition(loc)) || (
+                Number.isFinite(Number(loc.map_y ?? loc.position?.y)) && Number.isFinite(Number(loc.map_x ?? loc.position?.x))
+            );
         }
 
         function getMapPosition(loc) {
+            const savedPosition = getSavedMapPosition(loc.id);
+            if (savedPosition) return savedPosition;
+            if (PERMANENT_MAP_POSITIONS[loc.id]) return PERMANENT_MAP_POSITIONS[loc.id];
+            const manualViewportPosition = findManualViewportPosition(loc);
+            if (manualViewportPosition && map) {
+                const [xPercent, yPercent] = manualViewportPosition;
+                const size = map.getSize();
+                const point = map.containerPointToLatLng([
+                    size.x * (xPercent / 100),
+                    size.y * (yPercent / 100)
+                ]);
+                return [point.lat, point.lng];
+            }
+            // Mechatronics sits beside Annex Cafe. It follows the cafe's map
+            // position so that moving Annex later keeps the pair together.
+            if (locationKey(loc.name).includes('mechatronics')) {
+                const annex = allLocations.find(item => locationKey(item.name).includes('annex'));
+                if (annex) {
+                    const [annexY, annexX] = getMapPosition(annex);
+                    return [annexY - 18, annexX + 42];
+                }
+            }
             if (hasMapPosition(loc)) {
-                return [Number(loc.map_lat ?? loc.latitude ?? loc.lat ?? loc.position?.y), Number(loc.map_lng ?? loc.longitude ?? loc.lng ?? loc.position?.x)];
+                const y = Number(loc.map_y ?? loc.position?.y);
+                const x = Number(loc.map_x ?? loc.position?.x);
+                // Accept simple 0–100 / 0–160 coordinates as well as native image pixels.
+                return [y <= 100 ? y * 10.24 : y, x <= 160 ? x * 9.6 : x];
             }
             const lane = CATEGORY_LANES[loc.category] || [52, 80];
             const hash = [...String(loc.id)].reduce((total, char) => (total * 31 + char.charCodeAt(0)) >>> 0, 7);
@@ -619,14 +804,20 @@
                 }
 
                 if (actionsEl) {
+                    const aerial = aerialViewFor(location);
+                    const aerialButton = aerial
+                        ? `<button class="btn-outline" onclick="window.openAerialView('${locationId}')">🛰️ VIEW REAL AERIAL ANGLE</button>`
+                        : '';
                     if (isDiscovered) {
                         actionsEl.innerHTML = `
                             <button class="btn-outline" onclick="window.openGoogleMaps()">📍 Open in Google Maps</button>
                             <button class="btn-yellow" onclick="window.startQuestForLocation('${locationId}')">START QUEST</button>
+                            ${aerialButton}
                         `;
                     } else {
                         actionsEl.innerHTML = `
                             <button class="btn-yellow" onclick="window.scanQR('${locationId}')">📷 SCAN QR TO UNLOCK</button>
+                            ${aerialButton}
                         `;
                     }
                 }
@@ -636,6 +827,24 @@
                 console.error('Error opening location:', error);
                 alert('Error loading location details');
             }
+        };
+
+        window.openAerialView = async function(locationId) {
+            const location = allLocations.find(item => item.id === locationId)
+                || (await getLocation(locationId)).data;
+            const aerial = aerialViewFor(location);
+            if (!aerial) return;
+
+            const image = document.getElementById('aerialImage');
+            const title = document.getElementById('aerialTitle');
+            const caption = document.getElementById('aerialCaption');
+            if (image) {
+                image.src = aerial.src;
+                image.alt = aerial.title;
+            }
+            if (title) title.textContent = aerial.title;
+            if (caption) caption.textContent = aerial.caption;
+            openModal('aerial-modal');
         };
 
         // ========================================
@@ -706,15 +915,9 @@
         window.findMyLocation = function() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        const point = [position.coords.latitude, position.coords.longitude];
-                        if (map && L.latLngBounds(CAMPUS_BOUNDS).pad(.35).contains(point)) {
-                            map.flyTo(point, 18);
-                            showMapToast('📍 YOU ARE ON CAMPUS');
-                        } else {
-                            if (map) map.fitBounds(CAMPUS_BOUNDS, { padding: [10, 10] });
-                            showMapToast('📍 UET CAMPUS VIEW CENTERED');
-                        }
+                    () => {
+                        if (map) map.fitBounds(CAMPUS_BOUNDS, { padding: [8, 8] });
+                        showMapToast('📍 UET CAMPUS VIEW CENTERED');
                     },
                     () => showMapToast('📍 GPS UNAVAILABLE — CAMPUS VIEW CENTERED')
                 );

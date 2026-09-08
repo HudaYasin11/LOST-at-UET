@@ -1556,7 +1556,6 @@ body {
     body {
         padding: 0;
     }
-
     #app {
         border-radius: 0;
         border: none;
@@ -1564,35 +1563,28 @@ body {
         min-height: 100vh;
         padding-bottom: 70px;
     }
-
     #global-header {
         flex-direction: column;
         align-items: stretch;
         gap: 8px;
     }
-
     .header-nav {
         justify-content: center;
         flex-wrap: wrap;
         gap: 12px;
     }
-
     .header-profile {
         justify-content: center;
     }
-
     .header-nav {
         display: none;
     }
-
     .bottom-nav {
         display: flex;
     }
-
     .map-layout {
         flex-direction: column;
     }
-
     .map-sidebar {
         flex: none;
         display: flex;
@@ -1601,73 +1593,58 @@ body {
         padding: 12px;
         overflow-x: auto;
     }
-
     .map-sidebar h3 {
         width: 100%;
         margin-bottom: 4px;
     }
-
     .filter-btn {
         width: auto;
         padding: 6px 14px;
         font-size: 12px;
         margin-bottom: 0;
     }
-
     .map-container {
         min-height: 400px;
     }
-
     .discovery-grid {
         grid-template-columns: 1fr 1fr;
     }
-
     .landing-title {
         font-size: 32px;
     }
-
     .pixel-building {
         grid-template-columns: repeat(4, 20px);
         grid-template-rows: repeat(3, 20px);
     }
-
     .speech-bubble {
         font-size: 11px;
         padding: 10px 16px;
         max-width: 280px;
     }
-
     .modal-content {
         max-width: 100%;
         margin: 10px;
         padding: 16px;
     }
-
     .modal-actions {
         flex-direction: column;
     }
-
     .stats-bar {
         flex-wrap: wrap;
         gap: 8px;
     }
-
     .quest-stats {
         grid-template-columns: 1fr 1fr 1fr;
     }
-
     .discovery-stats {
         grid-template-columns: 1fr 1fr 1fr;
     }
-
     .qr-code-grid {
         grid-template-columns: repeat(3, 1fr);
     }
-
     .save-actions {
         flex-direction: column;
     }
-
     .save-actions .btn-outline,
     .save-actions .btn-danger {
         width: 100%;
@@ -1678,64 +1655,53 @@ body {
     .discovery-grid {
         grid-template-columns: 1fr;
     }
-
     .page-header {
         flex-direction: column;
         align-items: flex-start;
         gap: 8px;
     }
-
     .level-bar {
         flex-wrap: wrap;
         font-size: 12px;
     }
-
     .quest-card {
         flex-wrap: wrap;
     }
-
     .legend-container {
         gap: 10px;
     }
-
     .stats-bar {
         flex-direction: column;
         align-items: center;
         gap: 4px;
     }
-
     .quest-stats {
         grid-template-columns: 1fr 1fr 1fr;
         gap: 6px;
     }
-
     .quest-stat .stat-number {
         font-size: 18px;
     }
-
     .discovery-stats {
         grid-template-columns: 1fr 1fr 1fr;
         gap: 6px;
     }
-
     .stat-card .stat-number {
         font-size: 16px;
     }
-
     .qr-code-grid {
         grid-template-columns: repeat(3, 1fr);
         gap: 8px;
     }
-
     .qr-code-box {
         font-size: 24px;
         padding: 8px;
     }
-
     .search-bar input {
         font-size: 14px;
     }
 }
+
 /* ========================================
    LOADING STATES
    ======================================== */
@@ -1793,6 +1759,7 @@ body {
 }
 
 .map-titlebar small { color: #b8d8b5; font-family: var(--font-body); font-size: 11px; }
+.map-help { position: absolute; z-index: 700; bottom: 15px; left: 14px; padding: 7px 9px; border: 1px solid rgba(232,194,97,.65); border-radius: 3px; background: rgba(13,34,39,.82); color: #d9e1b2; font-family: var(--font-pixel); font-size: 7px; pointer-events: none; }
 
 .map-toast {
     position: absolute;
@@ -1814,23 +1781,116 @@ body {
 
 .map-toast.show { opacity: 1; transform: translateY(0); }
 
-#campusMap { height: 500px; width: 100%; border-radius: 7px; background: #343125; }
+#campusMap { height: 500px; width: 100%; border-radius: 7px; background: #343125; --icon-scale: 1; }
+#campusMap:focus { outline: 2px solid rgba(233,199,97,.7); outline-offset: -2px; }
 #campusMap .leaflet-control-attribution { font-size: 8px; opacity: .72; background: rgba(20, 20, 16, .7); color: #dfc18b; }
 #campusMap .leaflet-control-attribution a { color: #dfc18b; }
-.leaflet-tile-pane { filter: sepia(.16) saturate(1.42) contrast(1.08) brightness(1.16) hue-rotate(345deg); }
+
+.leaflet-tile-pane { filter: none; }
+
 .map-vignette { position: absolute; z-index: 650; inset: 0; pointer-events: none; border-radius: 7px; box-shadow: inset 0 0 46px 10px rgba(44, 28, 12, .24), inset 0 0 0 2px rgba(236, 192, 109, .22); background: repeating-linear-gradient(0deg, rgba(255, 225, 159, .018) 0 1px, transparent 1px 4px); mix-blend-mode: soft-light; }
+
+
 .leaflet-container { font-family: var(--font-body); }
-.game-marker { width: 40px; height: 40px; display: grid; place-items: center; background: var(--marker-color); border: 3px solid #ffe191; border-radius: 50% 50% 50% 7px; transform: rotate(-45deg); box-shadow: 0 4px 0 #0b222c, 0 6px 12px rgba(2, 13, 22, .72); transition: transform .15s ease; }
-.game-marker span { transform: rotate(45deg); font-size: 19px; filter: drop-shadow(0 1px 0 rgba(0,0,0,.2)); }
-.game-marker:hover { transform: rotate(-45deg) scale(1.16); }
-.game-marker.is-locked { filter: saturate(.65); }
+
+.landmark-marker { display: flex; flex-direction: column; align-items: center; width: 90px; pointer-events: none; overflow: visible; }
+.landmark-marker { position: relative; height: 82px; justify-content: flex-end; filter: drop-shadow(0 3px 2px rgba(0,0,0,.55)); }
+.landmark-marker.is-locked { filter: grayscale(.55) brightness(.7) drop-shadow(0 3px 2px rgba(0,0,0,.6)); }
+.landmark-status { position: absolute; z-index: 3; right: 3px; top: 14px; display: grid; place-items: center; width: 19px; height: 19px; border: 2px solid #ffe191; border-radius: 50%; background: var(--marker-color); color: #0b202b; font-family: var(--font-pixel); font-size: 8px; box-shadow: 0 2px 0 #0b222c; }
+.landmark-photo { width: 106px; height: 70px; object-fit: cover; object-position: center; image-rendering: pixelated; border-radius: 5px; }
+.landmark-marker.has-3d-sprite { width: 184px; height: 142px; justify-content: flex-end; transform-origin: 50% 100%; }
+.landmark-marker.has-3d-sprite .landmark-photo { width: 180px; height: 124px; object-fit: cover; object-position: center; border: 0; border-radius: 0; filter: saturate(1.05) contrast(1.06) drop-shadow(0 8px 4px rgba(0,0,0,.52)); }
+.landmark-marker.has-3d-sprite .landmark-status { right: 11px; top: 15px; }
+.landmark-marker.has-3d-sprite .marker-name { margin-top: -3px; position: relative; z-index: 4; }
+.svg-landmark { display: grid; width: 44px; height: 44px; place-items: center; padding: 5px; border: 2px solid #132333; border-radius: 4px; background: rgba(15, 47, 45, .85); image-rendering: pixelated; }
+.svg-landmark svg { width: 38px; height: 38px; image-rendering: pixelated; }
+.mini-landmark { position: relative; display: block; width: 67px; height: 47px; overflow: hidden; border: 3px solid #132333; border-radius: 4px 4px 2px 2px; background: #f2eee0; box-shadow: inset 0 -9px 0 rgba(0,0,0,.13); }
+.mini-landmark::before { content: ''; position: absolute; inset: 7px 8px 10px; background: repeating-linear-gradient(90deg,#77adc2 0 7px,#17314a 7px 10px); border: 2px solid #243344; }
+.mini-landmark i { position: absolute; z-index: 1; left: 25px; bottom: 0; width: 15px; height: 18px; background: #26384a; border: 2px solid #111d2b; }
+.mini-landmark em { position: absolute; top: -9px; left: 5px; width: 51px; height: 16px; transform: skewX(-28deg); background: #823f48; border: 3px solid #172431; }
+.mini-landmark.cafe { background: #f5efe1; }.mini-landmark.cafe em { background:#a45d50; }.mini-landmark.field,.mini-landmark.court,.mini-landmark.park,.mini-landmark.stadium,.mini-landmark.pool,.mini-landmark.mosque { width:74px; background:#39845d; }.mini-landmark.field::before,.mini-landmark.court::before { inset:7px; background:linear-gradient(90deg,transparent 48%,#f5f0cf 48% 52%,transparent 52%); border-color:#f5f0cf; }.mini-landmark.pool { background:#3b9fc5; }.mini-landmark.pool::before { background:repeating-linear-gradient(0deg,#70d5e4 0 4px,#2583b1 4px 8px); }.mini-landmark.park::before { border-radius:50%; background:radial-gradient(circle,#d9cf70 0 18%,#3c8a59 19%); }.mini-landmark.stadium::before { inset:5px; border-radius:50%; background:#b99561; box-shadow:inset 0 0 0 7px #d4c19c; }.mini-landmark.mosque { background:#f5f1df; }.mini-landmark.mosque::before { left:22px;top:10px;width:27px;height:27px;border-radius:50% 50% 8px 8px;background:#4c9563; }.mini-landmark.mosque em { top:-6px;left:8px;width:8px;height:42px;transform:none;background:#f3eedc; }
+
+.game-marker {
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    position: relative;
+    cursor: pointer;
+    pointer-events: auto;
+    transform: scale(var(--icon-scale, 1));
+    transform-origin: 50% 100%;
+    transition: transform .18s ease-out;
+}
+
+.game-marker::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    width: 24px;
+    height: 8px;
+    background: radial-gradient(ellipse at center, rgba(0,0,0,.5) 0%, rgba(0,0,0,0) 72%);
+    transform: translateX(-50%);
+    z-index: -1;
+}
+
+.game-marker span { font-size: 19px; filter: drop-shadow(0 1px 0 rgba(0,0,0,.2)); }
+
+.game-marker:hover { filter: brightness(1.15); }
+
+.game-marker.is-locked svg { filter: saturate(.45) brightness(.75); }
+
+.marker-name { display: none; max-width: 110px; margin-top: 4px; padding: 3px 5px; overflow: hidden; color: #fff0bf; background: rgba(12, 31, 38, .9); border: 1px solid #d2a84c; border-radius: 3px; font-family: var(--font-pixel); font-size: 7px; line-height: 1.4; letter-spacing: .02em; text-align: center; text-overflow: ellipsis; white-space: nowrap; box-shadow: 2px 2px 0 rgba(0, 0, 0, .38); }
+
+#campusMap.show-landmark-labels .marker-name { display: block; }
+.world-pin { position: relative; display: grid; width: 24px; height: 24px; place-items: center; border: 2px solid #fff0a8; border-radius: 50% 50% 50% 5px; background: var(--marker-color); color: #173442; font-family: var(--font-pixel); font-size: 11px; transform: rotate(-45deg); box-shadow: 0 3px 0 #14313a, 0 4px 6px rgba(0,0,0,.5); }
+.world-pin > b { position: absolute; top: 28px; left: 50%; transform: translateX(-50%) rotate(45deg); }
+
 .leaflet-popup-content-wrapper { padding: 0; overflow: hidden; border: 2px solid #e9c761; border-radius: 6px; background: #173a3d; color: #f8f1d3; box-shadow: 4px 5px 0 rgba(17, 36, 39, .5); }
+
 .leaflet-popup-content { margin: 0; }
+
 .leaflet-popup-tip { background: #173a3d; }
+
 .game-popup { min-width: 190px; padding: 13px; }
+
 .game-popup-title { display: flex; align-items: center; gap: 7px; color: #fff4c4; font-family: var(--font-pixel); font-size: 10px; line-height: 1.45; }
+
 .game-popup-title span { font-size: 23px; }
+
 .game-popup-meta { margin-top: 6px; color: #a9d6ca; font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+
 .game-popup-xp { margin: 8px 0; color: #f7cd59; font-size: 12px; font-weight: 800; }
+
 .game-popup button { width: 100%; padding: 8px; border: 2px solid #624d1c; border-radius: 3px; background: #f3c855; color: #213f40; cursor: pointer; font-family: var(--font-pixel); font-size: 9px; }
+
 .game-popup button:hover { background: #ffe190; }
+
+/* Real aerial reference views for landmarks. These retain the original
+   camera angle instead of warping a drone photo into the top-down map. */
+.aerial-modal .modal-content { width: min(880px, calc(100vw - 32px)); max-width: 880px; }
+.aerial-modal-body { padding: 14px; background: #102633; }
+.aerial-detail-image { display: block; width: 100%; max-height: 72vh; object-fit: contain; border: 2px solid #d7ae4e; border-radius: 5px; background: #07151d; image-rendering: auto; }
+.aerial-caption { margin: 10px 2px 2px; color: #dbe6d0; font-size: 13px; line-height: 1.55; }
+
+/* ========================================
+   BUILDING MARKER ICONS (pixel-art SVGs)
+   ======================================== */
+.game-marker svg {
+    width: 32px;
+    height: 32px;
+    filter: drop-shadow(0 3px 2px rgba(0,0,0,.5));
+}
+
+.lock-badge {
+    position: absolute;
+    top: -4px;
+    right: -6px;
+    font-size: 11px;
+    line-height: 1;
+    background: #0b222c;
+    border: 1px solid #ffe191;
+    border-radius: 50%;
+    padding: 2px 3px;
+}
