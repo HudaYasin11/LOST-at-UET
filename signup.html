@@ -332,7 +332,7 @@
         // ========================================
         // IMPORT AUTH FUNCTIONS
         // ========================================
-        import { signUp, getCurrentUser, logout, signOut } from './js/auth.js';
+        import { signup as signUp, getCurrentUser, logout } from './js/auth.js';
 
         // ========================================
         // DOM ELEMENTS
@@ -387,7 +387,7 @@
         async function checkAuth() {
             try {
                 const user = await getCurrentUser();
-                if (user) {
+                if (user?.success && user.data) {
                     // User is logged in - show message instead of redirecting
                     console.log('✅ User is already logged in:', user);
                     alreadyLoggedIn.style.display = 'block';
@@ -410,10 +410,6 @@
         async function handleLogoutFromSignup() {
             try {
                 await logout();
-                // Also try signOut from api.js
-                if (typeof signOut === 'function') {
-                    await signOut();
-                }
                 // Reload to show signup form
                 window.location.reload();
             } catch (error) {
