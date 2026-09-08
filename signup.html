@@ -271,6 +271,10 @@
                         </button>
                     </form>
 
+                    <button type="button" class="btn-outline" id="resendConfirmationBtn" style="width:100%;margin-top:10px;">
+                        <i class="fas fa-envelope"></i> RESEND CONFIRMATION EMAIL
+                    </button>
+
                     <div class="auth-link">
                         Already have an account? <a href="index.html">Login</a>
                     </div>
@@ -332,7 +336,7 @@
         // ========================================
         // IMPORT AUTH FUNCTIONS
         // ========================================
-        import { signup as signUp, getCurrentUser, logout } from './js/auth.js';
+        import { signup as signUp, resendSignupConfirmation, getCurrentUser, logout } from './js/auth.js';
 
         // ========================================
         // DOM ELEMENTS
@@ -347,6 +351,7 @@
         const alreadyLoggedIn = document.getElementById('alreadyLoggedIn');
         const signupFormContainer = document.getElementById('signupFormContainer');
         const logoutFromSignupBtn = document.getElementById('logoutFromSignupBtn');
+        const resendConfirmationBtn = document.getElementById('resendConfirmationBtn');
 
         // ========================================
         // SHOW/HIDE HELPERS
@@ -476,6 +481,12 @@
                 console.log('📝 Signup result:', result);
                 
                 if (result && result.user) {
+                    if (result.requiresConfirmation) {
+                        showSuccess('Account created. Check your inbox, or use the resend button below.');
+                        setLoading(false);
+                        return;
+                    }
+
                     showSuccess('✅ Account created! Redirecting to login...');
                     
                     usernameInput.value = '';
@@ -510,6 +521,28 @@
         // EVENT LISTENERS
         // ========================================
         signupBtn.addEventListener('click', handleSignup);
+
+        resendConfirmationBtn.addEventListener('click', async function() {
+            hideMessages();
+            const email = emailInput.value.trim();
+            if (!email) {
+                showError('Enter your email above, then select resend confirmation.');
+                emailInput.focus();
+                return;
+            }
+
+            resendConfirmationBtn.disabled = true;
+            resendConfirmationBtn.textContent = 'SENDING...';
+            try {
+                await resendSignupConfirmation(email);
+                showSuccess('A new confirmation email was sent. Check your inbox and spam folder.');
+            } catch (error) {
+                showError(error.message || 'Could not resend the confirmation email. Please try again shortly.');
+            } finally {
+                resendConfirmationBtn.disabled = false;
+                resendConfirmationBtn.innerHTML = '<i class="fas fa-envelope"></i> RESEND CONFIRMATION EMAIL';
+            }
+        });
 
         if (logoutFromSignupBtn) {
             logoutFromSignupBtn.addEventListener('click', handleLogoutFromSignup);
