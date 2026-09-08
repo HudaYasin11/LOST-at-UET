@@ -196,7 +196,6 @@
             margin-top: 4px;
         }
 
-        /* ✅ VERIFICATION POPUP */
         .verification-overlay {
             position: fixed;
             top: 0;
@@ -297,7 +296,6 @@
 
         <header id="global-header">
             <div class="header-left">
-                <span class="logo-icon">🏛️</span>
                 <span class="logo-text">LOST@UET</span>
             </div>
             <nav class="header-nav">
@@ -325,13 +323,13 @@
                     <p>EXPLORE · DISCOVER · BELONG</p>
                 </div>
 
-                <h2>📝 SIGN UP</h2>
+                <h2>SIGN UP</h2>
 
                 <!-- Rate Limit Message -->
                 <div class="auth-rate-limit" id="rateLimitMessage">
-                    ⚠️ Too many signup attempts. Please wait <span class="timer" id="countdownTimer">5:00</span>
+                     Too many signup attempts. Please wait <span class="timer" id="countdownTimer">5:00</span>
                     <div class="workaround">
-                        💡 Already have an account? <a href="index.html">Login here</a>
+                         Already have an account? <a href="index.html">Login here</a>
                         <br>Or use a different email address.
                     </div>
                 </div>
@@ -375,10 +373,8 @@
             </div>
         </div>
 
-        <!-- ✅ VERIFICATION POPUP -->
         <div class="verification-overlay" id="verificationOverlay">
             <div class="verification-modal">
-                <span class="big-icon">📧</span>
                 <h2>CHECK YOUR EMAIL</h2>
                 <p>We've sent a verification link to:</p>
                 <div class="email-display" id="verificationEmail">user@email.com</div>
@@ -386,14 +382,14 @@
                     Please check your inbox and click the verification link to activate your account.
                     <br><br>
                     <span style="font-size:12px; color:var(--text-muted);">
-                        💡 Check your spam folder if you don't see it.
+                        -> Check your spam folder if you don't see it.
                     </span>
                 </p>
                 <button class="btn-yellow" onclick="window.location.href='index.html'">
                     GO TO LOGIN
                 </button>
                 <button class="btn-outline" id="resendVerificationBtn">
-                    🔄 Resend Verification Email
+                     Resend Verification Email
                 </button>
                 <div class="resend-status" id="resendStatus"></div>
             </div>
@@ -442,7 +438,7 @@
             } else if (strength <= 2) {
                 hint.textContent = '⚠️ Weak password';
             } else if (strength <= 4) {
-                hint.textContent = '👍 Medium password';
+                hint.textContent = '⚠️ Medium password';
             } else {
                 hint.textContent = '✅ Strong password';
             }
@@ -450,15 +446,9 @@
     </script>
 
     <script type="module">
-        // ========================================
-        // IMPORT AUTH FUNCTIONS
-        // ========================================
+       
         import { signUp, getCurrentUser, logout, signOut } from './js/auth.js';
         import { supabase } from './js/config.js';
-
-        // ========================================
-        // DOM ELEMENTS
-        // ========================================
         const signupBtn = document.getElementById('signupBtn');
         const usernameInput = document.getElementById('signupUsername');
         const emailInput = document.getElementById('signupEmail');
@@ -470,7 +460,7 @@
         const rateLimitMessage = document.getElementById('rateLimitMessage');
         const countdownTimer = document.getElementById('countdownTimer');
 
-        // Verification popup
+        
         const verificationOverlay = document.getElementById('verificationOverlay');
         const verificationEmail = document.getElementById('verificationEmail');
         const resendVerificationBtn = document.getElementById('resendVerificationBtn');
@@ -479,18 +469,15 @@
         let cooldownInterval = null;
         let currentSignupEmail = '';
 
-        // ========================================
-        // SHOW/HIDE HELPERS
-        // ========================================
         function showError(message) {
-            errorEl.textContent = '❌ ' + message;
+            errorEl.textContent = ' ' + message;
             errorEl.style.display = 'block';
             successEl.style.display = 'none';
             rateLimitMessage.style.display = 'none';
         }
 
         function showSuccess(message) {
-            successEl.textContent = '✅ ' + message;
+            successEl.textContent = ' ' + message;
             successEl.style.display = 'block';
             errorEl.style.display = 'none';
             rateLimitMessage.style.display = 'none';
@@ -515,9 +502,7 @@
             }
         }
 
-        // ========================================
-        // RATE LIMIT COUNTDOWN TIMER
-        // ========================================
+        
         function startCooldownTimer(seconds) {
             if (cooldownInterval) {
                 clearInterval(cooldownInterval);
@@ -543,11 +528,9 @@
             cooldownInterval = setInterval(updateTimer, 1000);
         }
 
-        // ========================================
-        // ✅ RESEND VERIFICATION EMAIL
-        // ========================================
+        
         async function resendVerification(email) {
-            resendStatus.textContent = '⏳ Sending...';
+            resendStatus.textContent = 'Sending...';
             resendStatus.className = 'resend-status';
 
             try {
@@ -567,15 +550,13 @@
                 if (error.message?.includes('rate_limit')) {
                     resendStatus.textContent = '⚠️ Too many requests. Please wait a few minutes.';
                 } else {
-                    resendStatus.textContent = '❌ Failed to resend: ' + error.message;
+                    resendStatus.textContent = ' Failed to resend: ' + error.message;
                 }
                 resendStatus.className = 'resend-status error';
             }
         }
 
-        // ========================================
-        // ✅ HANDLE SIGNUP
-        // ========================================
+        
         async function handleSignup() {
             hideMessages();
 
@@ -628,18 +609,15 @@
                 console.log('📝 Signup result:', result);
                 
                 if (result && result.user) {
-                    // ✅ Store email for verification popup
+                    
                     currentSignupEmail = email;
 
-                    // ✅ Show verification popup
                     verificationEmail.textContent = email;
                     verificationOverlay.classList.add('active');
                     
-                    // Reset resend status
                     resendStatus.textContent = '';
                     resendStatus.className = 'resend-status';
 
-                    // Clear form
                     usernameInput.value = '';
                     emailInput.value = '';
                     passwordInput.value = '';
@@ -655,7 +633,7 @@
                     setLoading(false);
                 }
             } catch (error) {
-                console.error('❌ Signup error:', error);
+                console.error(' ⚠️Signup error:', error);
                 let errorMessage = error.message || 'Something went wrong.';
                 
                 if (errorMessage.includes('rate_limit') || errorMessage.includes('too many')) {
@@ -674,9 +652,6 @@
             }
         }
 
-        // ========================================
-        // EVENT LISTENERS
-        // ========================================
         signupBtn.addEventListener('click', handleSignup);
 
         // Resend verification email
@@ -700,11 +675,8 @@
             }
         });
 
-        // ========================================
-        // INIT
-        // ========================================
-        // No checkAuth() - always show signup form
-        console.log('📝 Signup page loaded');
+       
+        console.log(' Signup page loaded');
     </script>
 </body>
 </html>

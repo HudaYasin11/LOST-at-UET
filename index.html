@@ -147,7 +147,6 @@
         <!-- HEADER -->
         <header id="global-header">
             <div class="header-left">
-                <span class="logo-icon">🏛️</span>
                 <span class="logo-text">LOST@UET</span>
             </div>
             <nav class="header-nav">
@@ -240,13 +239,13 @@
         // SHOW/HIDE HELPERS
         // ========================================
         function showError(message) {
-            errorEl.textContent = '❌ ' + message;
+            errorEl.textContent = '' + message;
             errorEl.style.display = 'block';
             successEl.style.display = 'none';
         }
 
         function showSuccess(message) {
-            successEl.textContent = '✅ ' + message;
+            successEl.textContent = '' + message;
             successEl.style.display = 'block';
             errorEl.style.display = 'none';
         }
@@ -334,15 +333,6 @@
                 passwordInput.focus();
             }
         });
-
-        // ========================================
-        // ✅ FIXED: REMOVED AUTO-LOGIN
-        // Only check auth on protected pages, NOT on login page
-        // ========================================
-        // The login page should NOT auto-redirect.
-        // User must click the LOGIN button.
-        // If they are already logged in and go to login page,
-        // they can still see the login page.
         
         console.log(' Login page loaded. Please enter your credentials.');
     </script>
