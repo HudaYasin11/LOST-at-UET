@@ -4,6 +4,7 @@
 
 import * as api from './api.js';
 import { questsData } from './questData.js';
+import { supabase } from './config.js';
 
 // ========================================
 // STATE
@@ -64,9 +65,14 @@ export async function loadGameData() {
         console.log('📡 User result:', userResult);
         
         if (userResult.success) {
+            // ✅ Get completed quests from database
+            const completedQuests = await getUserCompletedQuests(userResult.data.id);
+            userResult.data.completedQuests = completedQuests;
+            
             appState.user = userResult.data;
             appState.isAuthenticated = true;
             console.log('✅ User authenticated. Discoveries:', appState.user?.discoveries?.length || 0);
+            console.log('✅ Completed Quests from DB:', appState.user?.completedQuests || []);
         } else {
             console.warn('❌ Not authenticated:', userResult.error);
             appState.isAuthenticated = false;
@@ -93,9 +99,6 @@ export async function loadGameData() {
             appState.quests = [];
         }
         
-        // ✅ Auto-complete quests based on discoveries
-        await syncDiscoveredQuests();
-        
         appState.loading = false;
         notifyListeners();
         console.log('✅ loadGameData: Complete!');
@@ -111,15 +114,87 @@ export async function loadGameData() {
 }
 
 // ========================================
-// REFRESH DATA - WITH NOTIFY
+// ✅ GET USER COMPLETED QUESTS FROM DB
+// ========================================
+
+export async function getUserCompletedQuests(userId) {
+    try {
+        const { data, error } = await supabase
+            .from('quest_completions')
+            .select('quest_id')
+            .eq('user_id', userId);
+
+        if (error) {
+            console.error('❌ Error fetching completed quests:', error);
+            return [];
+        }
+
+        const questIds = data.map(item => item.quest_id);
+        console.log('✅ Fetched completed quests from DB:', questIds);
+        return questIds;
+    } catch (error) {
+        console.error('❌ Error fetching completed quests:', error);
+        return [];
+    }
+}
+
+// ========================================
+// ✅ SAVE COMPLETED QUEST TO DB
+// ========================================
+
+export async function saveCompletedQuestToDB(userId, questId) {
+    try {
+        // Check if already completed
+        const { data: existing, error: checkError } = await supabase
+            .from('quest_completions')
+            .select('id')
+            .eq('user_id', userId)
+            .eq('quest_id', questId)
+            .single();
+
+        if (existing) {
+            console.log('⚠️ Quest already completed in DB');
+            return { success: true, alreadyExists: true };
+        }
+
+        // Insert new completion
+        const { data, error } = await supabase
+            .from('quest_completions')
+            .insert({
+                user_id: userId,
+                quest_id: questId,
+                completed_at: new Date().toISOString()
+            })
+            .select();
+
+        if (error) {
+            console.error('❌ Error saving quest completion:', error);
+            return { success: false, error: error.message };
+        }
+
+        console.log('✅ Quest completion saved to DB:', questId);
+        return { success: true, data: data };
+    } catch (error) {
+        console.error('❌ Error saving quest completion:', error);
+        return { success: false, error: error.message };
+    }
+}
+
+// ========================================
+// REFRESH DATA
 // ========================================
 
 export async function refreshUserData() {
     console.log('🔄 Refreshing user data...');
     const result = await api.getCurrentUser();
     if (result.success) {
+        // ✅ Get completed quests from database
+        const completedQuests = await getUserCompletedQuests(result.data.id);
+        result.data.completedQuests = completedQuests;
+        
         appState.user = result.data;
         console.log('✅ User data refreshed. Discoveries:', appState.user?.discoveries?.length || 0);
+        console.log('✅ Completed Quests from DB:', appState.user?.completedQuests || []);
         notifyListeners();
     } else {
         console.warn('⚠️ Failed to refresh user data:', result.error);
@@ -154,45 +229,50 @@ export async function refreshQuests() {
 }
 
 // ========================================
-// ✅ AUTO-COMPLETE QUESTS (NO API CALL)
+// ✅ COMPLETE QUEST - SAVES TO DB
 // ========================================
 
-export async function syncDiscoveredQuests() {
-    if (!appState.user) return { success: true, completed: 0 };
-
-    const discoveries = appState.user.discoveries || [];
-    const completedQuests = appState.user.completedQuests || [];
+export async function completeQuest(questId) {
+    console.log(`🎯 Completing quest: ${questId}`);
     
-    // ✅ Find quests whose location has been discovered but not yet completed
-    const readyQuests = appState.quests.filter(quest =>
-        quest.location_id && discoveries.includes(quest.location_id) && !completedQuests.includes(quest.id)
-    );
-
-    if (!readyQuests.length) return { success: true, completed: 0 };
-
-    console.log(`🎯 Auto-completing ${readyQuests.length} quests locally...`);
-    
-    // ✅ Update completed quests locally (no API call)
-    if (!appState.user.completedQuests) {
-        appState.user.completedQuests = [];
+    if (!appState.user) {
+        return { success: false, error: 'No user logged in' };
     }
     
-    readyQuests.forEach(quest => {
-        if (!appState.user.completedQuests.includes(quest.id)) {
-            appState.user.completedQuests.push(quest.id);
-            console.log(`✅ Quest completed: ${quest.title}`);
-        }
-    });
+    const userId = appState.user.id;
+    const completedQuests = appState.user.completedQuests || [];
     
-    // ✅ Update XP
-    const totalXP = readyQuests.reduce((sum, q) => sum + (q.xp || 0), 0);
-    appState.user.xp = (appState.user.xp || 0) + totalXP;
+    // Check if already completed
+    if (completedQuests.includes(questId)) {
+        console.log('⚠️ Quest already completed');
+        return { success: false, error: 'Already completed' };
+    }
+    
+    // ✅ Save to database FIRST
+    const dbResult = await saveCompletedQuestToDB(userId, questId);
+    
+    if (!dbResult.success) {
+        console.error('❌ Failed to save to database:', dbResult.error);
+        // Still complete locally even if DB fails
+    }
+    
+    // ✅ Update local state
+    appState.user.completedQuests = [...completedQuests, questId];
+    
+    // Find quest to get XP
+    const quest = appState.quests.find(q => q.id === questId);
+    const xp = quest?.xp || 100;
+    appState.user.xp = (appState.user.xp || 0) + xp;
     appState.user.level = Math.floor(appState.user.xp / 100) + 1;
     
-    console.log(`📊 XP added: ${totalXP}, Total XP: ${appState.user.xp}, Level: ${appState.user.level}`);
+    console.log(`✅ Quest completed! +${xp} XP`);
+    console.log(`📊 Total XP: ${appState.user.xp}, Level: ${appState.user.level}`);
+    console.log(`📋 Completed quests:`, appState.user.completedQuests);
     
+    // ✅ Notify UI
     notifyListeners();
-    return { success: true, completed: readyQuests.length };
+    
+    return { success: true, data: { xp_awarded: xp, completedQuests: appState.user.completedQuests } };
 }
 
 // ========================================
@@ -215,55 +295,12 @@ export async function unlockLocation(locationId) {
         await refreshLocations();
         await refreshQuests();
         
-        // ✅ Auto-complete linked quests
-        await syncDiscoveredQuests();
-        
         notifyListeners();
-        
         return result;
     } catch (error) {
         console.error('❌ Unlock error:', error);
         return { success: false, error: error.message };
     }
-}
-
-export async function completeQuest(questId) {
-    console.log(`🎯 Manually completing quest: ${questId}`);
-    
-    // ✅ Try API first
-    try {
-        const result = await api.completeQuest(questId);
-        if (result.success) {
-            await refreshUserData();
-            await refreshQuests();
-            notifyListeners();
-            return result;
-        }
-    } catch (e) {
-        console.warn('⚠️ API failed, using local completion:', e);
-    }
-    
-    // ✅ FALLBACK: Complete locally
-    if (appState.user) {
-        if (!appState.user.completedQuests) {
-            appState.user.completedQuests = [];
-        }
-        if (!appState.user.completedQuests.includes(questId)) {
-            appState.user.completedQuests.push(questId);
-            
-            // Find quest to get XP
-            const quest = appState.quests.find(q => q.id === questId);
-            const xp = quest?.xp || 100;
-            appState.user.xp = (appState.user.xp || 0) + xp;
-            appState.user.level = Math.floor(appState.user.xp / 100) + 1;
-            
-            console.log(`✅ Quest completed locally! +${xp} XP`);
-            notifyListeners();
-            return { success: true, data: { xp_awarded: xp } };
-        }
-        return { success: false, error: 'Already completed' };
-    }
-    return { success: false, error: 'No user' };
 }
 
 export async function scanQR(qrCode) {
@@ -335,7 +372,6 @@ export default {
     refreshQuests,
     unlockLocation,
     completeQuest,
-    syncDiscoveredQuests,
     scanQR,
     getState,
     subscribe,
@@ -347,5 +383,7 @@ export default {
     getTotalLocations,
     getCompletionPercentage,
     isAuthenticated,
-    getLeaderboard
+    getLeaderboard,
+    getUserCompletedQuests,
+    saveCompletedQuestToDB
 };

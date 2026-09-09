@@ -124,17 +124,13 @@
             refreshLocations
         } from './js/dataService.js';
 
-        // ========================================
-        // DOM REFS
-        // ========================================
+        
         const grid = document.getElementById('discoveriesGrid');
         const displayName = document.getElementById('userDisplayName');
         const progressBar = document.getElementById('userProgressBar');
         const progressText = document.getElementById('userProgressText');
 
-        // ========================================
-        // SUBSCRIBE TO STATE CHANGES - AUTO UPDATE
-        // ========================================
+        
         subscribe((state) => {
             console.log('🔄 Discoveries page: State changed!');
             updateHeader();
@@ -142,9 +138,7 @@
             renderDiscoveries();
         });
 
-        // ========================================
-        // LOAD DATA
-        // ========================================
+      
         async function loadData() {
             try {
                 const user = await getCurrentUser();
@@ -165,9 +159,7 @@
             }
         }
 
-        // ========================================
-        // UPDATE HEADER
-        // ========================================
+        
         function updateHeader() {
             const state = getState();
             const user = state.user;
@@ -186,9 +178,7 @@
             }
         }
 
-        // ========================================
-        // UPDATE STATS - ALL COUNTS UPDATE HERE
-        // ========================================
+        
         function updateStats() {
             const discovered = getTotalDiscoveries();
             const total = getTotalLocations();
@@ -217,9 +207,7 @@
             if (totalXP) totalXP.textContent = xp;
         }
 
-        // ========================================
-        // RENDER DISCOVERIES
-        // ========================================
+      
         function renderDiscoveries() {
             if (!grid) return;
 
@@ -251,16 +239,12 @@
             }).join('');
         }
 
-        // ========================================
-        // OPEN LOCATION
-        // ========================================
+       
         window.openLocation = function(locationId) {
             window.location.href = `map.html?location=${locationId}`;
         };
 
-        // ========================================
-        // EXPORT/IMPORT
-        // ========================================
+       
         window.exportSave = function() {
             const state = getState();
             const data = {
@@ -295,18 +279,13 @@
             reader.readAsText(file);
         };
 
-        // ========================================
-        // PERIODIC REFRESH (Every 10 seconds)
-        // ========================================
         setInterval(async () => {
             console.log('🔄 Auto-refreshing discoveries...');
             await refreshUserData();
             await refreshLocations();
         }, 10000);
 
-        // ========================================
-        // INIT
-        // ========================================
+        
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', loadData);
         } else {
