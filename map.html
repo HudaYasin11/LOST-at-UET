@@ -663,8 +663,7 @@
 
             const positionedCount = filtered.filter(hasMapPosition).length;
             const note = document.getElementById('mapPositionNote');
-            if (note) note.textContent = positionedCount === filtered.length
-                ? 'Live campus positions' : `${positionedCount}/${filtered.length} precise API positions`;
+            if (note) note.textContent = `${positionedCount}/${filtered.length} precise API positions`;
 
             // While a category is being calibrated, show only its confirmed pins.
             // This prevents fallback positions from looking like verified locations.
