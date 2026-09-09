@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/campus-experience.css" />
 
     <style>
        
@@ -139,7 +140,7 @@
         }
     </style>
 </head>
-<body>
+<body class="campus-game">
     <div id="app">
 
         <!-- ======================================== -->
@@ -204,10 +205,10 @@
 
                     <!-- Map Controls -->
                     <div class="map-controls">
-                        <button class="map-btn" onclick="zoomIn()">+</button>
-                        <button class="map-btn" onclick="zoomOut()">−</button>
-                        <button class="map-btn" onclick="centerMap()">🧭</button>
-                        <button class="map-btn" onclick="findMyLocation()">🎯</button>
+                        <button id="mapZoomIn" class="map-btn" onclick="zoomIn()" aria-label="Zoom in" title="Zoom in">+</button>
+                        <button id="mapZoomOut" class="map-btn" onclick="zoomOut()" aria-label="Zoom out" title="Zoom out">−</button>
+                        <button class="map-btn" onclick="centerMap()" aria-label="Reset campus view" title="Reset campus view">🧭</button>
+                        <button class="map-btn" onclick="findMyLocation()" aria-label="Find my location" title="Find my location">🎯</button>
                     </div>
                 </div>
             </div>
@@ -323,6 +324,8 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script type="module">
+        import { createCampusExperience, gameMarkerMarkup } from './js/campus-experience.js';
+        import { revealDialogue, stopDialoguesWithin } from './js/retro-dialogue.js';
         import { getCurrentUser } from './js/auth.js';
         import { 
             loadGameData, 
@@ -348,9 +351,14 @@
         let markers = [];
         let userLocationMarker = null;
         let mapToastTimer = null;
+        let campusExperience = null;
+        let mapFrameObserver = null;
         // Coordinates for the integrated illustrated campus world (not GPS).
         const CAMPUS_BOUNDS = [[0, 0], [1024, 1536]];
         const CAMPUS_CENTER = [512, 768];
+        // A small bleed beyond the camera limits hides rounding seams at the edge.
+        // This is a viewport constraint only; image bounds and all pin coordinates stay unchanged.
+        const CAMPUS_VIEW_BOUNDS = [[8, 8], [1016, 1528]];
         const CATEGORY_LANES = {
             academic: [20, 44], food: [82, 36], sports: [24, 122],
             services: [70, 132], essential: [54, 82], 'student-life': [78, 102],
@@ -616,8 +624,12 @@
         function initMap() {
             const container = document.getElementById('campusMap');
             if (!container) return;
+            const previousView = map ? { center: map.getCenter(), zoom: map.getZoom() } : null;
+            const previewPosition = campusExperience?.getPlayerPosition();
 
             if (map) {
+                mapFrameObserver?.disconnect();
+                campusExperience?.destroy();
                 map.remove();
                 map = null;
             }
@@ -625,8 +637,11 @@
             map = L.map('campusMap', {
                 crs: L.CRS.Simple,
                 center: CAMPUS_CENTER,
-                minZoom: -2,
-                maxZoom: 1,
+                minZoom: 0,
+                maxZoom: 2,
+                maxBounds: CAMPUS_VIEW_BOUNDS,
+                maxBoundsViscosity: 1,
+                bounceAtZoomLimits: false,
                 zoom: 0,
                 zoomControl: false,
                 zoomAnimation: true,
@@ -639,15 +654,45 @@
             });
 
             L.imageOverlay('assets/uet-retro-campus-map-v2.png', CAMPUS_BOUNDS, { interactive: false }).addTo(map);
-            map.fitBounds(CAMPUS_BOUNDS, { padding: [8, 8] });
-            // Open at the central roundabout: a useful game-world starting viewpoint.
-            map.setView([540, 768], map.getZoom() + 0.5, { animate: false });
+            updateMapFrameLimits();
+            map.setView([420, 768], map.getMinZoom(), { animate: false });
+            if (previousView) map.setView(previousView.center, previousView.zoom, { animate: false });
             map.on('zoomend', updateMarkerLabels);
+            map.on('zoomend zoomlevelschange', updateZoomButtons);
+            map.on('resize', updateMapFrameLimits);
+            mapFrameObserver = new ResizeObserver(() => {
+                if (map) map.invalidateSize({ pan: false });
+            });
+            mapFrameObserver.observe(container);
 
             addLocationMarkers();
 
-            map.setMaxBounds([[-80, -120], [1104, 1656]]);
+            campusExperience = createCampusExperience({ map, locations: allLocations, getPosition: getMapPosition,
+                getState, getLocationStatus, viewDetails: id => window.openLocation(id),
+                scan: id => window.scanQR(id), markers, initialPlayerPosition: previewPosition });
+
             updateMarkerLabels();
+            updateZoomButtons();
+        }
+
+        function updateMapFrameLimits() {
+            if (!map) return;
+            const size = map.getSize(), snap = map.options.zoomSnap;
+            const height = CAMPUS_VIEW_BOUNDS[1][0] - CAMPUS_VIEW_BOUNDS[0][0];
+            const width = CAMPUS_VIEW_BOUNDS[1][1] - CAMPUS_VIEW_BOUNDS[0][1];
+            const minimum = Math.ceil(Math.log2(Math.max(size.x / width, size.y / height)) / snap) * snap;
+            map.stop();
+            map.setMaxZoom(Math.max(2, minimum + .5));
+            map.setMinZoom(minimum);
+            // setView clamps the center too, including after container/orientation changes.
+            map.setView(map.getCenter(), Math.max(map.getZoom(), minimum), { animate: false });
+            updateZoomButtons();
+        }
+
+        function updateZoomButtons() {
+            if (!map) return;
+            document.getElementById('mapZoomOut').disabled = map.getZoom() <= map.getMinZoom();
+            document.getElementById('mapZoomIn').disabled = map.getZoom() >= map.getMaxZoom();
         }
 
         // ========================================
@@ -675,29 +720,24 @@
                 const [lat, lng] = getMapPosition(loc);
                 
                 const isDiscovered = getLocationStatus(loc.id) === 'discovered';
-                const color = isDiscovered ? '#4bc46a' : loc.is_hidden ? '#a46bd7' : '#f2bc45';
-
                 const marker = L.marker([lat, lng], {
+                    title: loc.name,
+                    alt: loc.name,
                     icon: L.divIcon({
                         className: 'custom-marker',
-                        html: `<div class="world-pin" style="--marker-color:${color}">${isDiscovered ? '✦' : '🔒'}<b class="marker-name">${loc.name}</b></div>`,
-                        iconSize: [26, 30], iconAnchor: [13, 26], popupAnchor: [0, -26]
+                        html: gameMarkerMarkup(loc, isDiscovered),
+                        iconSize: [34, 40], iconAnchor: [17, 36], popupAnchor: [0, -36]
                     })
                 });
 
-                const popupContent = `
-                    <div class="game-popup">
-                        <div class="game-popup-title"><span>${loc.icon || '📍'}</span><strong>${loc.name}</strong></div>
-                        <div class="game-popup-meta">${loc.category || 'Campus'} · ${isDiscovered ? 'DISCOVERED' : 'LOCKED'}</div>
-                        <div class="game-popup-xp">✦ +${loc.xp || 0} XP</div>
-                        <button onclick="window.openLocation('${loc.id}')">${isDiscovered ? 'VIEW LOCATION' : 'HOW TO UNLOCK'}</button>
-                    </div>
-                `;
-
-                marker.bindPopup(popupContent, { maxWidth: 250 });
-
                 marker.on('click', function() {
-                    window.openLocation(loc.id);
+                    campusExperience?.select(loc);
+                });
+                marker.on('keypress', function(event) {
+                    if (event.originalEvent.key === 'Enter' || event.originalEvent.key === ' ') {
+                        L.DomEvent.preventDefault(event.originalEvent);
+                        campusExperience?.select(loc);
+                    }
                 });
 
                 marker.addTo(map);
@@ -708,14 +748,13 @@
             const requestedLocation = new URLSearchParams(window.location.search).get('location');
             const targetMarker = requestedLocation && markers.find(marker => marker.options.locationId === requestedLocation);
             if (targetMarker) {
-                map.flyTo(targetMarker.getLatLng(), 18);
-                targetMarker.openPopup();
+                map.setView(targetMarker.getLatLng(), 1, { animate: false });
             }
         }
 
         function updateMarkerLabels() {
             const container = document.getElementById('campusMap');
-            if (container && map) container.classList.toggle('show-landmark-labels', map.getZoom() >= 2);
+            if (container && map) container.classList.toggle('show-landmark-labels', map.getZoom() >= 0.5);
         }
 
         function landmarkMarkup(loc, isDiscovered, color) {
@@ -882,11 +921,12 @@
             if (modal) {
                 modal.classList.add('active');
                 document.body.style.overflow = 'hidden';
+                revealDialogue(modal.querySelector('.modal-content'), '.modal-header h3, #locationDescription, #aerialCaption, #unlockedLocationName, .qr-desc');
             }
         }
 
         window.closeModal = function() {
-            document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
+            document.querySelectorAll('.modal').forEach(m => { stopDialoguesWithin(m); m.classList.remove('active'); });
             document.body.style.overflow = '';
         };
 
@@ -915,21 +955,22 @@
 
         window.centerMap = function() {
             if (map) {
-                map.fitBounds(CAMPUS_BOUNDS, { padding: [10, 10] });
+                map.setView(CAMPUS_CENTER, map.getMinZoom(), { animate: !matchMedia('(prefers-reduced-motion: reduce)').matches });
             }
         };
 
         window.findMyLocation = function() {
+            if (campusExperience) { campusExperience.findMe(); return; }
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
                     () => {
-                        if (map) map.fitBounds(CAMPUS_BOUNDS, { padding: [8, 8] });
+                        window.centerMap();
                         showMapToast('📍 UET CAMPUS VIEW CENTERED');
                     },
                     () => showMapToast('📍 GPS UNAVAILABLE — CAMPUS VIEW CENTERED')
                 );
             } else {
-                if (map) map.fitBounds(CAMPUS_BOUNDS, { padding: [10, 10] });
+                window.centerMap();
                 showMapToast('📍 CAMPUS VIEW CENTERED');
             }
         };
