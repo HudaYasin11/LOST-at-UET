@@ -33,6 +33,16 @@ const server = http.createServer((req,res) => {
     const browser=await chromium.launch({headless:true,channel:'msedge'});
     try {
         const page=await browser.newPage({viewport:{width:1366,height:768}});
+        await page.addInitScript(() => {
+            window.__campusAudioLevels = [];
+            for (const method of ['setValueAtTime', 'linearRampToValueAtTime']) {
+                const original = AudioParam.prototype[method];
+                AudioParam.prototype[method] = function(value, ...args) {
+                    if (value > .001 && value < 1) window.__campusAudioLevels.push(value);
+                    return original.call(this, value, ...args);
+                };
+            }
+        });
         const errors=[];page.on('pageerror',e=>{errors.push(e.message);console.error('PAGE:',e.message);});
         page.on('console',message=>{if(message.type()==='error')console.error('BROWSER:',message.text());});
         page.on('requestfailed',request=>console.error('REQUEST:',request.url(),request.failure()?.errorText));
@@ -104,6 +114,7 @@ const server = http.createServer((req,res) => {
         await page.locator('.world-destination:not([hidden])').waitFor();
         const destination = page.locator('.world-destination');
         await page.locator('.world-destination[data-typing="true"]').waitFor();
+        await page.waitForFunction(()=>window.__campusAudioLevels.includes(.06));
         const fullTitle = await destination.locator('h2 .retro-full').textContent();
         assert.equal(fullTitle,locations[0].name,'Assistive technology receives the entire title immediately');
         assert.ok((await destination.locator('h2 .retro-visual').textContent()).length < fullTitle.length,'The visible title starts partially typed');
@@ -156,6 +167,7 @@ const server = http.createServer((req,res) => {
         await page.keyboard.press('Escape');
         await page.getByRole('button',{name:/SOUND OFF/}).click();
         assert.equal(await page.getByRole('button',{name:/SOUND ON/}).getAttribute('aria-pressed'),'true');
+        assert.ok(await page.evaluate(()=>[.09,.12,.055].every(level=>window.__campusAudioLevels.includes(level))), 'Music uses the raised phone-speaker mix');
         await page.getByRole('button',{name:/SOUND ON/}).click();
         await page.getByRole('button',{name:'Food',exact:true}).click();
         assert.equal(await page.locator('.campus-hud').count(),1);

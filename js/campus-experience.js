@@ -21,7 +21,8 @@ export function gameMarkerMarkup(loc, discovered) {
     return `<div class="campus-landmark ${discovered ? 'is-discovered' : ''} ${loc.is_hidden ? 'is-secret' : ''}"><span class="landmark-emblem">${iconFor(loc)}</span><i>${discovered ? '✓' : '·'}</i><b class="landmark-label">${escape(loc.name)}</b></div>`;
 }
 
-// Original, quietly layered minor-key soundtrack. Starts only on a user gesture.
+// Original minor-key soundtrack, balanced for phone speakers. Device media volume
+// remains the final output control; playback still starts only on a user gesture.
 let music;
 function soundtrack() {
     if (music) return music;
@@ -39,10 +40,12 @@ function soundtrack() {
             oscillator.start(at); oscillator.stop(at + duration + .1);
             oscillator.onended = () => { oscillator.disconnect(); gain.disconnect(); };
         };
-        tone(146.83 * 2 ** (notes[step % notes.length] / 12), 1.2, .018, 'triangle');
+        tone(146.83 * 2 ** (notes[step % notes.length] / 12), 1.2, .09, 'triangle');
         if (step % 4 === 0) {
             const root = [73.42, 58.27, 65.41, 55][Math.floor(step / 8) % 4];
-            tone(root, 2.4, .03, 'sine'); tone(root * 3, 2.2, .008, 'sine');
+            // Keep headroom for overlapping notes and typing, with a clearer upper
+            // layer since small speakers reproduce it better than the deep bass.
+            tone(root, 2.4, .12, 'sine'); tone(root * 3, 2.2, .055, 'sine');
         }
         step++;
     }

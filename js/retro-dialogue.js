@@ -17,7 +17,8 @@ function keySound() {
         oscillator.type = 'square';
         oscillator.frequency.setValueAtTime(650 + Math.random() * 250, at);
         oscillator.frequency.exponentialRampToValueAtTime(180, at + .025);
-        gain.gain.setValueAtTime(.009, at);
+        // Audible on phone speakers, while leaving ample headroom for the music.
+        gain.gain.setValueAtTime(.06, at);
         gain.gain.exponentialRampToValueAtTime(.0001, at + .028);
         oscillator.connect(gain); gain.connect(audio.destination);
         oscillator.start(at); oscillator.stop(at + .03);
