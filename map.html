@@ -202,12 +202,21 @@
                     <div id="campusMap" aria-label="Interactive UET campus exploration map"></div>
                     <div class="map-vignette" aria-hidden="true"></div>
 
+                    <div id="placementPanel" style="position:absolute;top:16px;right:16px;z-index:1000;width:230px;background:#10233b;color:#fff;border:2px solid #f2bc45;border-radius:8px;padding:12px;display:none;box-shadow:0 4px 16px #0008;font-size:12px;">
+                        <strong style="display:block;color:#f2bc45;font-family:var(--font-pixel);margin-bottom:8px;">PLACE A LOCATION</strong>
+                        <select id="placementSelect" style="width:100%;margin-bottom:8px;background:#081426;color:#fff;border:1px solid #4895ef;padding:7px;border-radius:4px;"></select>
+                        <button id="startPlacementBtn" class="map-btn" style="width:100%;height:34px;font-size:11px;">PLACE ON MAP</button>
+                        <button id="exportPlacementBtn" class="map-btn" style="width:100%;height:30px;margin-top:6px;font-size:10px;">COPY SAVED COORDINATES</button>
+                        <small id="placementStatus" style="display:block;color:#b7c5d8;margin-top:8px;line-height:1.35;">Choose a location, then click its building on the map.</small>
+                    </div>
+
                     <!-- Map Controls -->
                     <div class="map-controls">
                         <button class="map-btn" onclick="zoomIn()">+</button>
                         <button class="map-btn" onclick="zoomOut()">−</button>
                         <button class="map-btn" onclick="centerMap()">🧭</button>
                         <button class="map-btn" onclick="findMyLocation()">🎯</button>
+                        <button class="map-btn" id="placementToggleBtn" title="Temporary placement mode">📌</button>
                     </div>
                 </div>
             </div>
@@ -348,6 +357,9 @@
         let markers = [];
         let userLocationMarker = null;
         let mapToastTimer = null;
+        let placementMode = false;
+        let placementLocationId = '';
+        let placementControlsInitialized = false;
         // Coordinates for the integrated illustrated campus world (not GPS).
         const CAMPUS_BOUNDS = [[0, 0], [1024, 1536]];
         const CAMPUS_CENTER = [512, 768];
@@ -497,6 +509,7 @@
                 allLocations = state.locations || [];
                 
                 console.log('📍 Locations loaded:', allLocations.length);
+                populatePlacementSelect();
                 
                 updateHeader();
                 updateStats();
@@ -632,6 +645,7 @@
             // Open at the central roundabout: a useful game-world starting viewpoint.
             map.setView([540, 768], map.getZoom() + 0.5, { animate: false });
             map.on('zoomend', updateMarkerLabels);
+            setupPlacementControls();
 
             addLocationMarkers();
 
@@ -701,6 +715,70 @@
                 map.flyTo(targetMarker.getLatLng(), 18);
                 targetMarker.openPopup();
             }
+        }
+
+        function populatePlacementSelect() {
+            const select = document.getElementById('placementSelect');
+            if (!select) return;
+            const saved = getSavedMapPositions();
+            const unplaced = allLocations.filter(loc => !hasMapPosition(loc) && !saved[loc.id]);
+            select.innerHTML = (unplaced.length ? unplaced : allLocations).map(loc =>
+                `<option value="${loc.id}">${loc.name}</option>`
+            ).join('');
+            if (!unplaced.length) {
+                const status = document.getElementById('placementStatus');
+                if (status) status.textContent = 'All locations have coordinates. Export to keep a backup.';
+            }
+        }
+
+        function handlePlacementClick(event) {
+            if (!placementMode || !placementLocationId) return;
+            const saved = getSavedMapPositions();
+            saved[placementLocationId] = [event.latlng.lat, event.latlng.lng];
+            localStorage.setItem(PLACEMENT_STORAGE_KEY, JSON.stringify(saved));
+            placementMode = false;
+            const location = allLocations.find(item => item.id === placementLocationId);
+            const status = document.getElementById('placementStatus');
+            if (status) status.textContent = `${location?.name || 'Location'} saved. Choose the next one.`;
+            const button = document.getElementById('startPlacementBtn');
+            if (button) button.textContent = 'PLACE ON MAP';
+            populatePlacementSelect();
+            addLocationMarkers();
+            showMapToast(`📌 ${location?.name || 'Location'} position saved`);
+        }
+
+        function setupPlacementControls() {
+            const panel = document.getElementById('placementPanel');
+            const toggle = document.getElementById('placementToggleBtn');
+            const select = document.getElementById('placementSelect');
+            const start = document.getElementById('startPlacementBtn');
+            const exportButton = document.getElementById('exportPlacementBtn');
+            if (!panel || !toggle || !select || !start || !exportButton) return;
+            if (!placementControlsInitialized) {
+                toggle.addEventListener('click', () => {
+                    panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+                });
+                start.addEventListener('click', () => {
+                    placementLocationId = select.value;
+                    placementMode = Boolean(placementLocationId);
+                    start.textContent = placementMode ? 'CLICK THE BUILDING' : 'PLACE ON MAP';
+                    const location = allLocations.find(item => item.id === placementLocationId);
+                    const status = document.getElementById('placementStatus');
+                    if (status) status.textContent = placementMode
+                        ? `Click the exact map spot for ${location?.name || 'this location'}.`
+                        : 'Choose a location, then click its building on the map.';
+                });
+                exportButton.addEventListener('click', async () => {
+                    const text = JSON.stringify(getSavedMapPositions(), null, 2);
+                    try { await navigator.clipboard.writeText(text); }
+                    catch { window.prompt('Copy these coordinates:', text); }
+                    const status = document.getElementById('placementStatus');
+                    if (status) status.textContent = 'Coordinates copied. Send them to me when finished.';
+                });
+                placementControlsInitialized = true;
+            }
+            populatePlacementSelect();
+            map.on('click', handlePlacementClick);
         }
 
         function updateMarkerLabels() {
