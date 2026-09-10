@@ -363,8 +363,10 @@ export const societyDetails = {
     "reviewedAt": "2026-09-10"
   },
   "islamic": {
-    "instagram": "https://www.instagram.com/islamic_society_uet/",
+    "instagram": "https://www.instagram.com/uet_islamicsociety/",
     "links": [],
+    "logo": "assets/societies/islamic.jpg",
+    "logoSource": "https://www.instagram.com/uet_islamicsociety/",
     "reviewedAt": "2026-09-10"
   },
   "media": {

@@ -249,5 +249,12 @@
     "label": "ASME UET Instagram profile",
     "width": 200,
     "height": 200
+  },
+  "islamic": {
+    "path": "assets/societies/islamic.jpg",
+    "source": "https://www.instagram.com/uet_islamicsociety/",
+    "label": "Islamic Society UET Instagram profile",
+    "width": 200,
+    "height": 200
   }
 }
