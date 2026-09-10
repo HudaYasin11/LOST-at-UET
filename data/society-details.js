@@ -41,7 +41,7 @@ export const societyDetails = {
     "reviewedAt": "2026-09-10"
   },
   "spet": {
-    "instagram": "https://www.instagram.com/spet_uet_lahore/",
+    "instagram": "https://www.instagram.com/spet_uetofficial/",
     "links": [
       {
         "label": "Department page",
@@ -49,7 +49,7 @@ export const societyDetails = {
       }
     ],
     "logo": "assets/societies/spet.jpg",
-    "logoSource": "https://polymer.uet.edu.pk/sample-page/technical-societies/society-of-polymer-engineers-and-technologists-spet/",
+    "logoSource": "https://www.instagram.com/spet_uetofficial/",
     "reviewedAt": "2026-09-10"
   },
   "spid": {

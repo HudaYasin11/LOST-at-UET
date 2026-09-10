@@ -22,10 +22,10 @@
   },
   "spet": {
     "path": "assets/societies/spet.jpg",
-    "source": "https://polymer.uet.edu.pk/sample-page/technical-societies/society-of-polymer-engineers-and-technologists-spet/",
-    "label": "SPET logo on the approved department page",
-    "width": 150,
-    "height": 150
+    "source": "https://www.instagram.com/spet_uetofficial/",
+    "label": "SPET UET Instagram profile",
+    "width": 200,
+    "height": 200
   },
   "science": {
     "path": "assets/societies/science.jpg",
