@@ -169,8 +169,10 @@ export const societyDetails = {
     "reviewedAt": "2026-09-10"
   },
   "uraan": {
-    "instagram": "https://www.instagram.com/uraan_uet/",
+    "instagram": "https://www.instagram.com/info_uraanofficial/",
     "links": [],
+    "logo": "assets/societies/uraan.jpg",
+    "logoSource": "https://www.instagram.com/info_uraanofficial/",
     "reviewedAt": "2026-09-10"
   },
   "gdg": {

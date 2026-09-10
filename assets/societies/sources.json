@@ -227,5 +227,12 @@
     "label": "AED Student Chapter Instagram profile",
     "width": 200,
     "height": 200
+  },
+  "uraan": {
+    "path": "assets/societies/uraan.jpg",
+    "source": "https://www.instagram.com/info_uraanofficial/",
+    "label": "Uraan Instagram profile",
+    "width": 200,
+    "height": 200
   }
 }
