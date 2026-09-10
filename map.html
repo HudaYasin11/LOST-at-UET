@@ -154,6 +154,7 @@
                 <a href="map.html" class="active">Map</a>
                 <a href="quests.html">Quests</a>
                 <a href="discoveries.html">Discoveries</a>
+                <a href="faq.html">FAQ</a>
             </nav>
             <div class="header-profile" id="userProfile">
                 <div class="avatar">👤</div>
@@ -212,7 +213,6 @@
                 </div>
             </div>
 
-            <!-- Stats Bar - Real Data -->
             <div class="stats-bar">
                 <div class="stat-item">
                     
@@ -236,13 +236,11 @@
                 </span>
             </h3>
             <div id="locationsCardsContainer" class="locations-cards-container">
-                <!-- Location cards rendered by JavaScript -->
+             
             </div>
         </section>
 
-        <!-- ======================================== -->
-        <!-- MODAL: LOCATION DETAILS -->
-        <!-- ======================================== -->
+        
         <div id="location-modal" class="modal">
             <div class="modal-content">
                 <div class="modal-header">
@@ -284,14 +282,12 @@
             </div>
         </div>
 
-        <!-- ======================================== -->
-        <!-- MODAL: QR UNLOCK SUCCESS -->
-        <!-- ======================================== -->
+     
         <div id="qr-modal" class="modal">
             <div class="modal-content qr-modal">
                 <div class="qr-sparkles">✦ ✦ ✦</div>
-                <div class="qr-icon">📱</div>
-                <h2>🎉 LOCATION UNLOCKED!</h2>
+                <div class="qr-icon"></div>
+                <h2> LOCATION UNLOCKED!</h2>
                 <div class="qr-building">🏛️</div>
                 <h3 id="unlockedLocationName">CS DEPARTMENT</h3>
                 <p class="qr-xp" id="unlockedXP">+100 XP</p>
@@ -308,6 +304,7 @@
             <a href="map.html" class="active"><i class="fas fa-map"></i> Map</a>
             <a href="quests.html"><i class="fas fa-tasks"></i> Quests</a>
             <a href="discoveries.html"><i class="fas fa-trophy"></i> Discoveries</a>
+         <a href="faq.html"> <i class="fas fa-question-circle"></i> FAQ</a>
         </nav>
 
         <nav class="mobile-nav">
@@ -315,11 +312,12 @@
             <a href="map.html" class="active"><i class="fas fa-map"></i> Map</a>
             <a href="quests.html"><i class="fas fa-tasks"></i> Quests</a>
             <a href="discoveries.html"><i class="fas fa-trophy"></i> Discoveries</a>
+            <a href="faq.html"><i class="fas fa-question-circle"></i> FAQ</a>
         </nav>
 
     </div>
 
-    <!-- Leaflet JS -->
+  
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script type="module">
@@ -339,9 +337,7 @@
         import { getLocations, getLocation } from './js/api.js';
         import { getBuildingIcon } from './js/building-icons.js';
 
-        // ========================================
-        // STATE
-        // ========================================
+        
         let currentFilter = 'all';
         let allLocations = [];
         let map = null;
@@ -467,18 +463,13 @@
             return Object.entries(AERIAL_VIEWS).find(([key]) => name.includes(key))?.[1] || null;
         }
 
-        // ========================================
-        // DOM REFS
-        // ========================================
+        
         const cardsContainer = document.getElementById('locationsCardsContainer');
         const locationCount = document.getElementById('locationCount');
         const displayName = document.getElementById('userDisplayName');
         const progressBar = document.getElementById('userProgressBar');
         const progressText = document.getElementById('userProgressText');
 
-        // ========================================
-        // LOAD DATA
-        // ========================================
         async function loadData() {
             try {
                 console.log('🔄 Loading data...');
@@ -508,9 +499,7 @@
             }
         }
 
-        // ========================================
-        // UPDATE HEADER
-        // ========================================
+      
         function updateHeader() {
             const state = getState();
             const user = state.user;
@@ -529,9 +518,7 @@
             }
         }
 
-        // ========================================
-        // UPDATE STATS
-        // ========================================
+        
         function updateStats() {
             const xpEl = document.getElementById('mapXP');
             const discoveriesEl = document.getElementById('mapDiscoveries');
@@ -542,9 +529,7 @@
             if (levelEl) levelEl.textContent = 'Level ' + getLevel();
         }
 
-        // ========================================
-        // RENDER LOCATION CARDS
-        // ========================================
+       
         function renderLocationCards() {
             if (!cardsContainer) return;
 
@@ -599,9 +584,7 @@
             }).join('');
         }
 
-        // ========================================
-        // INIT MAP (Leaflet)
-        // ========================================
+       
         function initMap() {
             const container = document.getElementById('campusMap');
             if (!container) return;
@@ -639,9 +622,7 @@
             updateMarkerLabels();
         }
 
-        // ========================================
-        // ADD LOCATION MARKERS
-        // ========================================
+       
         function addLocationMarkers() {
             markers.forEach(marker => map.removeLayer(marker));
             markers = [];
@@ -851,9 +832,6 @@
             window.location.href = `qr.html?location=${locationId}`;
         };
 
-        // ========================================
-        // FILTERS
-        // ========================================
         document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -864,9 +842,6 @@
             });
         });
 
-        // ========================================
-        // MODAL CONTROLS
-        // ========================================
         function openModal(id) {
             const modal = document.getElementById(id);
             if (modal) {
@@ -892,9 +867,6 @@
             }
         });
 
-        // ========================================
-        // MAP CONTROLS
-        // ========================================
         window.zoomIn = function() {
             if (map) map.zoomIn();
         };
@@ -938,12 +910,10 @@
         };
 
         window.startQuestForLocation = function(locationId) {
-            alert('🎯 Starting quest for this location!');
+            alert(' Starting quest for this location!');
         };
 
-        // ========================================
-        // INIT
-        // ========================================
+        
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', loadData);
         } else {
