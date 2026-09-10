@@ -1,10 +1,10 @@
 {
   "ashrae": {
     "path": "assets/societies/ashrae.jpg",
-    "source": "https://pk.linkedin.com/company/ashrae-uet-lahore-official",
-    "label": "ASHRAE UET Lahore Student Branch",
-    "width": 100,
-    "height": 100
+    "source": "https://www.instagram.com/ashraeuetlahore/",
+    "label": "ASHRAE UET Lahore Instagram profile",
+    "width": 200,
+    "height": 200
   },
   "spe": {
     "path": "assets/societies/spe.jpg",
