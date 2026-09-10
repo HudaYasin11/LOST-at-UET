@@ -341,7 +341,7 @@ export const societyDetails = {
     "reviewedAt": "2026-09-10"
   },
   "music": {
-    "instagram": "https://www.instagram.com/uetmusic/",
+    "instagram": "https://www.instagram.com/musicsocietyuet/",
     "links": [
       {
         "label": "LinkedIn",
