@@ -39,12 +39,8 @@ async function apiRequest(endpoint, method = 'GET', data = null) {
     const url = `${API_BASE_URL}${endpoint}`;
     console.log(`🌐 API Request: ${method} ${url}`);
     
-    const isPublic = endpoint === '/auth/login' || endpoint === '/auth/signup' ||
-        (method === 'GET' && (
-            endpoint.startsWith('/locations') ||
-            endpoint.startsWith('/quests') ||
-            endpoint.startsWith('/users/leaderboard')
-        ));
+    const publicEndpoints = ['/auth/login', '/auth/signup', '/locations', '/quests', '/users/leaderboard'];
+    const isPublic = publicEndpoints.some(e => endpoint.includes(e));
     
     const headers = {
         'Content-Type': 'application/json',
@@ -158,13 +154,9 @@ export async function getLocation(locationId) {
     return result;
 }
 
-// ========================================
 // ✅ FIXED: locationId → location_id
-// ========================================
-
 export async function unlockLocation(locationId) {
     console.log(`🔓 API: Unlocking ${locationId}`);
-    // ✅ The API expects "location_id" with an underscore
     const result = await apiRequest('/discover', 'POST', { location_id: locationId });
     console.log(`🔓 API Result:`, result);
     return result;

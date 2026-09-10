@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>FAQ - LOST@UET</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    
+    <style>
+        /* FAQ Page Styles */
+        .faq-container {
+            padding: 16px 20px 80px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .faq-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .faq-header h1 {
+            font-family: var(--font-pixel);
+            font-size: 24px;
+            color: var(--text-yellow);
+            margin-bottom: 8px;
+        }
+
+        .faq-header p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .faq-header .creators {
+            color: var(--text-muted);
+            font-size: 12px;
+            margin-top: 6px;
+            font-family: var(--font-body);
+        }
+
+        .faq-header .creators .highlight {
+            color: var(--text-yellow);
+            font-weight: 600;
+        }
+
+        /* FAQ Search */
+        .faq-search {
+            margin-bottom: 24px;
+        }
+
+        .faq-search input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border-blue);
+            border-radius: 8px;
+            background: var(--dark-bg);
+            color: var(--text-white);
+            font-size: 14px;
+            font-family: var(--font-body);
+            transition: border-color 0.2s;
+        }
+
+        .faq-search input:focus {
+            outline: none;
+            border-color: var(--text-yellow);
+        }
+
+        .faq-search input::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* FAQ Categories */
+        .faq-categories {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+
+        .faq-categories .category-btn {
+            padding: 6px 16px;
+            border: 2px solid var(--border-blue);
+            border-radius: 20px;
+            background: transparent;
+            color: var(--text-muted);
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .faq-categories .category-btn:hover {
+            border-color: var(--text-yellow);
+            color: var(--text-white);
+        }
+
+        .faq-categories .category-btn.active {
+            background: var(--text-yellow);
+            color: var(--dark-bg);
+            border-color: var(--text-yellow);
+        }
+
+        /* FAQ Accordion */
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .faq-item {
+            background: var(--card-bg);
+            border-radius: 10px;
+            border: 1px solid var(--border-blue);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            border-color: var(--text-yellow);
+        }
+
+        .faq-item .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            cursor: pointer;
+            transition: background 0.2s;
+            gap: 12px;
+        }
+
+        .faq-item .faq-question:hover {
+            background: rgba(108, 99, 255, 0.05);
+        }
+
+        .faq-item .faq-question .q-left {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .faq-item .faq-question .q-icon {
+            color: var(--text-yellow);
+            font-weight: 700;
+            font-size: 14px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .faq-item .faq-question .q-text {
+            color: var(--text-white);
+            font-weight: 600;
+            font-size: 15px;
+            line-height: 1.4;
+        }
+
+        .faq-item .faq-question .q-arrow {
+            color: var(--text-muted);
+            font-size: 16px;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .faq-item.active .faq-question .q-arrow {
+            transform: rotate(180deg);
+            color: var(--text-yellow);
+        }
+
+        .faq-item .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.3s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 600px;
+            padding: 0 20px 16px 20px;
+        }
+
+        .faq-item .faq-answer .a-content {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.8;
+            padding-top: 4px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .faq-item .faq-answer .a-content .highlight {
+            color: var(--text-yellow);
+            font-weight: 600;
+        }
+
+        .faq-item .faq-answer .a-content .highlight-green {
+            color: #4CAF50;
+            font-weight: 600;
+        }
+
+        .faq-item .faq-answer .a-content .highlight-blue {
+            color: #4895EF;
+            font-weight: 600;
+        }
+
+        .faq-item .faq-answer .a-content ul {
+            margin: 8px 0 0 20px;
+            list-style-type: disc;
+        }
+
+        .faq-item .faq-answer .a-content ul li {
+            margin-bottom: 4px;
+        }
+
+        .faq-item .faq-answer .a-content .emoji-big {
+            font-size: 20px;
+            margin-right: 4px;
+        }
+
+        /* No Results */
+        .faq-no-results {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+            display: none;
+        }
+
+        .faq-no-results .no-results-icon {
+            font-size: 48px;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        /* Back to Top */
+        .faq-back-top {
+            text-align: center;
+            margin-top: 24px;
+        }
+
+        .faq-back-top button {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border-blue);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-family: var(--font-body);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .faq-back-top button:hover {
+            border-color: var(--text-yellow);
+            color: var(--text-white);
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .faq-container {
+                padding: 12px 16px 80px;
+            }
+
+            .faq-item .faq-question {
+                padding: 14px 16px;
+            }
+
+            .faq-item .faq-question .q-text {
+                font-size: 14px;
+            }
+
+            .faq-categories .category-btn {
+                font-size: 11px;
+                padding: 4px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+
+        <!-- HEADER -->
+        <header id="global-header">
+            <div class="header-left">
+                <span class="logo-text">LOST@UET</span>
+            </div>
+            <nav class="header-nav">
+                <a href="home.html">Home</a>
+                <a href="map.html">Map</a>
+                <a href="quests.html">Quests</a>
+                <a href="discoveries.html">Discoveries</a>
+                <a href="faq.html" class="active">FAQ</a>
+            </nav>
+            <div class="header-profile" id="userProfile">
+                <div class="avatar">👤</div>
+                <div class="profile-info">
+                    <span class="level-text" id="userDisplayName">Explorer</span>
+                    <div class="mini-progress">
+                        <div class="mini-progress-bar" id="userProgressBar" style="width:0%;"></div>
+                    </div>
+                    <span class="progress-text" id="userProgressText">0/42</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- FAQ PAGE -->
+        <section class="page active">
+            <div class="faq-container">
+
+                <!-- Header -->
+                <div class="faq-header">
+                    <h1>FREQUENTLY ASKED QUESTIONS</h1>
+                    <p>Your ultimate guide to UET Lahore</p>
+                    
+                </div>
+
+                <!-- FAQ List -->
+                <div class="faq-list" id="faqList">
+
+                    <!-- FAQ 1: What is LOST@UET? -->
+                    <div class="faq-item" data-category="general">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <div class="q-left">
+                                <span class="q-icon">Q</span>
+                                <span class="q-text">What is LOST@UET?</span>
+                            </div>
+                            <span class="q-arrow">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="a-content">
+                                <span class="highlight">LOST@UET</span> is a gamified campus exploration app designed to help you discover the University of Engineering & Technology, Lahore  
+                                <br><br>
+                                Explore <span class="highlight">50 locations</span>, scan QR codes, unlock discoveries, earn XP, complete quests, and become a true UET Explorer!
+                               
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FAQ 2: Who created LOST@UET? -->
+                    <div class="faq-item" data-category="general">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <div class="q-left">
+                                <span class="q-icon">Q</span>
+                                <span class="q-text">Who created LOST@UET?</span>
+                            </div>
+                            <span class="q-arrow">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="a-content">
+                                <span class="highlight">LOST@UET</span> was created by two passionate CS students:
+                                <br><br>
+                                👩‍💻 <span class="highlight">Huda Yasin & Hamda Sami</span> 
+                               
+                                <br><br>
+                                🎓 Both are from the <span class="highlight-blue">CS '25</span> batch at UET Lahore.
+                                <br><br>
+                                💡 This project was built as a fun side project to help students explore and navigate campus in a fun and interactive way!
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FAQ 3: How do I start exploring? -->
+                    <div class="faq-item" data-category="general">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <div class="q-left">
+                                <span class="q-icon">Q</span>
+                                <span class="q-text">How do I start exploring?</span>
+                            </div>
+                            <span class="q-arrow">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="a-content">
+                                It's super easy! 🚀
+                                <br><br>
+                                1️⃣ <span class="highlight">Create an account</span> or <span class="highlight">Log in</span><br>
+                                2️⃣ Head to the <span class="highlight">Map</span> page<br>
+                                3️⃣ Walk to a location on campus<br>
+                                4️⃣ <span class="highlight">Scan the QR code</span> at that location<br>
+                                5️⃣ <span class="highlight-green">Location unlocked!</span> You earn XP!
+                                <br><br>
+                                💡 <span class="highlight-blue">Pro Tip:</span> Start with locations near you and work your way across campus!
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FAQ 4: Is there wifi on campus? -->
+                    <div class="faq-item" data-category="facilities">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <div class="q-left">
+                                <span class="q-icon">Q</span>
+                                <span class="q-text">Is there Wi-Fi on campus?</span>
+                            </div>
+                            <span class="q-arrow">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="a-content">
+                                 <span class="highlight-green">Yes!</span> UET Lahore has <span class="highlight">eduroam</span> available across the entire campus.
+                                <br><br>
+                                📶 You can access it once you receive your <span class="highlight">university credentials</span> (student ID and password).
+                                <br><br>
+                                💡 <span class="highlight-blue">Tip:</span> If you're having trouble connecting, visit the IT help desk for assistance.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FAQ 5: How to get to UET? -->
+                    <div class="faq-item" data-category="campus">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <div class="q-left">
+                                <span class="q-icon">Q</span>
+                                <span class="q-text">How do I get to UET?</span>
+                            </div>
+                            <span class="q-arrow">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="a-content">
+                                <span class="highlight">Bus Schedule:</span> You can access the official bus schedule through the <span class="highlight-blue">UET official website</span>.
+                                <br><br>
+                                <span class="highlight">Orange Line Metro:</span> The <span class="highlight">Sultanpura</span> and <span class="highlight">UET</span> Orange Line stations are right at the university's doorstep!
+                                <br><br>
+                                💡 <span class="highlight-blue">Tip:</span> The Orange Line is the fastest and most convenient way to reach campus.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ======================================== -->
+                    <!-- CAMPUS & LOCATIONS -->
+                    <!-- ======================================== -->
+
+                    <!-- FAQ 6: Where is the library? -->
+                    <div class="faq-item" data-category="campus">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <div class="q-left">
+                                <span class="q-icon">Q</span>
+                                <span class="q-text"> Where is the library and what are its timings?</span>
+                            </div>
+                            <span class="q-arrow">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="a-content">
+                                📚 The <span class="highlight">UET Central Library</span> is located near the enterance.
+                                <br><br>
+                                <span class="highlight">🕐 Timings:</span>
+                                <ul>
+                                    <li><span class="highlight-blue">Monday to Friday:</span> 08:00 AM – 04:00 PM</li>
+                                    <li><span class="highlight">Friday Prayer Break:</span> 12:30 PM – 02:00 PM</li>
+                                    <li><span class="highlight">Reading Hall (Mon-Fri):</span> 04:00 PM – 10:00 PM</li>
+                                    <li><span class="highlight">Reading Hall (Exam Week):</span> 04:00 PM – 12:00 AM (Midnight)</li>
+                                    <li><span class="highlight-blue">Saturday & Sunday:</span> 10:00 AM – 10:00 PM</li>
+                                </ul>
+                                💡 <span class="highlight-blue">Pro Tip:</span> During exam season, the reading hall stays open until midnight!
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FAQ 7: Where is the prayer room? -->
+                    <div class="faq-item" data-category="campus">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <div class="q-left">
+                                <span class="q-icon">Q</span>
+                                <span class="q-text"> Where are the prayer facilities on campus?</span>
+                            </div>
+                            <span class="q-arrow">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="a-content">
+                                There are <span class="highlight">three main prayer spots</span> on campus:
+                                <br><br>
+                                1️⃣ <span class="highlight">Jamia Masjid UET</span> — The main mosque located near the academic block (for everyone)
+                                <br>
+                                2️⃣ <span class="highlight">Library Prayer Room</span> — A quiet prayer space inside the library
+                                <br>
+                                3️⃣ <span class="highlight">GSSC (Girls)</span> — Top floor prayer area dedicated for female students
+                                <br><br>
+                                💡 <span class="highlight-blue">Tip:</span> All prayer areas are well-maintained and easily accessible.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FAQ 8: How many cafes does UET have? -->
+                    <div class="faq-item" data-category="food">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <div class="q-left">
+                                <span class="q-icon">Q</span>
+                                <span class="q-text"> How many cafes does UET have?</span>
+                            </div>
+                            <span class="q-arrow">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="a-content">
+                                🍽️ UET has <span class="highlight">5 main cafeterias and cafés</span> spread across campus:
+                                <br><br>
+                                 <span class="highlight">SSC (Student Service Center)</span> — Male Cafeteria<br>
+                                 <span class="highlight">GSSC (Girls Student Service Center)</span> — Girls dining area<br>
+                                 <span class="highlight">Anexi Café (Annexee)</span> — Famous for legendary milkshakes!<br>
+                                 <span class="highlight">Syalani Cafe</span> — Tea, shakes, and quick drinks<br>
+                                 <span class="highlight">Bhola Cafe</span> — Desi food, chai, and hangout vibes
+                                <br><br>
+                                💡 <span class="highlight-blue">Pro Tip:</span> Anexi's milkshakes are a must-try for every UET student!
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FAQ 9: Are there events at UET? -->
+                    <div class="faq-item" data-category="events">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <div class="q-left">
+                                <span class="q-icon">Q</span>
+                                <span class="q-text"> Are there events at UET?</span>
+                            </div>
+                            <span class="q-arrow">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="a-content">
+                                 <span class="highlight-green">Yes!</span> UET is full of events all year round!
+                                <br><br>
+                                <span class="highlight">Societies</span> organize their own events, workshops, and competitions
+                                <br>
+                                <span class="highlight">Cultural Day</span> — Celebrate the diversity of Pakistan
+                                <br>
+                             <span class="highlight">Sports Week</span> — Inter-department competitions
+                                <br>
+                                 <span class="highlight">Welcome Party</span> — For new students every year
+                                <br><br>
+                                💡 <span class="highlight-blue">Tip:</span> Follow society social media pages to stay updated!
+                            </div>
+                        </div>
+                    </div>
+
+                   
+                    <!-- FAQ 11: Where is the gym? -->
+                    <div class="faq-item" data-category="campus">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <div class="q-left">
+                                <span class="q-icon">Q</span>
+                                <span class="q-text"> Where is the gym and what are its timings?</span>
+                            </div>
+                            <span class="q-arrow">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="a-content">
+                                🏋️ The <span class="highlight">UET Gym</span> is located near the Sports Complex.
+                                <br><br>
+                                🕐 <span class="highlight">Timings:</span>
+                                <ul>
+                                    <li><span class="highlight-blue">Monday to Friday:</span> 07:00 AM – 09:00 PM</li>
+                                    <li><span class="highlight">Saturday:</span> 08:00 AM – 06:00 PM</li>
+                                    <li><span class="highlight">Sunday:</span> Closed</li>
+                                </ul>
+                                💡 <span class="highlight-blue">Tip:</span> Bring your own towel and lock for the lockers!
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item" data-category="campus">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <div class="q-left">
+                                <span class="q-icon">Q</span>
+                                <span class="q-text"> Where can I find the campus map?</span>
+                            </div>
+                            <span class="q-arrow">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="a-content">
+                                🗺️ You're already on it! <span class="highlight">LOST@UET</span> is the campus map! 😄
+                                <br><br>
+                                📍 Go to the <span class="highlight">Map</span> page to see all 42 locations.
+                                <br><br>
+                                💡 You can also find physical maps at the <span class="highlight-blue">Main Gate</span> and <span class="highlight-blue">Admin Office</span>.
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- No Results -->
+                <div class="faq-no-results" id="faqNoResults">
+                    <span class="no-results-icon">🔍</span>
+                    <p>No questions found matching your search.</p>
+                    <p style="font-size: 12px; color: var(--text-muted);">Try different keywords or browse by category</p>
+                </div>
+
+                <!-- Back to Top -->
+                <div class="faq-back-top">
+                    <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                        ↑ Back to Top
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- BOTTOM NAV -->
+        <nav class="bottom-nav">
+            <a href="home.html"><i class="fas fa-home"></i> Home</a>
+            <a href="map.html"><i class="fas fa-map"></i> Map</a>
+            <a href="quests.html"><i class="fas fa-tasks"></i> Quests</a>
+            <a href="discoveries.html"><i class="fas fa-trophy"></i> Discoveries</a>
+            <a href="faq.html" class="active"><i class="fas fa-question-circle"></i> FAQ</a>
+        </nav>
+
+        <nav class="mobile-nav">
+            <a href="home.html"><i class="fas fa-home"></i> Home</a>
+            <a href="map.html"><i class="fas fa-map"></i> Map</a>
+            <a href="quests.html"><i class="fas fa-tasks"></i> Quests</a>
+            <a href="discoveries.html"><i class="fas fa-trophy"></i> Discoveries</a>
+            <a href="faq.html" class="active"><i class="fas fa-question-circle"></i> FAQ</a>
+        </nav>
+
+    </div>
+
+    <script type="module">
+        import { getCurrentUser } from './js/auth.js';
+        import { loadGameData, getTotalDiscoveries, getTotalLocations, getCompletionPercentage } from './js/dataService.js';
+
+        // ========================================
+        // UPDATE HEADER
+        // ========================================
+        async function updateHeader() {
+            const user = await getCurrentUser();
+            if (user && user.success) {
+                await loadGameData();
+                const discoveries = getTotalDiscoveries();
+                const total = getTotalLocations();
+                const progress = getCompletionPercentage();
+
+                document.getElementById('userDisplayName').textContent = user.data?.name || 'Explorer';
+                document.getElementById('userProgressBar').style.width = progress + '%';
+                document.getElementById('userProgressText').textContent = `${discoveries}/${total}`;
+            }
+        }
+
+        updateHeader();
+
+        // ========================================
+        // TOGGLE FAQ ANSWER
+        // ========================================
+        window.toggleFaq = function(element) {
+            const item = element.closest('.faq-item');
+            const isActive = item.classList.contains('active');
+            
+            // Close all other items
+            document.querySelectorAll('.faq-item').forEach(el => {
+                if (el !== item) {
+                    el.classList.remove('active');
+                }
+            });
+            
+            // Toggle this item
+            if (isActive) {
+                item.classList.remove('active');
+            } else {
+                item.classList.add('active');
+            }
+        };
+
+        // ========================================
+        // SEARCH
+        // ========================================
+        const searchInput = document.getElementById('faqSearch');
+        const faqItems = document.querySelectorAll('.faq-item');
+        const noResults = document.getElementById('faqNoResults');
+
+        searchInput.addEventListener('input', function() {
+            const query = this.value.toLowerCase().trim();
+            let hasResults = false;
+
+            faqItems.forEach(item => {
+                const question = item.querySelector('.q-text').textContent.toLowerCase();
+                const answer = item.querySelector('.a-content')?.textContent?.toLowerCase() || '';
+                const matches = query === '' || question.includes(query) || answer.includes(query);
+                
+                if (matches && query !== '') {
+                    item.style.display = 'block';
+                    hasResults = true;
+                    // Auto-expand search matches
+                    item.classList.add('active');
+                } else if (query === '') {
+                    item.style.display = 'block';
+                    hasResults = true;
+                    item.classList.remove('active');
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            noResults.style.display = hasResults ? 'none' : 'block';
+        });
+
+        // ========================================
+        // CATEGORY FILTER
+        // ========================================
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const category = this.dataset.category;
+                
+                // Update active button
+                document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Clear search
+                searchInput.value = '';
+                noResults.style.display = 'none';
+                
+                // Filter items
+                let hasVisible = false;
+                faqItems.forEach(item => {
+                    const itemCategory = item.dataset.category;
+                    if (category === 'all' || itemCategory === category) {
+                        item.style.display = 'block';
+                        hasVisible = true;
+                        item.classList.remove('active');
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+                
+                if (!hasVisible) {
+                    noResults.style.display = 'block';
+                    noResults.querySelector('p').textContent = 'No questions in this category.';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
