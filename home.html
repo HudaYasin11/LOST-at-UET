@@ -13,7 +13,6 @@
 <body>
     <div id="app">
 
-        <!-- HEADER -->
         <header id="global-header">
             <div class="header-left">
                 
@@ -25,6 +24,7 @@
                 <a href="quests.html">Quests</a>
                 <a href="discoveries.html">Discoveries</a>
                 <a href="societies.html">Societies</a>
+                <a href="faq.html">FAQ</a>
             </nav>
             <div class="header-profile" id="userProfile">
                 <div class="avatar">👤</div>
@@ -77,11 +77,11 @@
                     </div>
                     <div class="stat-card">
                         <span class="stat-number" id="homeLevel">1</span>
-                        <span class="stat-label">📊 Level</span>
+                        <span class="stat-label"> Level</span>
                     </div>
                     <div class="stat-card">
                         <span class="stat-number" id="homeDiscoveries">0</span>
-                        <span class="stat-label">📍 Found</span>
+                        <span class="stat-label">Found</span>
                     </div>
                 </div>
 
@@ -99,6 +99,9 @@
                         MY DISCOVERIES
                     </a>
                     <a href="societies.html" class="btn-outline" style="text-decoration:none;text-align:center;">EXPLORE SOCIETIES</a>
+                     <a href="faq.html" class="btn-outline" style="text-decoration:none;text-align:center;">
+                        FAQ's
+                    </a>
                     <button id="logoutBtn" class="btn-outline" style="text-decoration:none;text-align:center;width:100%;">
                         <i class="fas fa-sign-out-alt"></i> LOGOUT
                     </button>
@@ -112,7 +115,9 @@
             <a href="map.html"><i class="fas fa-map"></i> Map</a>
             <a href="quests.html"><i class="fas fa-tasks"></i> Quests</a>
             <a href="discoveries.html"><i class="fas fa-trophy"></i> Discoveries</a>
-            <a href="societies.html"><i class="fas fa-users"></i> Societies</a>
+              <a href="societies.html"><i class="fas fa-users"></i> Societies</a>
+              <a href="faq.html"><i class="fas fa-question-circle"></i> FAQ
+  </a>
         </nav>
 
         <nav class="mobile-nav">
@@ -120,7 +125,9 @@
             <a href="map.html"><i class="fas fa-map"></i> Map</a>
             <a href="quests.html"><i class="fas fa-tasks"></i> Quests</a>
             <a href="discoveries.html"><i class="fas fa-trophy"></i> Discoveries</a>
-            <a href="societies.html"><i class="fas fa-users"></i> Societies</a>
+              <a href="societies.html"><i class="fas fa-users"></i> Societies</a>
+              <a href="faq.html"><i class="fas fa-question-circle"></i> FAQ
+  </a>
         </nav>
 
     </div>
@@ -129,9 +136,7 @@
         import { getCurrentUser, signOut } from './js/auth.js';
         import { loadGameData, getTotalXP, getLevel, getTotalDiscoveries, getTotalLocations, getCompletionPercentage } from './js/dataService.js';
 
-        // ========================================
-        // LOAD USER DATA
-        // ========================================
+      
         async function loadUserData() {
             try {
                 const user = await getCurrentUser();
@@ -162,9 +167,6 @@
             }
         }
 
-        // ========================================
-        // LOGOUT
-        // ========================================
         document.getElementById('logoutBtn').addEventListener('click', async function() {
             try {
                 await signOut();
@@ -176,9 +178,7 @@
             }
         });
 
-        // ========================================
-        // INIT
-        // ========================================
+        
         loadUserData();
     </script>
 </body>

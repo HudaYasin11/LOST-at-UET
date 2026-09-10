@@ -234,23 +234,9 @@
 
               
 
-                <!-- ======================================== -->
-                <!-- MANUAL ENTRY (Fallback) -->
-                <!-- ======================================== -->
-                <div id="manualEntry" class="manual-entry">
-                    <p style="color:var(--text-yellow); font-size:12px; text-align:center; margin-bottom:8px;">
-                        ⚠️ Couldn't scan? Enter manually:
-                    </p>
-                    <div class="manual-input-row">
-                        <input type="text" id="manualLocationId" placeholder="e.g., cs-department" />
-                        <button onclick="manualUnlock()" class="btn-yellow">UNLOCK</button>
-                    </div>
-                    <div class="manual-hint">💡 Try: cs-department, mosque, national-library, bhola-cafe</div>
-                </div>
+               
 
-                <!-- ======================================== -->
-                <!-- QR SCANNER (Camera) -->
-                <!-- ======================================== -->
+                
                 <div class="qr-scanner-section">
                     <p style="text-align:center; font-size:13px; color:var(--text-muted); margin-bottom:12px;">
                         <i class="fas fa-camera"></i> Or scan with your camera
@@ -291,7 +277,7 @@
         <!-- SUCCESS OVERLAY -->
         <div class="success-overlay" id="successOverlay">
             <div class="success-card">
-                <span class="big-icon">🎉</span>
+                
                 <h2>LOCATION UNLOCKED!</h2>
                 <p id="successLocation" style="font-size:24px; font-weight:700; margin:4px 0;">CS Department</p>
                 <p class="xp-gain" id="successXP">+100 XP</p>
@@ -310,7 +296,10 @@
             <a href="map.html" class="active"><i class="fas fa-map"></i> Map</a>
             <a href="quests.html"><i class="fas fa-tasks"></i> Quests</a>
             <a href="discoveries.html"><i class="fas fa-trophy"></i> Discoveries</a>
-            <a href="societies.html"><i class="fas fa-users"></i> Societies</a>
+             <a href="societies.html"><i class="fas fa-users"></i> Societies</a>
+             <a href="faq.html">
+      <i class="fas fa-question-circle"></i> FAQ
+  </a>
         </nav>
 
         <nav class="mobile-nav">
@@ -318,7 +307,10 @@
             <a href="map.html" class="active"><i class="fas fa-map"></i> Map</a>
             <a href="quests.html"><i class="fas fa-tasks"></i> Quests</a>
             <a href="discoveries.html"><i class="fas fa-trophy"></i> Discoveries</a>
-            <a href="societies.html"><i class="fas fa-users"></i> Societies</a>
+             <a href="societies.html"><i class="fas fa-users"></i> Societies</a>
+             <a href="faq.html">
+      <i class="fas fa-question-circle"></i> FAQ
+  </a>
         </nav>
 
     </div>
@@ -339,9 +331,7 @@
             getCompletionPercentage
         } from './js/dataService.js';
 
-        // ========================================
-        // DOM ELEMENTS
-        // ========================================
+        
         const startScanBtn = document.getElementById('startScanBtn');
         const stopScanBtn = document.getElementById('stopScanBtn');
         const statusDot = document.querySelector('.status-dot');
@@ -367,9 +357,7 @@
         let allLocations = [];
         let uploadedFileData = null;
 
-        // ========================================
-        // CHECK AUTH & LOAD DATA
-        // ========================================
+       
         async function init() {
             const user = await getCurrentUser();
             if (!user || !user.success) {
@@ -385,9 +373,7 @@
             updateHeader();
         }
 
-        // ========================================
-        // UPDATE HEADER - COUNTS UPDATE HERE
-        // ========================================
+        
         function updateHeader() {
             const state = getState();
             const user = state.user;
@@ -406,9 +392,7 @@
             }
         }
 
-        // ========================================
-        // PROCESS UNLOCK - UPDATES COUNTS
-        // ========================================
+        
         async function processUnlock(locationId) {
             if (!locationId) {
                 alert('No location ID provided');
@@ -451,13 +435,13 @@
                     
                     successOverlay.classList.add('active');
                     
-                    // ✅ THIS UPDATES THE COUNTS
+                    
                     await refreshUserData();
                     await refreshLocations();
                     await refreshQuests();
                     await loadGameData();
                     
-                    // ✅ Update header with new counts
+                    
                     updateHeader();
                     
                     resultText.textContent = `✅ Unlocked! +${xp} XP (Level ${level})`;
@@ -489,9 +473,7 @@
             }
         }
 
-        // ========================================
-        // MANUAL UNLOCK (Fallback)
-        // ========================================
+        
         window.manualUnlock = function() {
             const locationId = manualInput.value.trim().toLowerCase();
             if (!locationId) {
@@ -523,9 +505,7 @@
             updateHeader();
         };
 
-        // ========================================
-        // QR SCANNER (Camera)
-        // ========================================
+       
         function onScanSuccess(decodedText) {
             stopScanning();
             
@@ -584,9 +564,7 @@
             startScanBtn.disabled = false;
         }
 
-        // ========================================
-        // UPLOAD QR CODE
-        // ========================================
+        
         function handleFile(file) {
             if (!file) return;
             
@@ -632,9 +610,7 @@
             }
         });
 
-        // ========================================
-        // SCAN UPLOADED QR
-        // ========================================
+        
         scanUploadedBtn.addEventListener('click', async function() {
             if (!uploadedFileData) {
                 alert('Please upload a QR code image first.');
@@ -642,7 +618,7 @@
             }
 
             resultContainer.style.display = 'block';
-            resultText.textContent = '⏳ Scanning uploaded image...';
+            resultText.textContent = 'Scanning uploaded image...';
             resultText.className = 'status-text-result info';
 
             try {
@@ -690,15 +666,11 @@
             resultContainer.style.display = 'none';
         };
 
-        // ========================================
-        // EVENT LISTENERS
-        // ========================================
+        
         startScanBtn.addEventListener('click', startScanning);
         stopScanBtn.addEventListener('click', stopScanning);
 
-        // ========================================
-        // INIT
-        // ========================================
+       
         init();
 
         window.addEventListener('beforeunload', function() {

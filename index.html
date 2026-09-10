@@ -10,6 +10,22 @@
     <link rel="stylesheet" href="css/style.css" />
     
     <style>
+        body {
+            background: var(--dark-bg);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        #app {
+            width: 100%;
+            max-width: 420px;
+            min-height: 100vh;
+        }
+
         .auth-page {
             display: flex;
             flex-direction: column;
@@ -144,25 +160,10 @@
 <body>
     <div id="app">
 
-        <!-- HEADER -->
+        <!-- ✅ ONLY HEADER (NO NAVIGATION LINKS) -->
         <header id="global-header">
             <div class="header-left">
                 <span class="logo-text">LOST@UET</span>
-            </div>
-            <nav class="header-nav">
-                <a href="home.html">Home</a>
-                <a href="map.html">Map</a>
-                <a href="quests.html">Quests</a>
-                <a href="discoveries.html">Discoveries</a>
-                <a href="index.html" class="active">Login</a>
-            </nav>
-            <div class="header-profile" id="userProfile" style="display:none;">
-                <div class="avatar">👤</div>
-                <div class="profile-info">
-                    <span class="level-text" id="userDisplayName">Explorer</span>
-                    <div class="mini-progress"><div class="mini-progress-bar" id="userProgressBar" style="width:0%;"></div></div>
-                    <span class="progress-text" id="userProgressText">0/42</span>
-                </div>
             </div>
         </header>
 
@@ -202,23 +203,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- BOTTOM NAV -->
-        <nav class="bottom-nav">
-            <a href="home.html"><i class="fas fa-home"></i> Home</a>
-            <a href="map.html"><i class="fas fa-map"></i> Map</a>
-            <a href="quests.html"><i class="fas fa-tasks"></i> Quests</a>
-            <a href="discoveries.html"><i class="fas fa-trophy"></i> Discoveries</a>
-            <a href="index.html" class="active"><i class="fas fa-user"></i> Login</a>
-        </nav>
-
-        <nav class="mobile-nav">
-            <a href="home.html"><i class="fas fa-home"></i> Home</a>
-            <a href="map.html"><i class="fas fa-map"></i> Map</a>
-            <a href="quests.html"><i class="fas fa-tasks"></i> Quests</a>
-            <a href="discoveries.html"><i class="fas fa-trophy"></i> Discoveries</a>
-            <a href="index.html" class="active"><i class="fas fa-user"></i> Login</a>
-        </nav>
 
     </div>
 
