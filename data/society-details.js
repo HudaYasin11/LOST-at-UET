@@ -284,13 +284,15 @@ export const societyDetails = {
     "reviewedAt": "2026-09-10"
   },
   "debating": {
-    "instagram": "https://www.instagram.com/uetds/",
+    "instagram": "https://www.instagram.com/uetdebatingsociety/",
     "links": [
       {
         "label": "Society website",
         "url": "https://uetds.weebly.com/"
       }
     ],
+    "logo": "assets/societies/debating.jpg",
+    "logoSource": "https://www.instagram.com/uetdebatingsociety/",
     "reviewedAt": "2026-09-10"
   },
   "ice": {

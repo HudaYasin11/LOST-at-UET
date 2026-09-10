@@ -133,10 +133,11 @@
     "height": 200
   },
   "debating": {
-    "missing": true,
-    "attempts": [
-      "No usable profile image: https://uetds.weebly.com/"
-    ]
+    "path": "assets/societies/debating.jpg",
+    "source": "https://www.instagram.com/uetdebatingsociety/",
+    "label": "UET Debating Society Instagram profile",
+    "width": 200,
+    "height": 200
   },
   "ice": {
     "path": "assets/societies/ice.jpg",
