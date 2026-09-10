@@ -1,0 +1,5 @@
+/* Keep all five destinations reachable on narrow screens. */
+.header-nav { flex-wrap:wrap; }
+@media(max-width:768px) {
+    .bottom-nav a,.mobile-nav a { flex:1;min-width:0;padding:8px 2px;overflow-wrap:anywhere; }
+}

@@ -1,0 +1,7 @@
+.tmp/
+scripts/
+tests/
+docs/
+assets/societies/README.md
+assets/societies/sources.json
+data/society-socials.json

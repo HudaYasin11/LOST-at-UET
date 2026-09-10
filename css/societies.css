@@ -1,0 +1,49 @@
+.societies-page { background:#0b132b; }
+.societies-page #app { border-color:#2d4169; }
+.societies-page .logo-text { text-decoration:none; }
+.societies-page .header-nav { flex-wrap:wrap;gap:8px; }
+.societies-page main { max-width:1060px;margin:auto; }
+.society-intro { padding:30px 0 24px;max-width:750px; }
+.societies-page .eyebrow { font-size:12px;font-weight:700;letter-spacing:.15em;color:#f7b801;margin-bottom:14px; }
+.society-intro h1 { font-size:clamp(32px,5vw,52px);letter-spacing:-.045em;margin-bottom:14px;line-height:1.15; }
+.society-intro>p:last-child { color:#bec9dc;font-size:16px;line-height:1.7;max-width:620px; }
+.society-tools { display:flex;gap:16px;padding:20px;background:#15203b;border:1px solid #354767;border-radius:12px; }
+.society-search { flex:1;min-width:0; }
+.society-select { flex:0 1 250px;min-width:0; }
+.society-tools label { display:block;font-size:14px;font-weight:600;margin-bottom:9px; }
+.society-tools input,.society-tools select { width:100%;min-height:48px;padding:12px;border:1px solid #556887;border-radius:6px;background:#0b132b;color:#fff;font:inherit;font-size:16px; }
+.society-tools input::placeholder { color:#a8b6cb; }
+.societies-page :focus-visible { outline:3px solid #f7b801;outline-offset:4px; }
+#society-count { color:#b8c5da;font-size:14px;margin:22px 0 14px; }
+.society-grid { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px; }
+.society-card { min-width:0;display:flex;flex-direction:column;border:1px solid #344664;border-top:3px solid var(--society-accent,#79cfff);border-radius:10px;background:#17223d;padding:22px; }
+.society-card-top { display:flex;align-items:center;gap:12px;margin-bottom:20px; }
+.society-logo { flex:none;width:58px;height:58px;display:grid;place-items:center;overflow:hidden;border:1px solid #4c6181;border-radius:10px;background:#0b132b;color:var(--society-accent,#79cfff);font-weight:800;font-size:17px; }
+.society-logo img { width:100%;height:100%;object-fit:contain;background:#fff; }
+.society-category { font-size:13px;color:#c2d1e6;line-height:1.5; }
+.society-card h2 { font-size:19px;line-height:1.4;margin-bottom:12px;overflow-wrap:anywhere; }
+.society-card p { color:#b8c5da;font-size:14px;line-height:1.65; }
+.society-card .society-about { font-size:16px;margin-bottom:16px; }
+.society-links { margin-top:auto;padding-top:20px;display:flex;flex-wrap:wrap;gap:9px; }
+.society-links a { display:inline-flex;align-items:center;min-height:44px;padding:10px 12px;border:1px solid #536988;border-radius:6px;color:#e8f1ff;font-size:14px;text-decoration:none; }
+.society-links a:hover { background:#263b60;border-color:#8baddc; }
+.society-links .instagram-link { color:#ffe0ec;border-color:#a87493; }
+.society-links .instagram-link svg { width:17px;height:17px;margin-right:7px; }
+.society-card .social-pending { margin-top:12px;font-size:12px;color:#aebad0; }
+.society-availability { display:flex;flex-wrap:wrap;gap:6px;margin-top:14px; }
+.availability-tag { display:inline-block;width:fit-content;padding:5px 8px;border:1px dashed #73809a;border-radius:5px;color:#c3ccdd;font-size:12px;line-height:1.4; }
+.society-card>.logo-pending { margin-top:10px; }
+#society-empty { padding:42px 20px;text-align:center;border:1px dashed #536988;border-radius:10px; }
+#society-empty p { margin:12px; }
+#society-reset { margin-top:10px;padding:12px 18px;background:#f7b801;border:0;border-radius:6px;font:inherit;cursor:pointer; }
+.joining-guide { margin:36px 0;padding:26px;border:1px solid #6a6036;background:#201f2b;border-radius:10px; }
+.joining-guide h2 { font-size:24px;margin-bottom:18px; }
+.joining-guide ol { padding-left:22px; }
+.joining-guide li { padding-left:6px;margin:12px 0;line-height:1.7;color:#c7cede;font-size:16px; }
+.joining-guide strong { color:#fff; }
+.society-sources { padding-bottom:24px; }
+.society-sources p { font-size:13px;line-height:1.7;color:#aebbd0;margin-bottom:10px; }
+.society-sources a,.societies-page noscript a { color:#99d9ff; }
+.societies-page .bottom-nav a { padding:12px 3px; }
+@media(max-width:1000px) { .society-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:600px) { .society-grid { grid-template-columns:1fr; }.society-tools { flex-direction:column;padding:16px; }.society-select { flex-basis:auto; }.society-intro { padding-top:20px; }.society-card { padding:20px; } }
