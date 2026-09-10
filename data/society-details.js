@@ -93,7 +93,7 @@ export const societyDetails = {
     "reviewedAt": "2026-09-10"
   },
   "gym": {
-    "instagram": "https://www.instagram.com/gym_uet/",
+    "instagram": "https://www.instagram.com/gymclubuet/",
     "links": [
       {
         "label": "LinkedIn",
