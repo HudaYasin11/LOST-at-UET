@@ -229,7 +229,7 @@ export const societyDetails = {
     "reviewedAt": "2026-09-10"
   },
   "mun": {
-    "instagram": "https://www.instagram.com/uetmun/",
+    "instagram": "https://www.instagram.com/uetmunsociety/",
     "links": [
       {
         "label": "LinkedIn",
@@ -237,7 +237,7 @@ export const societyDetails = {
       }
     ],
     "logo": "assets/societies/mun.jpg",
-    "logoSource": "https://pk.linkedin.com/company/uetmun-society",
+    "logoSource": "https://www.instagram.com/uetmunsociety/",
     "reviewedAt": "2026-09-10"
   },
   "iet": {
