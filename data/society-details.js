@@ -55,6 +55,8 @@ export const societyDetails = {
   "spid": {
     "instagram": "https://www.instagram.com/spid_uet/",
     "links": [],
+    "logo": "assets/societies/spid.png",
+    "logoSource": "user-provided SPID profile image",
     "reviewedAt": "2026-09-10"
   },
   "science": {
@@ -85,6 +87,8 @@ export const societyDetails = {
         "url": "https://ieer.uet.edu.pk/technical-societies/"
       }
     ],
+    "logo": "assets/societies/ehs.png",
+    "logoSource": "user-provided EHS profile image",
     "reviewedAt": "2026-09-10"
   },
   "gym": {
