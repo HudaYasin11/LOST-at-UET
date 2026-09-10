@@ -220,5 +220,12 @@
     "label": "AWS Student Builder Group - UET Lahore",
     "width": 200,
     "height": 200
+  },
+  "aed": {
+    "path": "assets/societies/aed.jpg",
+    "source": "https://www.instagram.com/aedschap_uet/",
+    "label": "AED Student Chapter Instagram profile",
+    "width": 200,
+    "height": 200
   }
 }

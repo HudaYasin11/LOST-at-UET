@@ -162,8 +162,10 @@ export const societyDetails = {
     "reviewedAt": "2026-09-10"
   },
   "aed": {
-    "instagram": "https://www.instagram.com/aed_uet/",
+    "instagram": "https://www.instagram.com/aedschap_uet/",
     "links": [],
+    "logo": "assets/societies/aed.jpg",
+    "logoSource": "https://www.instagram.com/aedschap_uet/",
     "reviewedAt": "2026-09-10"
   },
   "uraan": {
