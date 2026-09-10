@@ -45,8 +45,7 @@ const entries = [
     ['tribune','UET Tribune','UT','Media & journalism'],
     ['physica','Physica Society','PHY','Science & technology'],
     ['inquisitors','Inquisitors Society','INQ','Community'],
-    ['sports','Sports Society','SPORT','Sports'],
-    ['international','International Student Society','ISS','Community']
+    ['formula-student','Formula Student UET Lahore','FS','Engineering']
 ];
 
 export const societies = entries.map(([id,name,initials,category]) => ({

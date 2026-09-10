@@ -256,5 +256,12 @@
     "label": "Islamic Society UET Instagram profile",
     "width": 200,
     "height": 200
+  },
+  "formula-student": {
+    "path": "assets/societies/formula-student.jpg",
+    "source": "https://www.instagram.com/fs.uet/",
+    "label": "Formula Student UET Lahore Instagram profile",
+    "width": 200,
+    "height": 200
   }
 }

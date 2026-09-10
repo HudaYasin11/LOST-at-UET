@@ -447,16 +447,6 @@ export const societyDetails = {
     ],
     "reviewedAt": "2026-09-10"
   },
-  "sports": {
-    "instagram": "https://www.instagram.com/sports_uet/",
-    "links": [],
-    "reviewedAt": "2026-09-10"
-  },
-  "international": {
-    "instagram": "https://www.instagram.com/uet_iss/",
-    "links": [],
-    "reviewedAt": "2026-09-10"
-  },
   "aws": {
     "instagram": "https://www.instagram.com/aws_sbg_uet/",
     "links": [
@@ -471,6 +461,13 @@ export const societyDetails = {
     ],
     "logo": "assets/societies/aws.jpg",
     "logoSource": "https://www.linkedin.com/company/aws-cloud-club-uet-lahore/",
+    "reviewedAt": "2026-09-10"
+  },
+  "formula-student": {
+    "instagram": "https://www.instagram.com/fs.uet/",
+    "links": [],
+    "logo": "assets/societies/formula-student.jpg",
+    "logoSource": "https://www.instagram.com/fs.uet/",
     "reviewedAt": "2026-09-10"
   }
 };
