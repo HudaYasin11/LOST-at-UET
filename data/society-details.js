@@ -55,6 +55,8 @@ export const societyDetails = {
   "spid": {
     "instagram": "https://www.instagram.com/spid_uet/",
     "links": [],
+    "logo": "assets/societies/spid.png",
+    "logoSource": "user-provided SPID profile image",
     "reviewedAt": "2026-09-10"
   },
   "science": {
@@ -85,6 +87,8 @@ export const societyDetails = {
         "url": "https://ieer.uet.edu.pk/technical-societies/"
       }
     ],
+    "logo": "assets/societies/ehs.png",
+    "logoSource": "user-provided EHS profile image",
     "reviewedAt": "2026-09-10"
   },
   "gym": {
@@ -180,6 +184,8 @@ export const societyDetails = {
   "literary": {
     "instagram": "https://www.instagram.com/uetliterarysociety/",
     "links": [],
+    "logo": "assets/societies/literary.png",
+    "logoSource": "user-provided Literary Society profile image",
     "reviewedAt": "2026-09-10"
   },
   "zimal": {
@@ -317,7 +323,7 @@ export const societyDetails = {
     "reviewedAt": "2026-09-10"
   },
   "mechanical": {
-    "instagram": "https://www.instagram.com/imeche_uet_lahore/",
+    "instagram": "https://www.instagram.com/imecheuetlhr/",
     "links": [
       {
         "label": "LinkedIn",
@@ -325,7 +331,7 @@ export const societyDetails = {
       }
     ],
     "logo": "assets/societies/mechanical.jpg",
-    "logoSource": "https://www.linkedin.com/company/imeche-uet-lahore",
+    "logoSource": "https://www.instagram.com/imecheuetlhr/",
     "reviewedAt": "2026-09-10"
   },
   "acm": {
@@ -360,7 +366,7 @@ export const societyDetails = {
     "reviewedAt": "2026-09-10"
   },
   "media": {
-    "instagram": "https://www.instagram.com/uetmediasociety/",
+    "instagram": "https://www.instagram.com/uet_mediasociety/",
     "links": [
       {
         "label": "LinkedIn",
@@ -368,7 +374,7 @@ export const societyDetails = {
       }
     ],
     "logo": "assets/societies/media.jpg",
-    "logoSource": "https://pk.linkedin.com/company/uetmediasociety",
+    "logoSource": "https://www.instagram.com/uet_mediasociety/",
     "reviewedAt": "2026-09-10"
   },
   "x-news": {

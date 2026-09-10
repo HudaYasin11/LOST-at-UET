@@ -28,7 +28,7 @@ for (const society of societies) {
         assert.ok(society.logoSource);
     }
 }
-assert.equal(societies.filter(s => s.logo).length, 37);
+assert.equal(societies.filter(s => s.logo).length, 40);
 assert.equal(societies.filter(s => !s.instagram && !s.links.length).length, 0);
 
 for (const page of ['home','map','quests','discoveries','qr','search']) {

@@ -35,11 +35,11 @@
     "height": 200
   },
   "ehs": {
-    "missing": true,
-    "attempts": [
-      "HTTPError: HTTP Error 400: Bad Request: https://www.facebook.com/ehsuet/",
-      "No usable profile image: https://ieer.uet.edu.pk/technical-societies/"
-    ]
+    "path": "assets/societies/ehs.png",
+    "source": "user-provided EHS profile image",
+    "label": "Environmental & Horticulture Society UET Lahore logo",
+    "width": 440,
+    "height": 440
   },
   "gym": {
     "path": "assets/societies/gym.jpg",
@@ -155,8 +155,8 @@
   },
   "mechanical": {
     "path": "assets/societies/mechanical.jpg",
-    "source": "https://www.linkedin.com/company/imeche-uet-lahore",
-    "label": "IMechE UET Lahore",
+    "source": "https://www.instagram.com/imecheuetlhr/",
+    "label": "IMechE UET Lahore Instagram profile",
     "width": 200,
     "height": 200
   },
@@ -176,10 +176,10 @@
   },
   "media": {
     "path": "assets/societies/media.jpg",
-    "source": "https://pk.linkedin.com/company/uetmediasociety",
-    "label": "UET Media Society - UMS",
-    "width": 100,
-    "height": 100
+    "source": "https://www.instagram.com/uet_mediasociety/",
+    "label": "UET Media Society Instagram profile",
+    "width": 200,
+    "height": 200
   },
   "x-news": {
     "path": "assets/societies/x-news.jpg",
@@ -264,5 +264,19 @@
     "label": "Formula Student UET Lahore Instagram profile",
     "width": 200,
     "height": 200
+  },
+  "literary": {
+    "path": "assets/societies/literary.png",
+    "source": "user-provided Literary Society profile image",
+    "label": "UET Literary Society logo",
+    "width": 320,
+    "height": 320
+  },
+  "spid": {
+    "path": "assets/societies/spid.png",
+    "source": "user-provided SPID profile image",
+    "label": "SPID UET Lahore logo",
+    "width": 404,
+    "height": 404
   }
 }

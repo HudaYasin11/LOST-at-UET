@@ -8,8 +8,9 @@ export async function signup(name, email, password) {
     try {
         console.log('📝 Signing up:', { name, email });
         
+        const normalizedEmail = email.trim().toLowerCase();
         const { data, error } = await supabase.auth.signUp({
-            email: email,
+            email: normalizedEmail,
             password: password,
             options: {
                 emailRedirectTo: `${window.location.origin}/index.html`,
@@ -36,27 +37,7 @@ export async function signup(name, email, password) {
         }
 
         if (data.user && data.session) {
-            console.log('📝 Creating profile for user:', data.user.id);
-            
-            try {
-                const { error: profileError } = await supabase
-                    .from("profiles")
-                    .insert({
-                        id: data.user.id,
-                        name: name,
-                        xp: 0,
-                        level: 1
-                    });
-
-                if (profileError) {
-                    console.error('⚠️ Profile creation error:', profileError);
-                } else {
-                    console.log('✅ Profile created successfully');
-                }
-            } catch (profileErr) {
-                console.error('⚠️ Profile creation exception:', profileErr);
-            }
-            
+            // The database trigger creates the profile atomically when auth.users is inserted.
             localStorage.setItem('access_token', data.session.access_token);
             if (data.session.refresh_token) {
                 localStorage.setItem('refresh_token', data.session.refresh_token);
@@ -78,7 +59,7 @@ export async function signup(name, email, password) {
 export async function resendSignupConfirmation(email) {
     const { error } = await supabase.auth.resend({
         type: 'signup',
-        email,
+        email: email.trim().toLowerCase(),
         options: {
             emailRedirectTo: `${window.location.origin}/index.html`
         }
