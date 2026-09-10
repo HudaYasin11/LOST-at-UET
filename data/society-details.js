@@ -296,7 +296,7 @@ export const societyDetails = {
     "reviewedAt": "2026-09-10"
   },
   "ice": {
-    "instagram": "https://www.instagram.com/uetice/",
+    "instagram": "https://www.instagram.com/iceuetlahore/",
     "links": [
       {
         "label": "LinkedIn",
@@ -304,7 +304,7 @@ export const societyDetails = {
       }
     ],
     "logo": "assets/societies/ice.jpg",
-    "logoSource": "https://pk.linkedin.com/company/uetice",
+    "logoSource": "https://www.instagram.com/iceuetlahore/",
     "reviewedAt": "2026-09-10"
   },
   "asme": {
