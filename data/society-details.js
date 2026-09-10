@@ -99,11 +99,6 @@ export const societyDetails = {
     "logoSource": "https://pk.linkedin.com/company/pm-s-green-youth-movement-club-uet-lahore",
     "reviewedAt": "2026-09-10"
   },
-  "itf": {
-    "instagram": "https://www.instagram.com/itf_uet/",
-    "links": [],
-    "reviewedAt": "2026-09-10"
-  },
   "mechatronics": {
     "instagram": "https://www.instagram.com/mechatronicsclub/",
     "links": [

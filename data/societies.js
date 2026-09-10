@@ -13,7 +13,6 @@ const entries = [
     ['science','UET Science Society','USS','Science & technology'],
     ['ehs','UET Environmental and Horticulture Society (EHS)','EHS','Environment'],
     ['gym','Green Youth Movement (GYM) Club UET','GYM','Environment'],
-    ['itf','ITF; UET Student Chapter','ITF','Engineering'],
     ['mechatronics','Mechatronics Club','MC','Engineering'],
     ['cbs','Character Building Society (CBS)','CBS','Community'],
     ['justuju','Justuju','J','Community'],
