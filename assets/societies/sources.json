@@ -264,5 +264,12 @@
     "label": "Formula Student UET Lahore Instagram profile",
     "width": 200,
     "height": 200
+  },
+  "literary": {
+    "path": "assets/societies/literary.png",
+    "source": "user-provided Literary Society profile image",
+    "label": "UET Literary Society logo",
+    "width": 320,
+    "height": 320
   }
 }

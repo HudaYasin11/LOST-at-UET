@@ -180,6 +180,8 @@ export const societyDetails = {
   "literary": {
     "instagram": "https://www.instagram.com/uetliterarysociety/",
     "links": [],
+    "logo": "assets/societies/literary.png",
+    "logoSource": "user-provided Literary Society profile image",
     "reviewedAt": "2026-09-10"
   },
   "zimal": {
