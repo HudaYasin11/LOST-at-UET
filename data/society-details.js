@@ -317,7 +317,7 @@ export const societyDetails = {
     "reviewedAt": "2026-09-10"
   },
   "mechanical": {
-    "instagram": "https://www.instagram.com/imeche_uet_lahore/",
+    "instagram": "https://www.instagram.com/imecheuetlhr/",
     "links": [
       {
         "label": "LinkedIn",
@@ -325,7 +325,7 @@ export const societyDetails = {
       }
     ],
     "logo": "assets/societies/mechanical.jpg",
-    "logoSource": "https://www.linkedin.com/company/imeche-uet-lahore",
+    "logoSource": "https://www.instagram.com/imecheuetlhr/",
     "reviewedAt": "2026-09-10"
   },
   "acm": {
