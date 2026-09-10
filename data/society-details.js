@@ -445,6 +445,8 @@ export const societyDetails = {
         "url": "https://pk.linkedin.com/in/inquisitors-society-167155381"
       }
     ],
+    "logo": "assets/societies/inquisitors.jpg",
+    "logoSource": "https://www.instagram.com/inquisitorssociety/",
     "reviewedAt": "2026-09-10"
   },
   "aws": {

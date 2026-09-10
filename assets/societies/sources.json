@@ -210,10 +210,11 @@
     "height": 200
   },
   "inquisitors": {
-    "missing": true,
-    "attempts": [
-      "HTTPError: HTTP Error 999: <none>: https://pk.linkedin.com/in/inquisitors-society-167155381"
-    ]
+    "path": "assets/societies/inquisitors.jpg",
+    "source": "https://www.instagram.com/inquisitorssociety/",
+    "label": "Inquisitors Society Instagram profile",
+    "width": 200,
+    "height": 200
   },
   "aws": {
     "path": "assets/societies/aws.jpg",
