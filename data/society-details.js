@@ -110,7 +110,7 @@ export const societyDetails = {
     "reviewedAt": "2026-09-10"
   },
   "mechatronics": {
-    "instagram": "https://www.instagram.com/explore/search/keyword/?q=Mechatronics%20Club%20UET%20Lahore",
+    "instagram": "https://www.instagram.com/mc_uet/",
     "links": [
       {
         "label": "LinkedIn",
@@ -249,7 +249,7 @@ export const societyDetails = {
     "reviewedAt": "2026-09-10"
   },
   "ieee": {
-    "instagram": "https://www.instagram.com/explore/search/keyword/?q=IEEE%20UET%20Lahore",
+    "instagram": "https://www.instagram.com/ieeeuetlahore/",
     "links": [
       {
         "label": "LinkedIn",
