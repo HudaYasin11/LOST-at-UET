@@ -10,7 +10,6 @@ const entries = [
     ['sae','Society of Automotive Engineering','SAE','Engineering'],
     ['spet','Society of Polymer Engineers and Technologies (SPET)','SPET','Engineering'],
     ['spid','Society of Product and Industrial Designers (SPID)','SPID','Design & arts'],
-    ['usra','UET CRP Society (USRA)','USRA','Engineering'],
     ['science','UET Science Society','USS','Science & technology'],
     ['ehs','UET Environmental and Horticulture Society (EHS)','EHS','Environment'],
     ['gym','Green Youth Movement (GYM) Club UET','GYM','Environment'],

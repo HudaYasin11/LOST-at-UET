@@ -57,11 +57,6 @@ export const societyDetails = {
     "links": [],
     "reviewedAt": "2026-09-10"
   },
-  "usra": {
-    "instagram": "https://www.instagram.com/usra_uet/",
-    "links": [],
-    "reviewedAt": "2026-09-10"
-  },
   "science": {
     "instagram": "https://www.instagram.com/uetsciencesociety/",
     "links": [

@@ -5,15 +5,15 @@ import { fileURLToPath } from 'node:url';
 import { societies, findSocieties } from '../data/societies.js';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
-assert.equal(societies.length, 42);
-assert.equal(new Set(societies.map(s => s.id)).size, 42);
+assert.equal(societies.length, 41);
+assert.equal(new Set(societies.map(s => s.id)).size, 41);
 assert.equal(societies.find(s => s.id === 'aws').instagram, 'https://www.instagram.com/aws_sbg_uet/');
 assert.deepEqual(findSocieties('  mUsIc  ').map(s => s.id), ['music']);
 assert.deepEqual(findSocieties('AWS', 'Computing & cloud').map(s => s.id), ['aws']);
 assert.deepEqual(findSocieties('AWS', 'Music'), []);
 assert.equal(findSocieties('no-such-society-123').length, 0);
 assert.equal(findSocieties('', 'Engineering').every(s => s.category === 'Engineering'), true);
-assert.equal(findSocieties().length, 42);
+assert.equal(findSocieties().length, 41);
 assert.deepEqual(findSocieties().slice(0,2).map(s => s.id), ['music','aws']);
 
 for (const society of societies) {
