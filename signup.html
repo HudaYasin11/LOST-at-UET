@@ -543,8 +543,8 @@
             hideMessages();
 
             const username = usernameInput.value.trim();
-            const email = emailInput.value.trim();
-            const password = passwordInput.value.trim();
+            const email = emailInput.value.trim().toLowerCase();
+            const password = passwordInput.value;
 
             // Validate
             if (!username) {
@@ -644,7 +644,7 @@
 
         resendConfirmationBtn.addEventListener('click', async function() {
             hideMessages();
-            const email = emailInput.value.trim();
+            const email = emailInput.value.trim().toLowerCase();
             if (!email) {
                 showError('Enter your email above, then select resend confirmation.');
                 emailInput.focus();

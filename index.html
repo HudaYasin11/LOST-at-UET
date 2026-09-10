@@ -258,8 +258,8 @@
         async function handleLogin() {
             hideMessages();
 
-            const email = emailInput.value.trim();
-            const password = passwordInput.value.trim();
+            const email = emailInput.value.trim().toLowerCase();
+            const password = passwordInput.value;
 
             if (!email) {
                 showError('Please enter your email');
@@ -294,7 +294,14 @@
                 }
             } catch (error) {
                 console.error('Login error:', error);
-                showError(error.message || 'Something went wrong. Please try again.');
+                const message = String(error.message || '').toLowerCase();
+                if (message.includes('email not confirmed') || message.includes('email_not_confirmed')) {
+                    showError('Your email is not confirmed yet. Return to signup and resend the confirmation email.');
+                } else if (message.includes('invalid login credentials')) {
+                    showError('Invalid email or password.');
+                } else {
+                    showError(error.message || 'Something went wrong. Please try again.');
+                }
                 setLoading(false);
             }
         }
