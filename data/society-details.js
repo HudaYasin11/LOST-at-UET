@@ -308,8 +308,10 @@ export const societyDetails = {
     "reviewedAt": "2026-09-10"
   },
   "asme": {
-    "instagram": "https://www.instagram.com/asme_uet/",
+    "instagram": "https://www.instagram.com/asme.uet/",
     "links": [],
+    "logo": "assets/societies/asme.jpg",
+    "logoSource": "https://www.instagram.com/asme.uet/",
     "reviewedAt": "2026-09-10"
   },
   "dramatics": {

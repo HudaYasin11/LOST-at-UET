@@ -242,5 +242,12 @@
     "label": "IMEC Instagram profile",
     "width": 200,
     "height": 200
+  },
+  "asme": {
+    "path": "assets/societies/asme.jpg",
+    "source": "https://www.instagram.com/asme.uet/",
+    "label": "ASME UET Instagram profile",
+    "width": 200,
+    "height": 200
   }
 }
