@@ -360,7 +360,7 @@ export const societyDetails = {
     "reviewedAt": "2026-09-10"
   },
   "media": {
-    "instagram": "https://www.instagram.com/uetmediasociety/",
+    "instagram": "https://www.instagram.com/uet_mediasociety/",
     "links": [
       {
         "label": "LinkedIn",
@@ -368,7 +368,7 @@ export const societyDetails = {
       }
     ],
     "logo": "assets/societies/media.jpg",
-    "logoSource": "https://pk.linkedin.com/company/uetmediasociety",
+    "logoSource": "https://www.instagram.com/uet_mediasociety/",
     "reviewedAt": "2026-09-10"
   },
   "x-news": {
