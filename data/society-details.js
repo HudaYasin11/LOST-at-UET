@@ -339,7 +339,7 @@ export const societyDetails = {
     "reviewedAt": "2026-09-10"
   },
   "acm": {
-    "instagram": "https://www.instagram.com/uet_acm/",
+    "instagram": "https://www.instagram.com/uet.acm/",
     "links": [
       {
         "label": "LinkedIn",
@@ -347,7 +347,7 @@ export const societyDetails = {
       }
     ],
     "logo": "assets/societies/acm.jpg",
-    "logoSource": "https://pk.linkedin.com/company/acm-uet-lahore",
+    "logoSource": "https://www.instagram.com/uet.acm/",
     "reviewedAt": "2026-09-10"
   },
   "music": {
