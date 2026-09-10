@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Societies at UET Lahore | LOST@UET</title>
+    <meta name="description" content="Find societies and student communities at UET Lahore Main Campus. Explore interests, official links, and guidance for your first society.">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/societies.css">
+</head>
+<body class="societies-page">
+<div id="app">
+    <header id="global-header">
+        <a class="logo-text" href="home.html">LOST@UET</a>
+        <nav class="header-nav" aria-label="Main navigation">
+            <a href="home.html">Home</a><a href="map.html">Map</a><a href="quests.html">Quests</a><a href="discoveries.html">Discoveries</a><a href="societies.html" class="active" aria-current="page">Societies</a>
+        </nav>
+    </header>
+    <main>
+        <section class="society-intro" aria-labelledby="page-title">
+            <p class="eyebrow">UET LAHORE · MAIN CAMPUS</p>
+            <h1 id="page-title">Find your people.</h1>
+            <p>Explore societies, follow their updates, and find a place for your interests beyond the classroom.</p>
+        </section>
+        <section aria-label="Find societies">
+            <div class="society-tools">
+                <div class="society-search"><label for="society-search">Search societies</label><input type="search" id="society-search" placeholder="Try music, computing, or AWS…" autocomplete="off"></div>
+                <div class="society-select"><label for="society-category">Your interests</label><select id="society-category"><option value="all">All interests</option></select></div>
+            </div>
+            <p id="society-count" role="status" aria-live="polite">Loading societies…</p>
+            <div id="society-grid" class="society-grid"></div>
+            <div id="society-empty" hidden><h2>No societies found</h2><p>Try a different name or interest.</p><button id="society-reset" type="button">Clear filters</button></div>
+            <noscript><p>Enable JavaScript to search this directory. You can also browse the <a href="https://www.uet.edu.pk/facilties/core-facilities/societies-clubs/">UET societies list</a> and <a href="https://www.meetup.com/aws-sbg-at-uet-lahore-main/">AWS Student Builder Group</a>.</p></noscript>
+        </section>
+        <aside class="joining-guide" aria-labelledby="guide-title">
+            <p class="eyebrow">YOUR FIRST SOCIETY</p><h2 id="guide-title">Start with curiosity.</h2>
+            <ol><li><strong>Shortlist your interests.</strong> Pick one or two societies you would enjoy making time for.</li><li><strong>Meet the members.</strong> Ask about beginner roles, eligibility, weekly commitment, and any fees.</li><li><strong>Follow recruitment updates.</strong> Check the society’s official account for current forms, deadlines, and interviews.</li></ol>
+        </aside>
+        <footer class="society-sources"><p>Directory baseline: <a href="https://www.uet.edu.pk/facilties/core-facilities/societies-clubs/" target="_blank" rel="noopener noreferrer">UET’s registered societies, 2025–2026</a>, plus the <a href="https://www.meetup.com/aws-sbg-at-uet-lahore-main/" target="_blank" rel="noopener noreferrer">AWS campus community</a>. Links reviewed 10 September 2026.</p><p>Interest categories are browsing guidance. Confirm current activities and eligibility with each society. Society names and profile artwork belong to their respective organizations.</p></footer>
+    </main>
+    <nav class="bottom-nav" aria-label="Mobile navigation"><a href="home.html">Home</a><a href="map.html">Map</a><a href="quests.html">Quests</a><a href="discoveries.html">Discoveries</a><a href="societies.html" class="active" aria-current="page">Societies</a></nav>
+</div>
+<script type="module" src="js/societies.js"></script>
+</body>
+</html>

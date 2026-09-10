@@ -1,0 +1,358 @@
+{
+  "ashrae": {
+    "instagram": "https://www.instagram.com/ashraeuetlahore/",
+    "links": [
+      {
+        "label": "LinkedIn",
+        "url": "https://pk.linkedin.com/company/ashrae-uet-lahore-official"
+      }
+    ]
+  },
+  "spe": {
+    "instagram": "https://www.instagram.com/speuet/",
+    "links": [
+      {
+        "label": "LinkedIn",
+        "url": "https://pk.linkedin.com/company/spe-uet-lsc"
+      }
+    ]
+  },
+  "sae": {
+    "instagram": "https://www.instagram.com/sae_uet/",
+    "links": [
+      {
+        "label": "LinkedIn",
+        "url": "https://www.linkedin.com/company/saeuet/"
+      },
+      {
+        "label": "All socials",
+        "url": "https://linktr.ee/sae_uet"
+      }
+    ]
+  },
+  "spet": {
+    "instagram": "https://www.instagram.com/spet_uetofficial/",
+    "links": [
+      {
+        "label": "Department page",
+        "url": "https://polymer.uet.edu.pk/sample-page/technical-societies/society-of-polymer-engineers-and-technologists-spet/"
+      }
+    ]
+  },
+  "spid": {
+    "instagram": "https://www.instagram.com/spid_uet/",
+    "links": []
+  },
+  "usra": {
+    "instagram": "https://www.instagram.com/usra_uet/",
+    "links": []
+  },
+  "science": {
+    "instagram": "https://www.instagram.com/uetsciencesociety/",
+    "links": [
+      {
+        "label": "Website",
+        "url": "https://www.uetss.org/"
+      },
+      {
+        "label": "LinkedIn",
+        "url": "https://www.linkedin.com/company/uet-science-society-official"
+      }
+    ]
+  },
+  "ehs": {
+    "instagram": "https://www.instagram.com/ehs_uet/",
+    "links": [
+      {
+        "label": "Facebook",
+        "url": "https://www.facebook.com/ehsuet/"
+      },
+      {
+        "label": "Department page",
+        "url": "https://ieer.uet.edu.pk/technical-societies/"
+      }
+    ]
+  },
+  "gym": {
+    "instagram": "https://www.instagram.com/gymclubuet/",
+    "links": [
+      {
+        "label": "LinkedIn",
+        "url": "https://pk.linkedin.com/company/pm-s-green-youth-movement-club-uet-lahore"
+      }
+    ]
+  },
+  "itf": {
+    "instagram": "https://www.instagram.com/itf_uet/",
+    "links": []
+  },
+  "mechatronics": {
+    "instagram": "https://www.instagram.com/mechatronicsclub/",
+    "links": [
+      {
+        "label": "LinkedIn",
+        "url": "https://pk.linkedin.com/company/mechatronicsuet-club"
+      },
+      {
+        "label": "Facebook group",
+        "url": "https://www.facebook.com/groups/127951280576343"
+      }
+    ]
+  },
+  "cbs": {
+    "instagram": "https://www.instagram.com/cbsuetlhr/",
+    "links": [
+      {
+        "label": "LinkedIn",
+        "url": "https://pk.linkedin.com/company/cbsuetlhr"
+      }
+    ]
+  },
+  "justuju": {
+    "instagram": "https://www.instagram.com/justujubyibm/",
+    "links": [
+      {
+        "label": "LinkedIn",
+        "url": "https://pk.linkedin.com/company/justujubyibm"
+      }
+    ]
+  },
+  "blood-donors": {
+    "instagram": "https://www.instagram.com/uetbds/",
+    "links": [
+      {
+        "label": "LinkedIn",
+        "url": "https://pk.linkedin.com/company/uet-bds"
+      }
+    ]
+  },
+  "aed": {
+    "instagram": "https://www.instagram.com/aedschap_uet/",
+    "links": []
+  },
+  "uraan": {
+    "instagram": "https://www.instagram.com/info_uraanofficial/",
+    "links": []
+  },
+  "gdg": {
+    "instagram": "https://www.instagram.com/gdgocuet/",
+    "links": [
+      {
+        "label": "LinkedIn",
+        "url": "https://pk.linkedin.com/company/gdgocuet"
+      }
+    ]
+  },
+  "literary": {
+    "instagram": "https://www.instagram.com/uetliterarysociety/",
+    "links": []
+  },
+  "zimal": {
+    "instagram": "https://www.instagram.com/zimaluet/",
+    "links": [
+      {
+        "label": "LinkedIn",
+        "url": "https://pk.linkedin.com/company/zimaluet"
+      }
+    ]
+  },
+  "some": {
+    "instagram": "https://www.instagram.com/somameuetofficial/",
+    "links": [
+      {
+        "label": "LinkedIn",
+        "url": "https://pk.linkedin.com/company/society-of-mining-engineers"
+      }
+    ]
+  },
+  "chemical": {
+    "instagram": "https://www.instagram.com/ihcsofficial/",
+    "links": [
+      {
+        "label": "LinkedIn post",
+        "url": "https://www.linkedin.com/posts/ihcsofficial_prof-dr-muhammad-hammad-lakhvi-is-our-cheif-activity-7119862331823550464-HQjV"
+      }
+    ]
+  },
+  "mun": {
+    "instagram": "https://www.instagram.com/uetmunsociety/",
+    "links": [
+      {
+        "label": "LinkedIn",
+        "url": "https://pk.linkedin.com/company/uetmun-society"
+      }
+    ]
+  },
+  "iet": {
+    "instagram": "https://www.instagram.com/iet_on_campus_uet_lahore/",
+    "links": [
+      {
+        "label": "LinkedIn",
+        "url": "https://pk.linkedin.com/company/iet-on-campus-uet-lahore"
+      }
+    ]
+  },
+  "ieee": {
+    "instagram": "https://www.instagram.com/ieeeuetlahore/",
+    "links": [
+      {
+        "label": "LinkedIn",
+        "url": "https://pk.linkedin.com/company/ieee-uet-lahore"
+      }
+    ]
+  },
+  "imec": {
+    "instagram": "https://www.instagram.com/imecuetlhr/",
+    "links": []
+  },
+  "climate": {
+    "instagram": "https://www.instagram.com/caf_uet/",
+    "links": [
+      {
+        "label": "LinkedIn",
+        "url": "https://pk.linkedin.com/company/caf-uet"
+      }
+    ]
+  },
+  "debating": {
+    "instagram": "https://www.instagram.com/uetdebatingsociety/",
+    "links": [
+      {
+        "label": "Society website",
+        "url": "https://uetds.weebly.com/"
+      }
+    ]
+  },
+  "ice": {
+    "instagram": "https://www.instagram.com/iceuetlahore/",
+    "links": [
+      {
+        "label": "LinkedIn",
+        "url": "https://pk.linkedin.com/company/uetice"
+      }
+    ]
+  },
+  "asme": {
+    "instagram": "https://www.instagram.com/asme.uet/",
+    "links": []
+  },
+  "dramatics": {
+    "instagram": "https://www.instagram.com/uet_dramatics/",
+    "links": [
+      {
+        "label": "LinkedIn",
+        "url": "https://www.linkedin.com/company/uet-drama-society"
+      }
+    ]
+  },
+  "mechanical": {
+    "instagram": "https://www.instagram.com/imeche_uet_lahore/",
+    "links": [
+      {
+        "label": "LinkedIn",
+        "url": "https://www.linkedin.com/company/imeche-uet-lahore"
+      }
+    ]
+  },
+  "acm": {
+    "instagram": "https://www.instagram.com/uet.acm/",
+    "links": [
+      {
+        "label": "LinkedIn",
+        "url": "https://pk.linkedin.com/company/acm-uet-lahore"
+      }
+    ]
+  },
+  "music": {
+    "instagram": "https://www.instagram.com/musicsocietyuet/",
+    "links": [
+      {
+        "label": "LinkedIn",
+        "url": "https://pk.linkedin.com/company/uet-music-society"
+      }
+    ]
+  },
+  "islamic": {
+    "instagram": "https://www.instagram.com/uet_islamicsociety/",
+    "links": []
+  },
+  "media": {
+    "instagram": "https://www.instagram.com/uetmediasociety/",
+    "links": [
+      {
+        "label": "LinkedIn",
+        "url": "https://pk.linkedin.com/company/uetmediasociety"
+      }
+    ]
+  },
+  "x-news": {
+    "instagram": "https://www.instagram.com/uetxnews/",
+    "links": [
+      {
+        "label": "LinkedIn",
+        "url": "https://pk.linkedin.com/company/uet-xnews"
+      }
+    ]
+  },
+  "aks": {
+    "instagram": "https://www.instagram.com/uetaksinsta/",
+    "links": [
+      {
+        "label": "All socials",
+        "url": "https://linktr.ee/uetaks"
+      },
+      {
+        "label": "Facebook",
+        "url": "https://www.facebook.com/UETAKS/"
+      }
+    ]
+  },
+  "tribune": {
+    "instagram": "https://www.instagram.com/uettribune.official/",
+    "links": [
+      {
+        "label": "LinkedIn",
+        "url": "https://www.linkedin.com/company/uettribuneofficial"
+      },
+      {
+        "label": "All socials",
+        "url": "https://linktr.ee/uettribuneofficial"
+      }
+    ]
+  },
+  "physica": {
+    "instagram": "https://www.instagram.com/physica_uet/",
+    "links": [
+      {
+        "label": "LinkedIn",
+        "url": "https://pk.linkedin.com/company/physica-uet"
+      }
+    ]
+  },
+  "inquisitors": {
+    "instagram": "https://www.instagram.com/inquisitorssociety/",
+    "links": [
+      {
+        "label": "LinkedIn",
+        "url": "https://pk.linkedin.com/in/inquisitors-society-167155381"
+      }
+    ]
+  },
+  "aws": {
+    "instagram": "https://www.instagram.com/aws_sbg_uet/",
+    "links": [
+      {
+        "label": "LinkedIn",
+        "url": "https://www.linkedin.com/company/aws-cloud-club-uet-lahore/"
+      },
+      {
+        "label": "Meetup",
+        "url": "https://www.meetup.com/aws-sbg-at-uet-lahore-main/"
+      }
+    ]
+  },
+  "formula-student": {
+    "instagram": "https://www.instagram.com/fs.uet/",
+    "links": []
+  }
+}

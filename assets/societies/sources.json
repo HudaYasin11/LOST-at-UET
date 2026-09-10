@@ -1,0 +1,268 @@
+{
+  "ashrae": {
+    "path": "assets/societies/ashrae.jpg",
+    "source": "https://www.instagram.com/ashraeuetlahore/",
+    "label": "ASHRAE UET Lahore Instagram profile",
+    "width": 200,
+    "height": 200
+  },
+  "spe": {
+    "path": "assets/societies/spe.jpg",
+    "source": "https://pk.linkedin.com/company/spe-uet-lsc",
+    "label": "Society of Petroleum Engineers UET Lahore Chapter",
+    "width": 200,
+    "height": 200
+  },
+  "sae": {
+    "path": "assets/societies/sae.jpg",
+    "source": "https://www.linkedin.com/company/saeuet/",
+    "label": "Society of Automotive Engineers, UET Lahore",
+    "width": 200,
+    "height": 200
+  },
+  "spet": {
+    "path": "assets/societies/spet.jpg",
+    "source": "https://www.instagram.com/spet_uetofficial/",
+    "label": "SPET UET Instagram profile",
+    "width": 200,
+    "height": 200
+  },
+  "science": {
+    "path": "assets/societies/science.jpg",
+    "source": "https://www.linkedin.com/company/uet-science-society-official",
+    "label": "UET Science Society",
+    "width": 200,
+    "height": 200
+  },
+  "ehs": {
+    "missing": true,
+    "attempts": [
+      "HTTPError: HTTP Error 400: Bad Request: https://www.facebook.com/ehsuet/",
+      "No usable profile image: https://ieer.uet.edu.pk/technical-societies/"
+    ]
+  },
+  "gym": {
+    "path": "assets/societies/gym.jpg",
+    "source": "https://pk.linkedin.com/company/pm-s-green-youth-movement-club-uet-lahore",
+    "label": "PM's Green Youth Movement Club UET, Lahore.",
+    "width": 200,
+    "height": 200
+  },
+  "mechatronics": {
+    "path": "assets/societies/mechatronics.jpg",
+    "source": "https://pk.linkedin.com/company/mechatronicsuet-club",
+    "label": "Mechatronics Club",
+    "width": 200,
+    "height": 200
+  },
+  "cbs": {
+    "path": "assets/societies/cbs.jpg",
+    "source": "https://pk.linkedin.com/company/cbsuetlhr",
+    "label": "Character Building Society - UET Lahore",
+    "width": 200,
+    "height": 200
+  },
+  "justuju": {
+    "path": "assets/societies/justuju.jpg",
+    "source": "https://pk.linkedin.com/company/justujubyibm",
+    "label": "Justuju",
+    "width": 200,
+    "height": 200
+  },
+  "blood-donors": {
+    "path": "assets/societies/blood-donors.jpg",
+    "source": "https://pk.linkedin.com/company/uet-bds",
+    "label": "UET Blood Donors' Society",
+    "width": 200,
+    "height": 200
+  },
+  "gdg": {
+    "path": "assets/societies/gdg.jpg",
+    "source": "https://pk.linkedin.com/company/gdgocuet",
+    "label": "Google Developer Groups On Campus - UET Lahore",
+    "width": 200,
+    "height": 200
+  },
+  "zimal": {
+    "path": "assets/societies/zimal.jpg",
+    "source": "https://pk.linkedin.com/company/zimaluet",
+    "label": "Zimal UET Lahore",
+    "width": 200,
+    "height": 200
+  },
+  "some": {
+    "path": "assets/societies/some.jpg",
+    "source": "https://www.instagram.com/somameuetofficial/",
+    "label": "SoME Instagram profile",
+    "width": 200,
+    "height": 200
+  },
+  "chemical": {
+    "path": "assets/societies/chemical.jpg",
+    "source": "https://www.linkedin.com/posts/ihcsofficial_prof-dr-muhammad-hammad-lakhvi-is-our-cheif-activity-7119862331823550464-HQjV",
+    "label": "View organization page for Ibne Hayyan Chemical Society",
+    "width": 100,
+    "height": 100
+  },
+  "mun": {
+    "path": "assets/societies/mun.jpg",
+    "source": "https://www.instagram.com/uetmunsociety/",
+    "label": "UET MUN Instagram profile",
+    "width": 200,
+    "height": 200
+  },
+  "iet": {
+    "path": "assets/societies/iet.jpg",
+    "source": "https://pk.linkedin.com/company/iet-on-campus-uet-lahore",
+    "label": "IET On Campus UET Lahore",
+    "width": 200,
+    "height": 200
+  },
+  "ieee": {
+    "path": "assets/societies/ieee.jpg",
+    "source": "https://pk.linkedin.com/company/ieee-uet-lahore",
+    "label": "IEEE UET Lahore",
+    "width": 200,
+    "height": 200
+  },
+  "climate": {
+    "path": "assets/societies/climate.jpg",
+    "source": "https://pk.linkedin.com/company/caf-uet",
+    "label": "Climate Action Forum UET",
+    "width": 200,
+    "height": 200
+  },
+  "debating": {
+    "path": "assets/societies/debating.jpg",
+    "source": "https://www.instagram.com/uetdebatingsociety/",
+    "label": "UET Debating Society Instagram profile",
+    "width": 200,
+    "height": 200
+  },
+  "ice": {
+    "path": "assets/societies/ice.jpg",
+    "source": "https://www.instagram.com/iceuetlahore/",
+    "label": "ICE UET Lahore Instagram profile",
+    "width": 200,
+    "height": 200
+  },
+  "dramatics": {
+    "path": "assets/societies/dramatics.jpg",
+    "source": "https://www.linkedin.com/company/uet-drama-society",
+    "label": "UET DRAMATICS SOCIETY",
+    "width": 200,
+    "height": 200
+  },
+  "mechanical": {
+    "path": "assets/societies/mechanical.jpg",
+    "source": "https://www.linkedin.com/company/imeche-uet-lahore",
+    "label": "IMechE UET Lahore",
+    "width": 200,
+    "height": 200
+  },
+  "acm": {
+    "path": "assets/societies/acm.jpg",
+    "source": "https://www.instagram.com/uet.acm/",
+    "label": "ACM UET Instagram profile",
+    "width": 200,
+    "height": 200
+  },
+  "music": {
+    "path": "assets/societies/music.jpg",
+    "source": "https://pk.linkedin.com/company/uet-music-society",
+    "label": "UET Music Society",
+    "width": 100,
+    "height": 100
+  },
+  "media": {
+    "path": "assets/societies/media.jpg",
+    "source": "https://pk.linkedin.com/company/uetmediasociety",
+    "label": "UET Media Society - UMS",
+    "width": 100,
+    "height": 100
+  },
+  "x-news": {
+    "path": "assets/societies/x-news.jpg",
+    "source": "https://pk.linkedin.com/company/uet-xnews",
+    "label": "UET XNEWS | The First Media Portal of UET",
+    "width": 200,
+    "height": 200
+  },
+  "aks": {
+    "path": "assets/societies/aks.jpg",
+    "source": "https://linktr.ee/uetaks",
+    "label": "uetaks's avatar",
+    "width": 1250,
+    "height": 1250
+  },
+  "tribune": {
+    "path": "assets/societies/tribune.jpg",
+    "source": "https://www.linkedin.com/company/uettribuneofficial",
+    "label": "UET Tribune",
+    "width": 200,
+    "height": 200
+  },
+  "physica": {
+    "path": "assets/societies/physica.jpg",
+    "source": "https://pk.linkedin.com/company/physica-uet",
+    "label": "PHYSICA",
+    "width": 200,
+    "height": 200
+  },
+  "inquisitors": {
+    "path": "assets/societies/inquisitors.jpg",
+    "source": "https://www.instagram.com/inquisitorssociety/",
+    "label": "Inquisitors Society Instagram profile",
+    "width": 200,
+    "height": 200
+  },
+  "aws": {
+    "path": "assets/societies/aws.jpg",
+    "source": "https://www.linkedin.com/company/aws-cloud-club-uet-lahore/",
+    "label": "AWS Student Builder Group - UET Lahore",
+    "width": 200,
+    "height": 200
+  },
+  "aed": {
+    "path": "assets/societies/aed.jpg",
+    "source": "https://www.instagram.com/aedschap_uet/",
+    "label": "AED Student Chapter Instagram profile",
+    "width": 200,
+    "height": 200
+  },
+  "uraan": {
+    "path": "assets/societies/uraan.jpg",
+    "source": "https://www.instagram.com/info_uraanofficial/",
+    "label": "Uraan Instagram profile",
+    "width": 200,
+    "height": 200
+  },
+  "imec": {
+    "path": "assets/societies/imec.jpg",
+    "source": "https://www.instagram.com/imecuetlhr/",
+    "label": "IMEC Instagram profile",
+    "width": 200,
+    "height": 200
+  },
+  "asme": {
+    "path": "assets/societies/asme.jpg",
+    "source": "https://www.instagram.com/asme.uet/",
+    "label": "ASME UET Instagram profile",
+    "width": 200,
+    "height": 200
+  },
+  "islamic": {
+    "path": "assets/societies/islamic.jpg",
+    "source": "https://www.instagram.com/uet_islamicsociety/",
+    "label": "Islamic Society UET Instagram profile",
+    "width": 200,
+    "height": 200
+  },
+  "formula-student": {
+    "path": "assets/societies/formula-student.jpg",
+    "source": "https://www.instagram.com/fs.uet/",
+    "label": "Formula Student UET Lahore Instagram profile",
+    "width": 200,
+    "height": 200
+  }
+}
