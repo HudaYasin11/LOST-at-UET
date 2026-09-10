@@ -13,7 +13,7 @@ export const societyDetails = {
     "reviewedAt": "2026-09-10"
   },
   "spe": {
-    "instagram": "https://www.instagram.com/explore/search/keyword/?q=SPE%20UET%20Lahore",
+    "instagram": "https://www.instagram.com/speuet/",
     "links": [
       {
         "label": "LinkedIn",
@@ -53,7 +53,7 @@ export const societyDetails = {
     "reviewedAt": "2026-09-10"
   },
   "spid": {
-    "instagram": "https://www.instagram.com/explore/search/keyword/?q=SPID%20UET%20Lahore",
+    "instagram": "https://www.instagram.com/spid_uet/",
     "links": [],
     "reviewedAt": "2026-09-10"
   },
@@ -79,7 +79,7 @@ export const societyDetails = {
     "reviewedAt": "2026-09-10"
   },
   "ehs": {
-    "instagram": "https://www.instagram.com/explore/search/keyword/?q=EHS%20UET%20Lahore",
+    "instagram": "https://www.instagram.com/ehs_uet/",
     "links": [
       {
         "label": "Facebook",
@@ -138,7 +138,7 @@ export const societyDetails = {
     "reviewedAt": "2026-09-10"
   },
   "justuju": {
-    "instagram": "https://www.instagram.com/explore/search/keyword/?q=Justuju%20UET%20Lahore",
+    "instagram": "https://www.instagram.com/justujubyibm/",
     "links": [
       {
         "label": "LinkedIn",
@@ -150,7 +150,7 @@ export const societyDetails = {
     "reviewedAt": "2026-09-10"
   },
   "blood-donors": {
-    "instagram": "https://www.instagram.com/explore/search/keyword/?q=UET%20Blood%20Donors%20Society",
+    "instagram": "https://www.instagram.com/uetbds/",
     "links": [
       {
         "label": "LinkedIn",
@@ -172,7 +172,7 @@ export const societyDetails = {
     "reviewedAt": "2026-09-10"
   },
   "gdg": {
-    "instagram": "https://www.instagram.com/explore/search/keyword/?q=GDG%20UET%20Lahore",
+    "instagram": "https://www.instagram.com/gdgocuet/",
     "links": [
       {
         "label": "LinkedIn",
@@ -184,12 +184,12 @@ export const societyDetails = {
     "reviewedAt": "2026-09-10"
   },
   "literary": {
-    "instagram": "https://www.instagram.com/explore/search/keyword/?q=UET%20Literary%20Society",
+    "instagram": "https://www.instagram.com/uetliterarysociety/",
     "links": [],
     "reviewedAt": "2026-09-10"
   },
   "zimal": {
-    "instagram": "https://www.instagram.com/explore/search/keyword/?q=Zimal%20UET",
+    "instagram": "https://www.instagram.com/zimaluet/",
     "links": [
       {
         "label": "LinkedIn",
@@ -201,7 +201,7 @@ export const societyDetails = {
     "reviewedAt": "2026-09-10"
   },
   "some": {
-    "instagram": "https://www.instagram.com/explore/search/keyword/?q=Society%20of%20Mining%20Engineers%20UET",
+    "instagram": "https://www.instagram.com/some_uet_lahore/",
     "links": [
       {
         "label": "LinkedIn",
@@ -213,7 +213,7 @@ export const societyDetails = {
     "reviewedAt": "2026-09-10"
   },
   "chemical": {
-    "instagram": "https://www.instagram.com/explore/search/keyword/?q=Ibne%20Hayyan%20Chemical%20Society",
+    "instagram": "https://www.instagram.com/ihcsofficial/",
     "links": [
       {
         "label": "LinkedIn post",
@@ -237,7 +237,7 @@ export const societyDetails = {
     "reviewedAt": "2026-09-10"
   },
   "iet": {
-    "instagram": "https://www.instagram.com/explore/search/keyword/?q=IET%20UET%20Lahore",
+    "instagram": "https://www.instagram.com/iet_on_campus_uet_lahore/",
     "links": [
       {
         "label": "LinkedIn",
@@ -261,12 +261,12 @@ export const societyDetails = {
     "reviewedAt": "2026-09-10"
   },
   "imec": {
-    "instagram": "https://www.instagram.com/explore/search/keyword/?q=IMEC%20UET%20Lahore",
+    "instagram": "https://www.instagram.com/imecuet/",
     "links": [],
     "reviewedAt": "2026-09-10"
   },
   "climate": {
-    "instagram": "https://www.instagram.com/explore/search/keyword/?q=Climate%20Action%20Forum%20UET",
+    "instagram": "https://www.instagram.com/caf_uet/",
     "links": [
       {
         "label": "LinkedIn",
@@ -300,12 +300,12 @@ export const societyDetails = {
     "reviewedAt": "2026-09-10"
   },
   "asme": {
-    "instagram": "https://www.instagram.com/explore/search/keyword/?q=ASME%20UET%20Lahore",
+    "instagram": "https://www.instagram.com/asme_uet/",
     "links": [],
     "reviewedAt": "2026-09-10"
   },
   "dramatics": {
-    "instagram": "https://www.instagram.com/explore/search/keyword/?q=UET%20Dramatics%20Society",
+    "instagram": "https://www.instagram.com/uet_dramatics/",
     "links": [
       {
         "label": "LinkedIn",
@@ -329,7 +329,7 @@ export const societyDetails = {
     "reviewedAt": "2026-09-10"
   },
   "acm": {
-    "instagram": "https://www.instagram.com/explore/search/keyword/?q=ACM%20UET%20Lahore",
+    "instagram": "https://www.instagram.com/uet_acm/",
     "links": [
       {
         "label": "LinkedIn",
@@ -353,12 +353,12 @@ export const societyDetails = {
     "reviewedAt": "2026-09-10"
   },
   "islamic": {
-    "instagram": "https://www.instagram.com/explore/search/keyword/?q=Islamic%20Society%20UET%20Lahore",
+    "instagram": "https://www.instagram.com/islamic_society_uet/",
     "links": [],
     "reviewedAt": "2026-09-10"
   },
   "media": {
-    "instagram": "https://www.instagram.com/explore/search/keyword/?q=UET%20Media%20Society",
+    "instagram": "https://www.instagram.com/uetmediasociety/",
     "links": [
       {
         "label": "LinkedIn",
@@ -370,7 +370,7 @@ export const societyDetails = {
     "reviewedAt": "2026-09-10"
   },
   "x-news": {
-    "instagram": "https://www.instagram.com/explore/search/keyword/?q=UET%20X-News",
+    "instagram": "https://www.instagram.com/uetxnews/",
     "links": [
       {
         "label": "LinkedIn",
@@ -414,7 +414,7 @@ export const societyDetails = {
     "reviewedAt": "2026-09-10"
   },
   "physica": {
-    "instagram": "https://www.instagram.com/explore/search/keyword/?q=Physica%20UET",
+    "instagram": "https://www.instagram.com/physica_uet/",
     "links": [
       {
         "label": "LinkedIn",
@@ -426,7 +426,7 @@ export const societyDetails = {
     "reviewedAt": "2026-09-10"
   },
   "inquisitors": {
-    "instagram": "https://www.instagram.com/explore/search/keyword/?q=Inquisitors%20Society%20UET",
+    "instagram": "https://www.instagram.com/inquisitorssociety/",
     "links": [
       {
         "label": "LinkedIn",
@@ -441,7 +441,7 @@ export const societyDetails = {
     "reviewedAt": "2026-09-10"
   },
   "international": {
-    "instagram": "https://www.instagram.com/explore/search/keyword/?q=International%20Student%20Society%20UET",
+    "instagram": "https://www.instagram.com/uet_iss/",
     "links": [],
     "reviewedAt": "2026-09-10"
   },
