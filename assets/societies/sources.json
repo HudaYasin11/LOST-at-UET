@@ -234,5 +234,12 @@
     "label": "Uraan Instagram profile",
     "width": 200,
     "height": 200
+  },
+  "imec": {
+    "path": "assets/societies/imec.jpg",
+    "source": "https://www.instagram.com/imecuetlhr/",
+    "label": "IMEC Instagram profile",
+    "width": 200,
+    "height": 200
   }
 }

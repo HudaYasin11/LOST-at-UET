@@ -265,8 +265,10 @@ export const societyDetails = {
     "reviewedAt": "2026-09-10"
   },
   "imec": {
-    "instagram": "https://www.instagram.com/imecuet/",
+    "instagram": "https://www.instagram.com/imecuetlhr/",
     "links": [],
+    "logo": "assets/societies/imec.jpg",
+    "logoSource": "https://www.instagram.com/imecuetlhr/",
     "reviewedAt": "2026-09-10"
   },
   "climate": {
