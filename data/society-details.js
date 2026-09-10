@@ -57,11 +57,6 @@ export const societyDetails = {
     "links": [],
     "reviewedAt": "2026-09-10"
   },
-  "usra": {
-    "instagram": "https://www.instagram.com/usra_uet/",
-    "links": [],
-    "reviewedAt": "2026-09-10"
-  },
   "science": {
     "instagram": "https://www.instagram.com/uetsciencesociety/",
     "links": [
@@ -102,11 +97,6 @@ export const societyDetails = {
     ],
     "logo": "assets/societies/gym.jpg",
     "logoSource": "https://pk.linkedin.com/company/pm-s-green-youth-movement-club-uet-lahore",
-    "reviewedAt": "2026-09-10"
-  },
-  "itf": {
-    "instagram": "https://www.instagram.com/itf_uet/",
-    "links": [],
     "reviewedAt": "2026-09-10"
   },
   "mechatronics": {
