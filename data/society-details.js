@@ -205,7 +205,7 @@ export const societyDetails = {
     "reviewedAt": "2026-09-10"
   },
   "some": {
-    "instagram": "https://www.instagram.com/some_uet_lahore/",
+    "instagram": "https://www.instagram.com/somameuetofficial/",
     "links": [
       {
         "label": "LinkedIn",
@@ -213,7 +213,7 @@ export const societyDetails = {
       }
     ],
     "logo": "assets/societies/some.jpg",
-    "logoSource": "https://pk.linkedin.com/company/society-of-mining-engineers",
+    "logoSource": "https://www.instagram.com/somameuetofficial/",
     "reviewedAt": "2026-09-10"
   },
   "chemical": {
