@@ -110,7 +110,7 @@ export const societyDetails = {
     "reviewedAt": "2026-09-10"
   },
   "mechatronics": {
-    "instagram": "https://www.instagram.com/mc_uet/",
+    "instagram": "https://www.instagram.com/mechatronicsclub/",
     "links": [
       {
         "label": "LinkedIn",
