@@ -13,66 +13,6 @@
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 
     <style>
-        .upload-section {
-            max-width: 400px;
-            margin: 0 auto 16px;
-        }
-        .upload-section .upload-area {
-            border: 2px dashed var(--border-blue);
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: var(--dark-bg);
-        }
-        .upload-section .upload-area:hover {
-            border-color: var(--text-yellow);
-            background: rgba(247, 184, 1, 0.05);
-        }
-        .upload-section .upload-area .upload-icon {
-            font-size: 36px;
-            display: block;
-            margin-bottom: 8px;
-        }
-        .upload-section .upload-area p {
-            color: var(--text-muted);
-            font-size: 14px;
-        }
-        .upload-section .upload-area .upload-sub {
-            font-size: 11px;
-            color: var(--text-muted);
-            opacity: 0.7;
-        }
-        .upload-section .upload-area input[type="file"] {
-            display: none;
-        }
-        .upload-preview {
-            max-width: 200px;
-            margin: 12px auto;
-            display: none;
-        }
-        .upload-preview img {
-            width: 100%;
-            border-radius: 8px;
-            border: 2px solid var(--border-blue);
-        }
-        .upload-actions {
-            display: flex;
-            gap: 8px;
-            justify-content: center;
-            margin-top: 8px;
-            flex-wrap: wrap;
-        }
-        .upload-actions .btn-yellow {
-            padding: 6px 16px;
-            font-size: 12px;
-        }
-        .upload-actions .btn-outline {
-            padding: 6px 16px;
-            font-size: 12px;
-        }
-
         .btn-group {
             display: flex;
             gap: 8px;
@@ -96,44 +36,6 @@
         .status-text-result.error { color: #FF6B6B; }
         .status-text-result.warning { color: #FFA500; }
         .status-text-result.info { color: #4895EF; }
-
-        .manual-entry {
-            max-width: 400px;
-            margin: 12px auto 0;
-            padding: 12px;
-            background: var(--card-bg);
-            border-radius: 8px;
-            border: 1px solid var(--border-blue);
-            display: none;
-        }
-        .manual-entry .manual-input-row {
-            display: flex;
-            gap: 8px;
-        }
-        .manual-entry input {
-            flex: 1;
-            padding: 8px 12px;
-            border-radius: 6px;
-            border: 2px solid var(--border-blue);
-            background: var(--dark-bg);
-            color: white;
-            font-family: var(--font-body);
-        }
-        .manual-entry input:focus {
-            outline: none;
-            border-color: var(--text-yellow);
-        }
-        .manual-entry .btn-yellow {
-            padding: 8px 16px;
-            font-size: 12px;
-            white-space: nowrap;
-        }
-        .manual-entry .manual-hint {
-            font-size: 11px;
-            color: var(--text-muted);
-            margin-top: 6px;
-            text-align: center;
-        }
 
         .success-overlay {
             position: fixed;
@@ -232,14 +134,9 @@
         <section class="page active">
             <div class="qr-page-container">
 
-              
-
-               
-
-                
                 <div class="qr-scanner-section">
                     <p style="text-align:center; font-size:13px; color:var(--text-muted); margin-bottom:12px;">
-                        <i class="fas fa-camera"></i> Or scan with your camera
+                        <i class="fas fa-camera"></i> Scan a QR code with your camera
                     </p>
 
                     <div id="qr-reader" style="width:100%; max-width:400px; margin: 0 auto;"></div>
@@ -296,10 +193,8 @@
             <a href="map.html" class="active"><i class="fas fa-map"></i> Map</a>
             <a href="quests.html"><i class="fas fa-tasks"></i> Quests</a>
             <a href="discoveries.html"><i class="fas fa-trophy"></i> Discoveries</a>
-             <a href="societies.html"><i class="fas fa-users"></i> Societies</a>
-             <a href="faq.html">
-      <i class="fas fa-question-circle"></i> FAQ
-  </a>
+            <a href="societies.html"><i class="fas fa-users"></i> Societies</a>
+            <a href="faq.html"><i class="fas fa-question-circle"></i> FAQ</a>
         </nav>
 
         <nav class="mobile-nav">
@@ -307,10 +202,8 @@
             <a href="map.html" class="active"><i class="fas fa-map"></i> Map</a>
             <a href="quests.html"><i class="fas fa-tasks"></i> Quests</a>
             <a href="discoveries.html"><i class="fas fa-trophy"></i> Discoveries</a>
-             <a href="societies.html"><i class="fas fa-users"></i> Societies</a>
-             <a href="faq.html">
-      <i class="fas fa-question-circle"></i> FAQ
-  </a>
+            <a href="societies.html"><i class="fas fa-users"></i> Societies</a>
+            <a href="faq.html"><i class="fas fa-question-circle"></i> FAQ</a>
         </nav>
 
     </div>
@@ -343,19 +236,9 @@
         const progressText = document.getElementById('userProgressText');
         const successOverlay = document.getElementById('successOverlay');
 
-        // Upload elements
-        const fileInput = document.getElementById('fileInput');
-        const uploadArea = document.getElementById('uploadArea');
-        const uploadPreview = document.getElementById('uploadPreview');
-        const previewImage = document.getElementById('previewImage');
-        const scanUploadedBtn = document.getElementById('scanUploadedBtn');
-        const manualEntry = document.getElementById('manualEntry');
-        const manualInput = document.getElementById('manualLocationId');
-
         let html5QrCode = null;
         let isScanning = false;
         let allLocations = [];
-        let uploadedFileData = null;
 
        
         async function init() {
@@ -407,7 +290,6 @@
                 resultContainer.style.display = 'block';
                 resultText.textContent = `❌ Unknown location: "${locationId}"`;
                 resultText.className = 'status-text-result error';
-                manualEntry.style.display = 'block';
                 return;
             }
 
@@ -417,7 +299,6 @@
             resultContainer.style.display = 'block';
             resultText.textContent = `⏳ Unlocking ${locationName}...`;
             resultText.className = 'status-text-result info';
-            manualEntry.style.display = 'none';
             
             try {
                 const result = await unlockLocation(locationId);
@@ -472,22 +353,6 @@
                 console.error('Full error:', err);
             }
         }
-
-        
-        window.manualUnlock = function() {
-            const locationId = manualInput.value.trim().toLowerCase();
-            if (!locationId) {
-                alert('Please enter a location ID');
-                return;
-            }
-            processUnlock(locationId);
-        };
-
-        manualInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                manualUnlock();
-            }
-        });
 
         // ========================================
         // SUCCESS OVERLAY CONTROLS
@@ -563,108 +428,6 @@
             statusText.textContent = 'Stopped';
             startScanBtn.disabled = false;
         }
-
-        
-        function handleFile(file) {
-            if (!file) return;
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                uploadedFileData = e.target.result;
-                previewImage.src = uploadedFileData;
-                uploadPreview.style.display = 'block';
-                uploadArea.style.display = 'none';
-                manualEntry.style.display = 'none';
-            };
-            reader.readAsDataURL(file);
-        }
-
-        uploadArea.addEventListener('click', function() {
-            fileInput.click();
-        });
-
-        fileInput.addEventListener('change', function(e) {
-            if (this.files && this.files[0]) {
-                handleFile(this.files[0]);
-            }
-        });
-
-        uploadArea.addEventListener('dragover', function(e) {
-            e.preventDefault();
-            this.style.borderColor = 'var(--text-yellow)';
-            this.style.background = 'rgba(247, 184, 1, 0.05)';
-        });
-
-        uploadArea.addEventListener('dragleave', function(e) {
-            e.preventDefault();
-            this.style.borderColor = 'var(--border-blue)';
-            this.style.background = 'transparent';
-        });
-
-        uploadArea.addEventListener('drop', function(e) {
-            e.preventDefault();
-            this.style.borderColor = 'var(--border-blue)';
-            this.style.background = 'transparent';
-            if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-                handleFile(e.dataTransfer.files[0]);
-            }
-        });
-
-        
-        scanUploadedBtn.addEventListener('click', async function() {
-            if (!uploadedFileData) {
-                alert('Please upload a QR code image first.');
-                return;
-            }
-
-            resultContainer.style.display = 'block';
-            resultText.textContent = 'Scanning uploaded image...';
-            resultText.className = 'status-text-result info';
-
-            try {
-                const imageScanner = new Html5Qrcode('qr-reader');
-                const decodedText = await imageScanner.scanFile(uploadedFileData, true);
-                await imageScanner.clear();
-                
-                let locationId = decodedText.trim().toLowerCase();
-                if (locationId.includes('/')) locationId = locationId.split('/').pop();
-                if (locationId.includes('?')) locationId = locationId.split('?')[0];
-                if (locationId.includes('#')) locationId = locationId.split('#')[0];
-                
-                const state = getState();
-                const locations = state.locations || [];
-                const validIds = locations.map(l => l.id);
-                
-                if (validIds.includes(locationId)) {
-                    resultText.textContent = `✅ QR decoded: ${locationId}`;
-                    resultText.className = 'status-text-result success';
-                    setTimeout(() => {
-                        processUnlock(locationId);
-                    }, 500);
-                } else {
-                    resultText.textContent = `❌ Unknown location: "${locationId}"`;
-                    resultText.className = 'status-text-result error';
-                    manualEntry.style.display = 'block';
-                    manualInput.value = locationId;
-                }
-                
-            } catch (error) {
-                console.error('❌ Scan failed:', error);
-                resultText.textContent = '⚠️ Could not scan QR. Please enter manually:';
-                resultText.className = 'status-text-result warning';
-                manualEntry.style.display = 'block';
-            }
-        });
-
-        window.clearUpload = function() {
-            uploadedFileData = null;
-            previewImage.src = '';
-            uploadPreview.style.display = 'none';
-            uploadArea.style.display = 'block';
-            fileInput.value = '';
-            manualEntry.style.display = 'none';
-            resultContainer.style.display = 'none';
-        };
 
         
         startScanBtn.addEventListener('click', startScanning);
