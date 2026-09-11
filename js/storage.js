@@ -5,3 +5,5 @@
 //
 // Final user progress will be stored using
 // Supabase after authentication is implemented.
+
+// data is secured
