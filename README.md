@@ -38,47 +38,6 @@ https://lost-at-uet.vercel.app
 - Gmail SMTP configured as the rate-limit unlock
 - Vercel for hosting
 
-## Project Structure
-LOST-at-UET/
-├── index.html Login page
-├── signup.html Sign up page
-├── home.html Home dashboard
-├── map.html Interactive campus map
-├── qr.html QR scanner and unlock page
-├── quests.html Quests listing
-├── discoveries.html Unlocked locations
-├── societies.html Societies directory
-├── faq.html FAQ page
-├── location.html Location detail page
-├── search.html Location search
-├── css/
-│ ├── style.css Global styles
-│ ├── navigation.css Navigation styles
-│ ├── campus-experience.css Map HUD and game layer
-│ └── societies.css Societies page styles
-├── js/
-│ ├── auth.js Authentication logic
-│ ├── api.js API service layer
-│ ├── dataService.js State management and data loading
-│ ├── config.js Supabase client config
-│ ├── questData.js Quest definitions
-│ ├── app.js Shared application entry
-│ ├── campus-experience.js Map HUD and interaction layer
-│ ├── campus-ambience.js Animated campus effects
-│ ├── retro-dialogue.js Typewriter dialogue effect
-│ ├── building-icons.js Pixel-art marker icons
-│ ├── societies.js Societies page logic
-│ ├── society-details.js Society social links and logos
-│ └── gameState.js Local state scaffold
-├── data/
-│ └── societies.js Society directory data
-└── assets/
-├── uet-retro-campus-map-v2.png
-├── aerial/ Drone reference views
-├── landmarks/ Landmark sprites
-└── societies/ Society logos
-
-text
 
 ## Setup
 
