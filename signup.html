@@ -233,9 +233,11 @@
             background: var(--card-bg);
             border: 2px solid var(--border-blue);
             border-radius: 16px;
-            padding: 40px;
-            max-width: 420px;
-            width: 100%;
+            padding: clamp(24px, 5vw, 40px);
+            max-width: min(520px, 100%);
+            width: min(100%, 520px);
+            max-height: calc(100dvh - 40px);
+            overflow-y: auto;
             text-align: center;
             animation: popIn 0.5s ease;
         }
@@ -263,7 +265,12 @@
             background: var(--dark-bg);
             padding: 8px 16px;
             border-radius: 8px;
-            display: inline-block;
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            overflow-wrap: anywhere;
+            word-break: break-word;
             margin: 8px 0 16px;
         }
         .verification-modal .btn-yellow {
