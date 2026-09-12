@@ -135,7 +135,7 @@
             <div class="qr-page-container">
 
                 <div class="qr-scanner-section">
-                    <p style="text-align:center; font-size:13px; color:var(--text-muted); margin-bottom:12px;">
+                    <p id="qr-scanner-hint" style="text-align:center; font-size:13px; color:var(--text-muted); margin-bottom:12px;">
                         <i class="fas fa-camera"></i> Scan a QR code with your camera
                     </p>
 
@@ -239,6 +239,22 @@
         let html5QrCode = null;
         let isScanning = false;
         let allLocations = [];
+        let targetLocationId = null;   // the ONLY location this scan session is allowed to unlock
+        let targetLocationName = null;
+
+        // The map page should link here as qr.html?location=<id>
+        // (also accepts ?target=<id> as an alias) to tell this page
+        // which single location the user is currently trying to unlock.
+        function getTargetLocationIdFromUrl() {
+            try {
+                const url = new URL(window.location.href);
+                return (url.searchParams.get('location') || url.searchParams.get('target') || '')
+                    .trim()
+                    .toLowerCase() || null;
+            } catch (e) {
+                return null;
+            }
+        }
 
        
         async function init() {
@@ -252,8 +268,33 @@
             
             const state = getState();
             allLocations = state.locations || [];
-            
+
+            targetLocationId = getTargetLocationIdFromUrl();
+            if (targetLocationId) {
+                const target = allLocations.find(l => l.id === targetLocationId);
+                targetLocationName = target?.name || targetLocationId;
+            }
+
             updateHeader();
+            updateTargetBanner();
+
+            // NOTE: unlocking only ever happens via the in-app camera
+            // scanner (startScanning -> onScanSuccess -> processUnlock),
+            // and only for the QR code matching targetLocationId (if set).
+        }
+
+        // Shows which location the user needs to scan for, and blocks
+        // scanning entirely if the page was opened without a valid target.
+        function updateTargetBanner() {
+            const scannerHint = document.getElementById('qr-scanner-hint');
+            if (!scannerHint) return;
+
+            if (targetLocationId) {
+                scannerHint.innerHTML = `<i class="fas fa-camera"></i> Scan the QR code at <strong>${targetLocationName}</strong>`;
+            } else {
+                scannerHint.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Open this scanner from a location on the map first.`;
+                startScanBtn.disabled = true;
+            }
         }
 
         
@@ -370,16 +411,78 @@
             updateHeader();
         };
 
-       
+        // ========================================
+        // QR SCAN HANDLING (fixed URL parsing)
+        // ========================================
+        function extractLocationId(decodedText) {
+            let raw = (decodedText || '').trim();
+
+            // Preferred path: parse as a real URL and read the
+            // "location" query parameter (handles full links like
+            // https://lost-at-uet.vercel.app/qr.html?location=admin-office
+            // correctly, regardless of extra path segments, hashes, etc.)
+            try {
+                const url = new URL(raw);
+                const param = url.searchParams.get('location');
+                if (param) {
+                    return param.toLowerCase();
+                }
+                // Fallback: no ?location= param found, use the last
+                // non-empty path segment instead.
+                const segments = url.pathname.split('/').filter(Boolean);
+                if (segments.length > 0) {
+                    return segments.pop().toLowerCase();
+                }
+            } catch (e) {
+                // Not a valid absolute URL — fall back to manual parsing
+                // for plain-text QR codes that just contain an id.
+            }
+
+            let locationId = raw.toLowerCase();
+            if (locationId.includes('#')) locationId = locationId.split('#')[0];
+            if (locationId.includes('?')) {
+                // try to salvage a location= param from the query string
+                const queryPart = locationId.split('?')[1] || '';
+                const match = queryPart.split('&').find(kv => kv.startsWith('location='));
+                if (match) {
+                    return decodeURIComponent(match.split('=')[1] || '');
+                }
+                locationId = locationId.split('?')[0];
+            }
+            if (locationId.includes('/')) locationId = locationId.split('/').pop();
+
+            return locationId;
+        }
+
         function onScanSuccess(decodedText) {
             stopScanning();
-            
-            let locationId = decodedText.trim().toLowerCase();
-            if (locationId.includes('/')) locationId = locationId.split('/').pop();
-            if (locationId.includes('?')) locationId = locationId.split('?')[0];
-            if (locationId.includes('#')) locationId = locationId.split('#')[0];
-            
-            processUnlock(locationId);
+
+            const scannedLocationId = extractLocationId(decodedText);
+
+            // Enforce: the scanned QR must match the location the user
+            // navigated here for. Scanning any other location's QR is
+            // rejected, even if that QR is itself valid elsewhere.
+            if (targetLocationId && scannedLocationId !== targetLocationId) {
+                const scannedLocation = allLocations.find(l => l.id === scannedLocationId);
+                const scannedName = scannedLocation?.name || scannedLocationId || 'an unknown location';
+
+                resultContainer.style.display = 'block';
+                resultText.textContent = `❌ Wrong QR code! That's "${scannedName}", but you need to scan the QR at "${targetLocationName}".`;
+                resultText.className = 'status-text-result error';
+                return;
+            }
+
+            if (!targetLocationId) {
+                // Page was opened without a target — shouldn't normally
+                // happen since scanning is disabled in that case, but
+                // guard against it anyway.
+                resultContainer.style.display = 'block';
+                resultText.textContent = `❌ No target location set for this scan. Go back to the map and try again.`;
+                resultText.className = 'status-text-result error';
+                return;
+            }
+
+            processUnlock(scannedLocationId);
         }
 
         function onScanError(err) {
@@ -388,6 +491,10 @@
 
         async function startScanning() {
             if (isScanning) return;
+            if (!targetLocationId) {
+                alert('Open this scanner from a specific location on the map first.');
+                return;
+            }
             
             try {
                 const devices = await navigator.mediaDevices.enumerateDevices();
