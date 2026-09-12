@@ -106,6 +106,7 @@ export async function login(email, password) {
 // ========================================
 // LOGOUT
 // ========================================
+// please stay out of here 
 
 export async function logout() {
     try {
