@@ -72,6 +72,25 @@ export async function resendSignupConfirmation(email) {
 // LOGIN
 // ========================================
 
+// ========================================
+// PASSWORD RECOVERY
+// ========================================
+
+export async function requestPasswordReset(email) {
+    const normalizedEmail = email.trim().toLowerCase();
+    const { error } = await supabase.auth.resetPasswordForEmail(normalizedEmail, {
+        redirectTo: `${window.location.origin}/reset-password.html`
+    });
+
+    if (error) throw new Error(error.message);
+    return { success: true };
+}
+
+export async function updatePassword(password) {
+    const { data, error } = await supabase.auth.updateUser({ password });
+    if (error) throw new Error(error.message);
+    return data;
+}
 export async function login(email, password) {
     try {
         console.log('Attempting login for:', email);
