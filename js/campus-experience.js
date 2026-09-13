@@ -21,6 +21,34 @@ export function gameMarkerMarkup(loc, discovered) {
     return `<div class="campus-landmark ${discovered ? 'is-discovered' : ''} ${loc.is_hidden ? 'is-secret' : ''}"><span class="landmark-emblem">${iconFor(loc)}</span><i>${discovered ? '✓' : '·'}</i><b class="landmark-label">${escape(loc.name)}</b></div>`;
 }
 
+// Hand-traced image-space walkways. Coordinates are [y, x] on the illustrated
+// campus map, so these are visual paths rather than GPS or surveyed directions.
+const ROUTE_WAYPOINTS = [
+    [[-40,750],[455,750],[488,742],[516,717],[546,680],[582,665],[619,676],[656,704],[702,719],[775,719],[841,680],[898,648]],
+    [[1060,825],[953,820],[914,802],[866,772],[826,752],[770,750],[704,755],[669,773],[635,801],[604,818],[571,817],[537,801],[504,779],[473,768],[-40,768]],
+    [[550,-40],[550,232],[542,451],[539,544],[543,598],[558,629],[605,647],[640,674],[655,710],[657,754],[640,798],[617,835],[603,881],[602,1094],[602,1285],[625,1318],[790,1370],[1060,1470]],
+    [[-20,706],[448,706],[478,695],[502,664],[519,610],[521,487],[531,232]],
+    [[-20,790],[454,790],[487,805],[524,834],[557,846],[575,880],[574,1115],[579,1284]],
+    [[1024,681],[934,687],[885,678],[829,687],[764,691],[704,691],[665,676],[631,637],[602,595]],
+    [[995,862],[930,852],[853,853],[763,861],[668,888],[637,1124]],
+    [[574,184],[634,168],[694,149],[736,117],[761,87],[824,64],[897,15]]
+];
+
+function visualRoute(start, end) {
+    const nodes = ROUTE_WAYPOINTS.flatMap(path => path.map(point => [...point]));
+    const edges = nodes.map(() => []);
+    const link = (a, b) => { const weight = Math.hypot(nodes[a][0] - nodes[b][0], nodes[a][1] - nodes[b][1]); edges[a].push([b, weight]); edges[b].push([a, weight]); };
+    ROUTE_WAYPOINTS.forEach(path => path.slice(1).forEach((point, i) => { const a = nodes.findIndex(node => node[0] === path[i][0] && node[1] === path[i][1]); const b = nodes.findIndex(node => node[0] === point[0] && node[1] === point[1]); link(a, b); }));
+    for (let a = 0; a < nodes.length; a++) for (let b = a + 1; b < nodes.length; b++) { const distance = Math.hypot(nodes[a][0] - nodes[b][0], nodes[a][1] - nodes[b][1]); if (distance > 1 && distance <= 145) link(a, b); }
+    const startIndex = nodes.push([...start]) - 1, endIndex = nodes.push([...end]) - 1; edges.push([], []);
+    const nearest = point => nodes.slice(0, -2).map((node, index) => ({ index, distance: Math.hypot(node[0] - point[0], node[1] - point[1]) })).sort((a, b) => a.distance - b.distance).slice(0, 5);
+    nearest(start).forEach(({ index, distance }) => { edges[startIndex].push([index, distance]); edges[index].push([startIndex, distance]); });
+    nearest(end).forEach(({ index, distance }) => { edges[endIndex].push([index, distance]); edges[index].push([endIndex, distance]); });
+    const distances = Array(nodes.length).fill(Infinity), previous = Array(nodes.length).fill(-1), open = new Set([startIndex]); distances[startIndex] = 0;
+    while (open.size) { const current = [...open].reduce((best, index) => distances[index] < distances[best] ? index : best); open.delete(current); if (current === endIndex) break; edges[current].forEach(([next, weight]) => { const candidate = distances[current] + weight; if (candidate < distances[next]) { distances[next] = candidate; previous[next] = current; open.add(next); } }); }
+    if (!Number.isFinite(distances[endIndex])) return [start, [start[0], end[1]], end];
+    const result = []; for (let index = endIndex; index !== -1; index = previous[index]) result.unshift(nodes[index]); return result;
+}
 // Original minor-key soundtrack, balanced for phone speakers. Device media volume
 // remains the final output control; playback still starts only on a user gesture.
 let music;
@@ -171,24 +199,18 @@ export function createCampusExperience({ map, locations, getPosition, getState, 
         if (!selected) return;
         stopRoute();
         const start = [...playerPosition], end = getPosition(selected);
-        // These are illustration pixels, not surveyed roads or geographic distances.
-        const points = [start, end];
+        const points = visualRoute(start, end);
         glow = L.polyline(points, {color:'#48ddff',weight:12,opacity:.16,interactive:false}).addTo(map);
         route = L.polyline(points, {color:'#a5edff',weight:3,dashArray:'6 12',className:'campus-route',interactive:false}).addTo(map);
         map.fitBounds(L.latLngBounds(points).pad(.4), { maxZoom: .5, animate: !reducedMotion });
-        $('.route-status').textContent = 'SIMULATION · Illustrative route, not walking directions.';
-        if (reducedMotion) { $('.route-status').textContent = 'Static route preview · Physical QR required to discover.'; return; }
+        $('.route-status').textContent = 'SIMULATION · Waypoint preview, not walking directions.';
+        if (reducedMotion) { $('.route-status').textContent = 'Static waypoint preview · Physical QR required to discover.'; return; }
+        const segmentLengths = points.slice(1).map((point, i) => Math.hypot(point[0] - points[i][0], point[1] - points[i][1]));
+        const totalLength = segmentLengths.reduce((sum, length) => sum + length, 0);
+        const pointAt = progress => { let remaining = totalLength * progress; for (let i = 0; i < segmentLengths.length; i++) { if (remaining <= segmentLengths[i]) { const ratio = segmentLengths[i] ? remaining / segmentLengths[i] : 0; return [points[i][0] + (points[i + 1][0] - points[i][0]) * ratio, points[i][1] + (points[i + 1][1] - points[i][1]) * ratio]; } remaining -= segmentLengths[i]; } return [...end]; };
         const began = performance.now(), duration = 9000;
         player.getElement()?.classList.add('is-walking');
-        const animate = now => {
-            if (disposed) return;
-            const progress = Math.min((now - began) / duration, 1);
-            playerPosition = [start[0] + (end[0]-start[0])*progress, start[1] + (end[1]-start[1])*progress];
-            player.setLatLng(playerPosition); updateMinimap();
-            $('.route-status').textContent = progress < 1 ? `SIMULATION · ${Math.round(progress * 100)}% of preview · No GPS tracking` : 'Preview complete. Visit the location and scan its physical QR.';
-            if (progress < 1) frame = requestAnimationFrame(animate);
-            else player.getElement()?.classList.remove('is-walking');
-        };
+        const animate = now => { if (disposed) return; const progress = Math.min((now - began) / duration, 1); playerPosition = pointAt(progress); player.setLatLng(playerPosition); updateMinimap(); $('.route-status').textContent = progress < 1 ? `SIMULATION · ${Math.round(progress * 100)}% of waypoint preview · No GPS tracking` : 'Preview complete. Visit the location and scan its physical QR.'; if (progress < 1) frame = requestAnimationFrame(animate); else player.getElement()?.classList.remove('is-walking'); };
         frame = requestAnimationFrame(animate);
     }
     function findMe() {
