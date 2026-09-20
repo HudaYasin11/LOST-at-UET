@@ -1,0 +1,15 @@
+User-agent: *
+Disallow: /home.html
+Disallow: /map.html
+Disallow: /quests.html
+Disallow: /discoveries.html
+Disallow: /societies.html
+Disallow: /faq.html
+Disallow: /search.html
+Disallow: /qr.html
+Disallow: /location.html
+Disallow: /signup.html
+Disallow: /forgot-password.html
+Disallow: /reset-password.html
+
+Sitemap: https://lost-at-uet.vercel.app/sitemap.xml
